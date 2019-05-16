@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 enum _BillBoardType { POLL, ANNOUNCEMENT }
 
 class BillBoardForm extends StatefulWidget {
-  List<Map<String, dynamic>> announcements = [];
+  final Function addToBillBoard;
 
-  //BillBoardForm(this.announcements);
+  BillBoardForm(this.addToBillBoard);
 
   @override
   State<StatefulWidget> createState() {
@@ -19,7 +19,7 @@ class _BillBoardFormState extends State<BillBoardForm> {
     'title': null,
     'type': _BillBoardType.ANNOUNCEMENT.toString(),
     'description': null,
-    'expiration': 0
+    'expiration': 24
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -27,7 +27,6 @@ class _BillBoardFormState extends State<BillBoardForm> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Title', filled: true, fillColor: Colors.white),
-      obscureText: true,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid Title';
@@ -78,8 +77,7 @@ class _BillBoardFormState extends State<BillBoardForm> {
     return TextFormField(
       keyboardType: TextInputType.multiline,
       maxLines: 3,
-      decoration: InputDecoration(
-          labelText: 'Description'),
+      decoration: InputDecoration(labelText: 'Description'),
       validator: (String value) {
         if (value.isEmpty || value.length < 10) {
           return 'Invalid Description';
@@ -134,7 +132,9 @@ class _BillBoardFormState extends State<BillBoardForm> {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    widget.announcements.add(_formData);
+
+    _formKey.currentState.save();
+    widget.addToBillBoard(_formData);
     Navigator.of(context).pop();
   }
 
@@ -142,8 +142,7 @@ class _BillBoardFormState extends State<BillBoardForm> {
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25.0))
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(25.0))),
       title: Text('Create'),
       content: _buildBody(context),
       actions: <Widget>[
