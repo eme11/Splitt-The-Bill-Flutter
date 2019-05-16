@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'pages/more_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -36,7 +37,8 @@ class _MyHomePageState extends State<MyHomePage>
     ),
     Container(
       child: Center(child: Text("Page 3")),
-    )
+    ),
+    MorePage()
   ];
   TabController _tabController;
 
@@ -71,13 +73,15 @@ class _MyHomePageState extends State<MyHomePage>
             _tabController.animateTo(_currentIndex);
           });
         },
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-              title: Text("Utilities"),
-              icon: Icon(Icons.account_balance_wallet)),
+              title: Text("Supplies"), icon: Icon(Icons.book)),
           BottomNavigationBarItem(
-              title: Text("Billboard"), icon: Icon(Icons.filter_frames)),
-          BottomNavigationBarItem(title: Text("More"), icon: Icon(Icons.menu))
+              title: Text("Billboard"), icon: Icon(Icons.dashboard)),
+          BottomNavigationBarItem(
+              title: Text("Chores"), icon: Icon(Icons.filter_frames)),
+          BottomNavigationBarItem(title: Text("More"), icon: Icon(Icons.menu)),
         ],
       ),
     );
