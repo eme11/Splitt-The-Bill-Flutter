@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../pop_up_widows/bill_board_announcement.dart';
-import '../widgets/ui_elements/bill_board_card.dart';
+import '../widgets/cards/bill_board_card.dart';
 
 class BillBoardPage extends StatefulWidget {
   List<Widget> _billBoardCards = [];

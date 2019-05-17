@@ -21,6 +21,21 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
     'user': 'anonymous_user'
   };
 
+  Widget _buildName(){
+    return TextFormField(
+      decoration: InputDecoration(
+          labelText: 'Name', filled: true, fillColor: Colors.white),
+      validator: (String value) {
+        if (value.isEmpty || value.length < 6) {
+          return 'Name too short';
+        }
+      },
+      onSaved: (String value) {
+        _formData['name'] = value;
+      },
+    );
+  }
+
   DropdownMenuItem<String> _buildDropDownItem(String value, IconData icon) {
     return DropdownMenuItem<String>(
       value: value,
@@ -64,13 +79,36 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
     );
   }
 
+  Widget _buildPrice(){
+    return TextFormField(
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(labelText: 'Price'),
+      initialValue: _formData['price'] == null
+          ? ''
+          : _formData['price'].toString(),
+      validator: (String value) {
+        if (value.isEmpty ||
+            !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+          return 'Input should be a number.';
+        }
+      },
+      onSaved: (String value) {
+        _formData['price'] = double.parse(value);
+      },
+    );
+  }
+
   Widget _buildBody(BuildContext context) {
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
         child: Column(
           children: <Widget>[
+            _buildName(),
+            _buildSizedBox(),
             _buildDropDownTypeList(),
+            _buildSizedBox(),
+            _buildPrice()
           ],
         ),
       ),
