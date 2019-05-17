@@ -3,12 +3,11 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class BillBoardCard extends StatefulWidget {
   final Map<String, dynamic> value;
-  final Function delete;
   int _okayScore = 0;
   int _noScore = 0;
   double _percent;
 
-  BillBoardCard(this.value, this.delete);
+  BillBoardCard(this.value);
 
   @override
   State<StatefulWidget> createState() {
