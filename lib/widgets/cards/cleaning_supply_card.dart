@@ -3,9 +3,8 @@ import '../ui_elements/price_tag.dart';
 
 class CleaningSupplyCard extends StatefulWidget {
   final Map<String, dynamic> value;
-  final Function delete;
 
-  CleaningSupplyCard(this.value, this.delete);
+  CleaningSupplyCard(this.value);
 
   @override
   State<StatefulWidget> createState() {

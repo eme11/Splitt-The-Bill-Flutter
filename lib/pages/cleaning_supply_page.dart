@@ -46,7 +46,7 @@ class _CleaningSuppliesPageState extends State<CleaningSuppliesPage>{
   void addCleaningSupply(Map<String,dynamic> value){
     if (value != null) {
       setState(() {
-        widget._cleaningSuppliesCard.add(CleaningSupplyCard(value, deleteCleaningSupply));
+        widget._cleaningSuppliesCard.add(CleaningSupplyCard(value));
       });
     }
   }
