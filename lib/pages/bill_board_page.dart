@@ -17,6 +17,7 @@ class _BillBoardPageState extends State<BillBoardPage>{
     if (value != null) {
       setState(() {
         widget._billBoardCards.add(BillBoardCard(value));
+        print('LLLLLLLLLLL' + value.toString());
       });
     }
   }
@@ -37,38 +38,10 @@ class _BillBoardPageState extends State<BillBoardPage>{
     return billBoardCards;
   }
 
-  Widget blahblah() {
-    Map<String, dynamic> _formData = {
-      'title': 'NNNNNNN',
-      'type': true,
-      'description': 'LLLLLLLLLLLLLLLLLL',
-      'expiration': 24,
-      'user':'anonymous_user'
-    };
-    setState(() {
-      widget._billBoardCards.add(BillBoardCard(_formData));
-    });
-
-    Widget billBoardCards;
-    if (widget._billBoardCards.length > 0) {
-      billBoardCards = ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: <Widget>[widget._billBoardCards[index]],
-          );
-        },
-        itemCount: widget._billBoardCards.length,
-      );
-    } else
-      billBoardCards = Container();
-    return billBoardCards;
-
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: blahblah(),
+      body: _buildBody(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(

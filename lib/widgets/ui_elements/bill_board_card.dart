@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-
 class BillBoardCard extends StatefulWidget {
   final Map<String, dynamic> value;
   int _okayScore = 0;
@@ -16,8 +15,7 @@ class BillBoardCard extends StatefulWidget {
   }
 }
 
-class _BillBoardCardState extends State<BillBoardCard>{
-
+class _BillBoardCardState extends State<BillBoardCard> {
   Widget _buildTrailing() {
     return widget.value['type'] == false
         ? Text('')
@@ -29,7 +27,7 @@ class _BillBoardCardState extends State<BillBoardCard>{
                 child: Icon(Icons.done),
                 onPressed: () {
                   setState(() {
-                    widget._okayScore =  widget._okayScore + 1;
+                    widget._okayScore = widget._okayScore + 1;
                   });
                 },
               ),
@@ -37,7 +35,7 @@ class _BillBoardCardState extends State<BillBoardCard>{
                 child: Icon(Icons.not_interested),
                 onPressed: () {
                   setState(() {
-                    widget._noScore =  widget._noScore + 1;
+                    widget._noScore = widget._noScore + 1;
                   });
                 },
               )
@@ -49,25 +47,23 @@ class _BillBoardCardState extends State<BillBoardCard>{
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text( widget.value['description']),
-        Text('Published by: ' +  widget.value['user'])
+        Text(widget.value['description']),
+        Text('Published by: ' + widget.value['user'])
       ],
     );
   }
 
-  Widget _buildPollVote(){
-    setState(() {
-      widget._percent = widget._okayScore /( widget._noScore + widget._okayScore);
-      print("AAAAAAAaa " + widget._percent.toString());
-      print("AAAAAAAaa " + widget._okayScore.toString());
-      print("AAAAAAAaa " + widget._noScore.toString());
-    });
-    return LinearPercentIndicator(
-      lineHeight: 10.0,
-      percent: widget._percent,
-      backgroundColor: Colors.red,
-      progressColor: Colors.green,
-    );
+  Widget _buildPollVote() {
+    widget._percent = widget._okayScore == 0 && widget._noScore == 0 ? 0.0 : widget._okayScore / (widget._noScore + widget._okayScore);
+
+    return widget.value['type'] == false
+        ? Text('')
+        : LinearPercentIndicator(
+            lineHeight: 10.0,
+            percent: widget._percent,
+            backgroundColor: Colors.red,
+            progressColor: Colors.green,
+          );
   }
 
   @override
@@ -76,7 +72,7 @@ class _BillBoardCardState extends State<BillBoardCard>{
       child: Column(
         children: <Widget>[
           ListTile(
-            title: Text( widget.value['title']),
+            title: Text(widget.value['title']),
             subtitle: _buildDescription(),
           ),
           Container(

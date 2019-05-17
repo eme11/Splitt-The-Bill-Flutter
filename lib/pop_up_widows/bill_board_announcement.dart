@@ -60,7 +60,7 @@ class _BillBoardFormState extends State<BillBoardForm> {
     );
   }
 
-  void _typeChanged(String newSelection) {
+  void _typeChanged(bool newSelection) {
     setState(() {
       _formData['type'] = newSelection;
     });
