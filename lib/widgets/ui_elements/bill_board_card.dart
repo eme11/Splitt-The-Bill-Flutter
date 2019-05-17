@@ -3,11 +3,12 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class BillBoardCard extends StatefulWidget {
   final Map<String, dynamic> value;
+  final Function delete;
   int _okayScore = 0;
   int _noScore = 0;
   double _percent;
 
-  BillBoardCard(this.value);
+  BillBoardCard(this.value, this.delete);
 
   @override
   State<StatefulWidget> createState() {
@@ -54,7 +55,9 @@ class _BillBoardCardState extends State<BillBoardCard> {
   }
 
   Widget _buildPollVote() {
-    widget._percent = widget._okayScore == 0 && widget._noScore == 0 ? 0.0 : widget._okayScore / (widget._noScore + widget._okayScore);
+    widget._percent = widget._okayScore == 0 && widget._noScore == 0
+        ? 0.0
+        : widget._okayScore / (widget._noScore + widget._okayScore);
 
     return widget.value['type'] == false
         ? Text('')
@@ -74,6 +77,7 @@ class _BillBoardCardState extends State<BillBoardCard> {
           ListTile(
             title: Text(widget.value['title']),
             subtitle: _buildDescription(),
+            //trailing: FlatButton(onPressed: () {widget.delete(widget);}, child: Icon(Icons.delete)),
           ),
           Container(
             child: _buildTrailing(),

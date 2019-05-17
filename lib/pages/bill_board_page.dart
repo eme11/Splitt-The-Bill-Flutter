@@ -11,15 +11,19 @@ class BillBoardPage extends StatefulWidget {
   }
 }
 
-class _BillBoardPageState extends State<BillBoardPage>{
-
+class _BillBoardPageState extends State<BillBoardPage> {
   void addToBillBoard(Map<String, dynamic> value) {
     if (value != null) {
       setState(() {
-        widget._billBoardCards.add(BillBoardCard(value));
-        print('LLLLLLLLLLL' + value.toString());
+        widget._billBoardCards.add(BillBoardCard(value, deleteFromBillBoard));
       });
     }
+  }
+
+  void deleteFromBillBoard(BillBoardCard value) {
+    setState(() {
+      widget._billBoardCards.remove(value);
+    });
   }
 
   Widget _buildBody() {
@@ -27,8 +31,21 @@ class _BillBoardPageState extends State<BillBoardPage>{
     if (widget._billBoardCards.length > 0) {
       billBoardCards = ListView.builder(
         itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: <Widget>[widget._billBoardCards[index]],
+          return Dismissible(
+            key: Key(index.toString()),
+            onDismissed: (DismissDirection direction) {
+              if (direction == DismissDirection.endToStart) {
+                deleteFromBillBoard(widget._billBoardCards[index]);
+              } else if (direction == DismissDirection.startToEnd) {
+                print('Swiped start to end');
+              } else {
+                print('Other swiping');
+              }
+            },
+            background: Container(color: Colors.red),
+            child: Column(
+              children: <Widget>[widget._billBoardCards[index]],
+            ),
           );
         },
         itemCount: widget._billBoardCards.length,
