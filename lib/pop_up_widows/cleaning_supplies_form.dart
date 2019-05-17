@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CleaningSuppliesForm extends StatefulWidget {
+  final Function addSupply;
+
+  CleaningSuppliesForm(this.addSupply);
+
   @override
   State<StatefulWidget> createState() {
     return _CleaningSuppliesFormState();
@@ -8,8 +12,69 @@ class CleaningSuppliesForm extends StatefulWidget {
 }
 
 class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
+  List<DropdownMenuItem<String>> _type = [];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Map<String, dynamic> _formData = {
+    'name': null,
+    'type': null,
+    'price': 0.0,
+    'user': 'anonymous_user'
+  };
+
+  DropdownMenuItem<String> _buildDropDownItem(String value, IconData icon) {
+    return DropdownMenuItem<String>(
+      value: value,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          CircleAvatar(minRadius: 3.0, child: Icon(icon)),
+          SizedBox(
+            width: 5.0,
+          ),
+          Text(value),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDropDownTypeList() {
+    _type = [];
+    _type.add(_buildDropDownItem('Bathroom', Icons.invert_colors));
+    _type.add(_buildDropDownItem('Kitchen', Icons.free_breakfast));
+    _type.add(_buildDropDownItem('Living', Icons.event_seat));
+    _type.add(_buildDropDownItem('Other', Icons.more_horiz));
+
+    return DropdownButtonFormField(
+      value: _formData['type'],
+      items: _type,
+      hint: Text('Select a type'),
+      onChanged: (value) => _typeChanged(value),
+    );
+  }
+
+  void _typeChanged(String newSelection) {
+    setState(() {
+      _formData['type'] = newSelection;
+    });
+  }
+
+  Widget _buildSizedBox() {
+    return SizedBox(
+      height: 10.0,
+    );
+  }
+
   Widget _buildBody(BuildContext context) {
-    return Container();
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            _buildDropDownTypeList(),
+          ],
+        ),
+      ),
+    );
   }
 
   void _submitForm() {}

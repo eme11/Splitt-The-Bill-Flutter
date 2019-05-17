@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../pop_up_widows/cleaning_supplies_form.dart';
 
 class CleaningSuppliesPage extends StatefulWidget{
+  List<Map<String,dynamic>> _cleaningSuppliesCard = [];
   @override
   State<StatefulWidget> createState() {
     return _CleaningSuppliesPageState();
@@ -16,6 +17,14 @@ class _CleaningSuppliesPageState extends State<CleaningSuppliesPage>{
     return Container();
   }
 
+  void addCleaningSupply(Map<String,dynamic> value){
+    if (value != null) {
+      setState(() {
+        widget._cleaningSuppliesCard.add(value);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +33,7 @@ class _CleaningSuppliesPageState extends State<CleaningSuppliesPage>{
         onPressed: () {
           showDialog(
               context: context,
-              builder: (BuildContext context) => CleaningSuppliesForm());
+              builder: (BuildContext context) => CleaningSuppliesForm(addCleaningSupply));
         },
         child: Icon(Icons.add),
         mini: true,
