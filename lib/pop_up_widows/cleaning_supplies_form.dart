@@ -26,7 +26,7 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
       decoration: InputDecoration(
           labelText: 'Name', filled: true, fillColor: Colors.white),
       validator: (String value) {
-        if (value.isEmpty || value.length < 6) {
+        if (value.isEmpty || value.length < 4 ) {
           return 'Name too short';
         }
       },
