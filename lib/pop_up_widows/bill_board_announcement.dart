@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-enum _BillBoardType { POLL, ANNOUNCEMENT }
-
 class BillBoardForm extends StatefulWidget {
   final Function addToBillBoard;
 
@@ -14,12 +12,13 @@ class BillBoardForm extends StatefulWidget {
 }
 
 class _BillBoardFormState extends State<BillBoardForm> {
-  List<DropdownMenuItem<String>> _type = [];
+  List<DropdownMenuItem<bool>> _type = [];
   Map<String, dynamic> _formData = {
     'title': null,
-    'type': _BillBoardType.ANNOUNCEMENT.toString(),
+    'type': false,
     'description': null,
-    'expiration': 24
+    'expiration': 24,
+    'user':'anonymous_user'
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -40,14 +39,14 @@ class _BillBoardFormState extends State<BillBoardForm> {
 
   Widget _buildDropDownTypeList() {
     _type = [];
-    _type.add(DropdownMenuItem<String>(
-      value: _BillBoardType.POLL.toString(),
+    _type.add(DropdownMenuItem<bool>(
+      value: true,
       child: Text(
         'Poll',
       ),
     ));
-    _type.add(DropdownMenuItem<String>(
-      value: _BillBoardType.ANNOUNCEMENT.toString(),
+    _type.add(DropdownMenuItem<bool>(
+      value: false,
       child: Text(
         'Announcement',
       ),
