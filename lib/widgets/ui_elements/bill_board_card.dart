@@ -54,10 +54,8 @@ class _BillBoardCardState extends State<BillBoardCard> {
   }
 
   Widget _buildPollVote() {
-    setState(() {
-      widget._percent =
-          widget._okayScore / (widget._noScore + widget._okayScore);
-    });
+    widget._percent = widget._okayScore == 0 && widget._noScore == 0 ? 0.0 : widget._okayScore / (widget._noScore + widget._okayScore);
+
     return widget.value['type'] == false
         ? Text('')
         : LinearPercentIndicator(

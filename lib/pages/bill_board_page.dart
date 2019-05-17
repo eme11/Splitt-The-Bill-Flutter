@@ -17,6 +17,7 @@ class _BillBoardPageState extends State<BillBoardPage>{
     if (value != null) {
       setState(() {
         widget._billBoardCards.add(BillBoardCard(value));
+        print('LLLLLLLLLLL' + value.toString());
       });
     }
   }
