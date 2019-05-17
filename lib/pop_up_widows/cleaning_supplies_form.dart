@@ -115,7 +115,15 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
     );
   }
 
-  void _submitForm() {}
+  void _submitForm() {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    _formKey.currentState.save();
+    widget.addSupply(_formData);
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
