@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'pages/more_page.dart';
 import 'pages/bill_board_page.dart';
 import 'pages/cleaning_supply_page.dart';
+import 'pages/chores_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,9 +34,7 @@ class _MyHomePageState extends State<MyHomePage>
   List<Widget> _bottomNavigation = [
     CleaningSuppliesPage(),
     BillBoardPage(),
-    Container(
-      child: Center(child: Text("Page 2")),
-    ),
+    ChoresPage(),
     MorePage()
   ];
   TabController _tabController;

@@ -77,7 +77,6 @@ class _BillBoardCardState extends State<BillBoardCard> {
           ListTile(
             title: Text(widget.value['title']),
             subtitle: _buildDescription(),
-            //trailing: FlatButton(onPressed: () {widget.delete(widget);}, child: Icon(Icons.delete)),
           ),
           Container(
             child: _buildTrailing(),
