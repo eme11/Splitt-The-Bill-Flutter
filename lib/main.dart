@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pages/more_page.dart';
 import 'pages/bill_board_page.dart';
+import 'pages/cleaning_supply_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,9 +31,7 @@ class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
   List<Widget> _bottomNavigation = [
-    Container(
-      child: Center(child: Text("Page 1")),
-    ),
+    CleaningSuppliesPage(),
     BillBoardPage(),
     Container(
       child: Center(child: Text("Page 2")),
