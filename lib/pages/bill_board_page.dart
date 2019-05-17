@@ -16,10 +16,15 @@ class _BillBoardPageState extends State<BillBoardPage>{
   void addToBillBoard(Map<String, dynamic> value) {
     if (value != null) {
       setState(() {
-        widget._billBoardCards.add(BillBoardCard(value));
-        print('LLLLLLLLLLL' + value.toString());
+        widget._billBoardCards.add(BillBoardCard(value, deleteFromBillBoard));
       });
     }
+  }
+
+  void deleteFromBillBoard(BillBoardCard value){
+    setState(() {
+      widget._billBoardCards.remove(value);
+    });
   }
 
   Widget _buildBody() {
