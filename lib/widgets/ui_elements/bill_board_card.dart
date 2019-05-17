@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
+
 
 class BillBoardCard extends StatefulWidget {
   final Map<String, dynamic> value;
   int _okayScore = 0;
   int _noScore = 0;
+  double _percent;
 
   BillBoardCard(this.value);
 
@@ -25,13 +28,17 @@ class _BillBoardCardState extends State<BillBoardCard>{
               FlatButton(
                 child: Icon(Icons.done),
                 onPressed: () {
-                  widget._okayScore =  widget._okayScore + 1;
+                  setState(() {
+                    widget._okayScore =  widget._okayScore + 1;
+                  });
                 },
               ),
               FlatButton(
                 child: Icon(Icons.not_interested),
                 onPressed: () {
-                  widget._noScore =  widget._noScore + 1;
+                  setState(() {
+                    widget._noScore =  widget._noScore + 1;
+                  });
                 },
               )
             ],
@@ -48,6 +55,21 @@ class _BillBoardCardState extends State<BillBoardCard>{
     );
   }
 
+  Widget _buildPollVote(){
+    setState(() {
+      widget._percent = widget._okayScore /( widget._noScore + widget._okayScore);
+      print("AAAAAAAaa " + widget._percent.toString());
+      print("AAAAAAAaa " + widget._okayScore.toString());
+      print("AAAAAAAaa " + widget._noScore.toString());
+    });
+    return LinearPercentIndicator(
+      lineHeight: 10.0,
+      percent: widget._percent,
+      backgroundColor: Colors.red,
+      progressColor: Colors.green,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -59,6 +81,9 @@ class _BillBoardCardState extends State<BillBoardCard>{
           ),
           Container(
             child: _buildTrailing(),
+          ),
+          Container(
+            child: _buildPollVote(),
           )
         ],
       ),
