@@ -47,7 +47,7 @@ class _AccountInfromationState extends State<AccountInformation> {
             _buildCard(widget.information['lastName'], 'Last Name', openWindow: openPopUp, key: 'lastName'),
             _buildCard(widget.information['nickName'], 'NickName', openWindow: openPopUp, key: 'nickName'),
             _buildCard(widget.information['email'], 'E-Mail', editable: false),
-            _buildCard(widget.information['number'], 'Phone Number',openWindow: openPopUp, key: 'number'),
+            _buildCard(widget.information['number'], 'Phone Number',openWindow: openPopUp, key: 'number', isNumber: true),
           ],
         ),
       ),
@@ -55,17 +55,17 @@ class _AccountInfromationState extends State<AccountInformation> {
   }
 
   Widget _buildCard(String title, String description,
-      {bool editable = true, Function openWindow, String key = ''}) {
-    return (editable == false ) ? _buildWithoutEdit(title, description) : _buildWithEdit(title, description, openWindow, key);
+      {bool editable = true, Function openWindow, String key = '', isNumber = false}) {
+    return (editable == false ) ? _buildWithoutEdit(title, description) : _buildWithEdit(title, description, openWindow, key, isNumber);
   }
 
   Widget _buildWithoutEdit(String title, String description){
     return DescriptionListTitle(title, description, isEditable: false);
   }
 
-  Widget _buildWithEdit(String title, String description, Function openWindow, String key){
+  Widget _buildWithEdit(String title, String description, Function openWindow, String key, isNumber){
     AccountInformationEditWindow popUp =
-    AccountInformationEditWindow(upDateField, key);
+    AccountInformationEditWindow(description, upDateField, key, isNumber: isNumber,);
     return DescriptionListTitle(title, description, openWindow: openWindow, popUp: popUp);
   }
 
