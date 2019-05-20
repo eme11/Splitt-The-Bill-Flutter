@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ApartmentCreate extends StatefulWidget {
+  final Function isNew;
+
+  ApartmentCreate(this.isNew);
 
   @override
   State<StatefulWidget> createState() {
@@ -121,7 +124,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     if (!_formKey.currentState.validate()) {
       return;
     }
-
+    widget.isNew();
     _formKey.currentState.save();
     Navigator.of(context).pop();
   }
