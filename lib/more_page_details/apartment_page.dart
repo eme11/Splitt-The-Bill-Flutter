@@ -1,8 +1,28 @@
 import 'package:flutter/material.dart';
 import '../pop_up_widows/apparment_create.dart';
 import '../widgets/more_list_titles/title_list_title.dart';
+import '../widgets/cards/user_information_card.dart';
 
 class ApartmentPage extends StatefulWidget {
+  List<Map<String, dynamic>> userList = [
+    {
+      'lastName': 'Mathe',
+      'firstName': 'Emese',
+      'nickName': 'Eme',
+      'number': '0740797202',
+      'email': 'emese.mathe.07@gmail.com'
+    },
+    {
+      'lastName': 'Mathe',
+      'firstName': 'Emese',
+      'nickName': 'Eme',
+      'number': '0740797202',
+      'email': 'emese.mathe.07@gmail.com'
+    },
+  ];
+
+  String address = 'Str. Biruintei nr. 1';
+
   @override
   State<StatefulWidget> createState() {
     return _ApartmentPageState();
@@ -10,33 +30,13 @@ class ApartmentPage extends StatefulWidget {
 }
 
 class _ApartmentPageState extends State<ApartmentPage> {
-  Map<String, dynamic> _formData = {
-    'address': 'Str. Biruintei nr. 1',
-    'userList': [
-      {
-        'lastName': 'Mathe',
-        'firstName': 'Emese',
-        'nickName': 'Eme',
-        'number': '0740797202',
-        'email': 'emese.mathe.07@gmail.com'
-      },
-      {
-        'lastName': 'Mathe',
-        'firstName': 'Emese',
-        'nickName': 'Eme',
-        'number': '0740797202',
-        'email': 'emese.mathe.07@gmail.com'
-      },
-      {
-        'lastName': 'Mathe',
-        'firstName': 'Emese',
-        'nickName': 'Eme',
-        'number': '0740797202',
-        'email': 'emese.mathe.07@gmail.com'
-      }
-    ]
+  Map<String, dynamic> _something = {
+    'lastName': 'Mathe',
+    'firstName': 'Emese',
+    'nickName': 'Eme',
+    'number': '0740797202',
+    'email': 'emese.mathe.07@gmail.com'
   };
-
   Widget _buildIcon() {
     return CircleAvatar(
       child: Icon(Icons.home),
@@ -50,10 +50,20 @@ class _ApartmentPageState extends State<ApartmentPage> {
     );
   }
 
-  Widget _buildUserLis() {}
+  Widget _buildUserLis() {
+   /*Widget usersCard;
+      usersCard = ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          UserInfoCard(_something);
+        },
+        itemCount: 1,
+      );
+    return usersCard;*/
+   return UserInfoCard(_something);
+  }
 
   Widget _buildAddress() {
-    return TitleListTitle(_formData['address'], Icons.business);
+    return TitleListTitle(widget.address, Icons.business);
   }
 
   Widget _buildBody(BuildContext context) {
@@ -67,7 +77,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
             _buildSizedBox(),
             _buildAddress(),
             _buildSizedBox(),
-            //_buildUserLis(),
+            _buildUserLis(),
           ],
         ),
       ),
