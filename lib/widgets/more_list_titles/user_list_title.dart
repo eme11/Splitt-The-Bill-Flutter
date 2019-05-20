@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 
-class UserListTitle extends StatelessWidget {
+class UserListTitle extends StatefulWidget {
   final String firstName;
   final String lastName;
+  final Function openNewPage;
+  final Widget page;
 
-  UserListTitle(this.firstName, this.lastName);
+  UserListTitle(this.firstName, this.lastName, this.openNewPage, this.page);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _UserListTitleState();
+  }
+}
+
+class _UserListTitleState extends State<UserListTitle>{
 
   String _getInitials() {
-    return firstName[0].toUpperCase() + lastName[0].toUpperCase();
+    return widget.firstName[0].toUpperCase() + widget.lastName[0].toUpperCase();
   }
 
   // for later:
@@ -20,9 +30,12 @@ class UserListTitle extends StatelessWidget {
         leading: CircleAvatar(
           child: Text(initials),
         ),
-        title: Text(firstName + ' ' + lastName),
+        title: Text(widget.firstName + ' ' + widget.lastName),
         subtitle: Text('Account Information'),
-        trailing: Icon(Icons.arrow_forward_ios),
+        trailing: IconButton(
+          icon: Icon(Icons.arrow_forward_ios),
+          onPressed: () {widget.openNewPage(context, widget.page);},
+        ),
       ),
     );
   }
