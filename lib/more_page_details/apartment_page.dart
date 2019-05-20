@@ -3,8 +3,10 @@ import '../pop_up_widows/apparment_create.dart';
 import '../widgets/more_list_titles/title_list_title.dart';
 import '../widgets/cards/user_information_card.dart';
 import '../pop_up_widows/add_user_form.dart';
+import '../pop_up_widows/delete_warning.dart';
 
 class ApartmentPage extends StatefulWidget {
+  bool _isDeleted = false;
   List<Map<String, dynamic>> userList = [
     {
       'lastName': 'Mathe',
@@ -30,6 +32,7 @@ class ApartmentPage extends StatefulWidget {
 }
 
 class _ApartmentPageState extends State<ApartmentPage> {
+
   Widget _buildIcon() {
     return CircleAvatar(
       child: Icon(Icons.home),
@@ -73,21 +76,46 @@ class _ApartmentPageState extends State<ApartmentPage> {
     );
   }
 
+  void _deleteTrue() {
+    setState(() {
+      widget._isDeleted = true;
+    });
+  }
+
+  void _deleteFalse() {
+    setState(() {
+      widget._isDeleted = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
         title: Text('Apartment'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      DeleteWarningMessage(_deleteTrue));
+            },
+          )
+        ],
       ),
-      body: _buildBody(context),
-      floatingActionButton: Row(mainAxisAlignment: MainAxisAlignment.end,children: <Widget>[
+      body: widget._isDeleted ? Container() : _buildBody(context),
+      floatingActionButton:
+      Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
         FloatingActionButton(
           heroTag: null,
           onPressed: () {
             showDialog(
                 context: context,
-                builder: (BuildContext context) => ApartmentCreate());
+                builder: (BuildContext context) =>
+                    ApartmentCreate(_deleteFalse));
           },
           child: Icon(Icons.add),
           mini: true,

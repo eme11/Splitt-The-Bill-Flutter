@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class DeleteWarningMessage extends StatelessWidget{
+class DeleteWarningMessage extends StatelessWidget {
   final Function delete;
 
   DeleteWarningMessage(this.delete);
-  
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -14,7 +14,10 @@ class DeleteWarningMessage extends StatelessWidget{
       content: Text('Are you sure you want to delete this?'),
       actions: <Widget>[
         FlatButton(
-          onPressed: delete,
+          onPressed: () {
+            delete();
+            Navigator.of(context).pop();
+          },
           child: Text('DELETE'),
         ),
         FlatButton(
@@ -26,5 +29,4 @@ class DeleteWarningMessage extends StatelessWidget{
       ],
     );
   }
-
 }
