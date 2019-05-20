@@ -34,7 +34,7 @@ class _AccountInfromationState extends State<AccountInformation> {
             _buildCard(widget.information['firstName'], 'First Name'),
             _buildCard(widget.information['lastName'], 'Last Name'),
             _buildCard(widget.information['nickName'], 'NickName'),
-            _buildCard(widget.information['email'], 'E-Mail'),
+            _buildCard(widget.information['email'], 'E-Mail', editable: false),
             _buildCard(widget.information['number'], 'Phone Number'),
           ],
         ),
@@ -44,8 +44,8 @@ class _AccountInfromationState extends State<AccountInformation> {
 
   
 
-  Widget _buildCard(String title, String description) {
-    return DescriptionListTitle(title, description);
+  Widget _buildCard(String title, String description, {bool editable = true}) {
+    return DescriptionListTitle(title, description, isEditable: editable);
   }
 
   @override

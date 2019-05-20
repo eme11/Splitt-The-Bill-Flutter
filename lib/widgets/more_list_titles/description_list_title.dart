@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class DescriptionListTitle extends StatelessWidget {
   final String title;
   final String description;
+  final bool isEditable;
 
-  DescriptionListTitle(this.title, this.description);
+  DescriptionListTitle(this.title, this.description, {this.isEditable = true});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class DescriptionListTitle extends StatelessWidget {
       child: ListTile(
         title: Text(title),
         subtitle: Text(description),
-        trailing: Icon(Icons.edit),
+        trailing: isEditable == false ? Text('') :  Icon(Icons.edit),
       ),
     );
   }
