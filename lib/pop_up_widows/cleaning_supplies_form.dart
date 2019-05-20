@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/regular_expressions.dart';
 
 class CleaningSuppliesForm extends StatefulWidget {
   final Function addSupply;
@@ -87,8 +88,7 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
           ? ''
           : _formData['price'].toString(),
       validator: (String value) {
-        if (value.isEmpty ||
-            !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+        if (value.isEmpty || RegularExpressions.isRealNumber(value)) {
           return 'Input should be a number.';
         }
       },

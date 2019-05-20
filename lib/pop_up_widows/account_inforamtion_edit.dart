@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/regular_expressions.dart';
 
 class AccountInformationEditWindow extends StatefulWidget {
   final Function update;
@@ -24,8 +25,7 @@ class _AccountInformationEditWindowState
       decoration: InputDecoration(labelText: widget.title),
       validator: (String value) {
         if (widget.isNumber) {
-          if (value.isEmpty ||
-              !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+          if (value.isEmpty || RegularExpressions.isInteger(value)) {
             return 'Input should be a number.';
           }
         } else {

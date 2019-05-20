@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/regular_expressions.dart';
 
 class ApartmentCreate extends StatefulWidget {
   final Function isNew;
@@ -78,8 +79,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
       decoration: InputDecoration(
           labelText: 'Number', filled: true, fillColor: Colors.white),
       validator: (String value) {
-        if (value.isEmpty ||
-            !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+        if (value.isEmpty || RegularExpressions.isInteger(value)) {
           return 'Invalid number';
         }
       },
