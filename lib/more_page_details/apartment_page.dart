@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../pop_up_widows/apparment_create.dart';
 import '../widgets/more_list_titles/title_list_title.dart';
 import '../widgets/cards/user_information_card.dart';
+import '../pop_up_widows/add_user_form.dart';
 
 class ApartmentPage extends StatefulWidget {
   List<Map<String, dynamic>> userList = [
@@ -96,7 +97,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
           onPressed: () {
             showDialog(
                 context: context,
-                builder: (BuildContext context) => ApartmentCreate());
+                builder: (BuildContext context) => AddUserForm());
           },
           child: Icon(Icons.account_circle),
           mini: true,
