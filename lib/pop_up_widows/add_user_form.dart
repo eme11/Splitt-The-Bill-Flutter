@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../helpers/regular_expressions.dart';
 class AddUserForm extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -17,7 +18,7 @@ class _AddUserFormState extends State<AddUserForm>{
       decoration: InputDecoration(
           labelText: 'User E-Mail', filled: true, fillColor: Colors.white),
       validator: (String value) {
-        if (value.isEmpty || value.length < 6) {
+        if (value.isEmpty || RegularExpressions.isEmail(value)) {
           return 'Invalid e-mail';
         }
       },
