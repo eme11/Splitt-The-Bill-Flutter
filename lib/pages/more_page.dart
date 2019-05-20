@@ -4,6 +4,7 @@ import '../widgets/more_list_titles/simple_list_title.dart';
 
 import '../more_page_details/account_page.dart';
 import '../more_page_details/about_page.dart';
+import '../more_page_details/report_issue_page.dart';
 
 class MorePage extends StatelessWidget {
   List<Widget> _initlizeList() {
@@ -15,7 +16,7 @@ class MorePage extends StatelessWidget {
     _returnList.add(SimpleListTitle('Change Theme', Icons.mode_edit));
     _returnList.add(SimpleListTitle('Settings', Icons.settings));
     _returnList.add(SimpleListTitle('About', Icons.info, openNewPage:openNewPage, page: AboutPage()));
-    _returnList.add(SimpleListTitle('Report issue', Icons.warning));
+    _returnList.add(SimpleListTitle('Report issue', Icons.warning, openNewPage: openNewPage, page: ReportIssuePage()));
 
     return _returnList;
   }
