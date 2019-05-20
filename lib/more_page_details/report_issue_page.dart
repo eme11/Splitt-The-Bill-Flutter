@@ -15,7 +15,7 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
   List<DropdownMenuItem<String>> _type = [];
   Map<String, dynamic> _formData = {
     'title': null,
-    'type': false,
+    'type': null,
     'description': null
   };
 
@@ -108,7 +108,7 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
               _buildSizedBox(),
               _buildDescription(),
               _buildSizedBox(),
-              //_buildDropDownTypeList(),
+              _buildDropDownTypeList(),
               _buildSizedBox(),
               _buildSubmitButton()
             ],
@@ -127,7 +127,6 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
     _scaffold.currentState.showSnackBar(SnackBar(
       content: new Text("Sending Message"),
     ));
-    //Scaffold.of(context).showSnackBar( ));
   }
 
   @override
