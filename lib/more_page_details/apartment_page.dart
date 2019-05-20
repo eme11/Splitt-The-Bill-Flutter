@@ -32,7 +32,6 @@ class ApartmentPage extends StatefulWidget {
 }
 
 class _ApartmentPageState extends State<ApartmentPage> {
-
   Widget _buildIcon() {
     return CircleAvatar(
       child: Icon(Icons.home),
@@ -54,7 +53,19 @@ class _ApartmentPageState extends State<ApartmentPage> {
     info.add(_buildAddress());
     info.add(_buildSizedBox());
     for (var i = 0; i < widget.userList.length; ++i) {
-      info.add(UserInfoCard(widget.userList[i]));
+      info.add(Dismissible(
+          key: Key(i.toString()),
+          onDismissed: (DismissDirection direction) {
+            if (direction == DismissDirection.endToStart) {
+              info.remove(widget.userList[i]);
+            } else if (direction == DismissDirection.startToEnd) {
+              print('Swiped start to end');
+            } else {
+              print('Other swiping');
+            }
+          },
+          background: Container(color: Colors.red),
+          child: UserInfoCard(widget.userList[i]),));
     }
 
     return info;
@@ -108,7 +119,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
       ),
       body: widget._isDeleted ? Container() : _buildBody(context),
       floatingActionButton:
-      Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+          Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
         FloatingActionButton(
           heroTag: null,
           onPressed: () {
