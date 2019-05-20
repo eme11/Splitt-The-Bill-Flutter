@@ -80,15 +80,28 @@ class _ApartmentPageState extends State<ApartmentPage> {
         title: Text('Apartment'),
       ),
       body: _buildBody(context),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) => ApartmentCreate());
-        },
-        child: Icon(Icons.add),
-        mini: true,
-      ),
+      floatingActionButton: Row(mainAxisAlignment: MainAxisAlignment.end,children: <Widget>[
+        FloatingActionButton(
+          heroTag: null,
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => ApartmentCreate());
+          },
+          child: Icon(Icons.add),
+          mini: true,
+        ),
+        FloatingActionButton(
+          heroTag: null,
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => ApartmentCreate());
+          },
+          child: Icon(Icons.account_circle),
+          mini: true,
+        ),
+      ]),
     );
   }
 }
