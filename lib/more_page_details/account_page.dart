@@ -30,8 +30,6 @@ class _AccountInfromationState extends State<AccountInformation> {
   }
 
   Widget _buildBody() {
-    AccountInformationEditWindow popUp =
-        AccountInformationEditWindow(upDateField, 'firstName');
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(10.0),
@@ -45,11 +43,11 @@ class _AccountInfromationState extends State<AccountInformation> {
               height: 10,
             ),
             _buildCard(widget.information['firstName'], 'First Name',
-                openWindow: openPopUp, popUp: popUp),
-            _buildCard(widget.information['lastName'], 'Last Name'),
-            _buildCard(widget.information['nickName'], 'NickName'),
+                openWindow: openPopUp, key: 'firstName'),
+            _buildCard(widget.information['lastName'], 'Last Name', openWindow: openPopUp, key: 'lastName'),
+            _buildCard(widget.information['nickName'], 'NickName', openWindow: openPopUp, key: 'nickName'),
             _buildCard(widget.information['email'], 'E-Mail', editable: false),
-            _buildCard(widget.information['number'], 'Phone Number'),
+            _buildCard(widget.information['number'], 'Phone Number',openWindow: openPopUp, key: 'number'),
           ],
         ),
       ),
@@ -57,11 +55,18 @@ class _AccountInfromationState extends State<AccountInformation> {
   }
 
   Widget _buildCard(String title, String description,
-      {bool editable = true,
-      Function openWindow,
-      AccountInformationEditWindow popUp}) {
-    return DescriptionListTitle(title, description,
-        isEditable: editable, openWindow: openWindow, popUp: popUp);
+      {bool editable = true, Function openWindow, String key = ''}) {
+    return (editable == false ) ? _buildWithoutEdit(title, description) : _buildWithEdit(title, description, openWindow, key);
+  }
+
+  Widget _buildWithoutEdit(String title, String description){
+    return DescriptionListTitle(title, description, isEditable: false);
+  }
+
+  Widget _buildWithEdit(String title, String description, Function openWindow, String key){
+    AccountInformationEditWindow popUp =
+    AccountInformationEditWindow(upDateField, key);
+    return DescriptionListTitle(title, description, openWindow: openWindow, popUp: popUp);
   }
 
   @override
