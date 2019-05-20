@@ -16,8 +16,7 @@ class SimpleListTitle extends StatefulWidget {
   }
 }
 
-class _SimpleListTitleState extends State<SimpleListTitle>{
-
+class _SimpleListTitleState extends State<SimpleListTitle> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -26,7 +25,11 @@ class _SimpleListTitleState extends State<SimpleListTitle>{
         title: Text(widget.title),
         trailing: IconButton(
           icon: Icon(Icons.arrow_forward_ios),
-          onPressed: () {widget.openNewPage(context, widget.page);},
+          onPressed: () {
+            if (widget.page != null) {
+              widget.openNewPage(context, widget.page);
+            }
+          },
         ),
       ),
     );
