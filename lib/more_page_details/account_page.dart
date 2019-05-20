@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/more_list_titles/simple_list_title.dart';
+import '../widgets/more_list_titles/description_list_title.dart';
 
 class AccountInformation extends StatefulWidget {
   Map<String, dynamic> information = {
     'lastName': 'Mathe',
     'firstName': 'Emese',
-    'Phone number': '0740797202',
+    'nickName': 'Eme',
+    'number': '0740797202',
     'email': 'emese.mathe.07@gmail.com'
   };
 
@@ -17,32 +18,34 @@ class AccountInformation extends StatefulWidget {
 }
 
 class _AccountInfromationState extends State<AccountInformation> {
-
-
   Widget _buildBody() {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Center(
-            child: CircleAvatar(child: Text('EM')),
-          ),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          children: <Widget>[
+            CircleAvatar(
+              child: Text('EM'),
+              maxRadius: 25,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            _buildCard(widget.information['firstName'], 'First Name'),
+            _buildCard(widget.information['lastName'], 'Last Name'),
+            _buildCard(widget.information['nickName'], 'NickName'),
+            _buildCard(widget.information['email'], 'E-Mail'),
+            _buildCard(widget.information['number'], 'Phone Number'),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildListView() {
-    /*Widget billBoardCards;
-    if (widget.information.length > 0) {
-      billBoardCards = ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          return SimpleListTitle()
-        },
-        itemCount: widget._billBoardCards.length,
-      );
-    } else
-      billBoardCards = Container();
-    return billBoardCards;*/
+  
+
+  Widget _buildCard(String title, String description) {
+    return DescriptionListTitle(title, description);
   }
 
   @override

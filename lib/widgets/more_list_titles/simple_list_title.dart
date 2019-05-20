@@ -26,7 +26,7 @@ class _SimpleListTitleState extends State<SimpleListTitle>{
         title: Text(widget.title),
         trailing: IconButton(
           icon: Icon(Icons.arrow_forward_ios),
-          onPressed: () {widget.openNewPage(context, widget.page);print("AAAAAAAAA");},
+          onPressed: () {widget.openNewPage(context, widget.page);},
         ),
       ),
     );
