@@ -18,9 +18,8 @@ class ApartmentPage extends StatefulWidget {
       'nickName': 'Eme',
       'number': '0740797202',
       'email': 'emese.mathe.07@gmail.com'
-    },
+    }
   ];
-
   String address = 'Str. Biruintei nr. 1';
 
   @override
@@ -30,13 +29,6 @@ class ApartmentPage extends StatefulWidget {
 }
 
 class _ApartmentPageState extends State<ApartmentPage> {
-  Map<String, dynamic> _something = {
-    'lastName': 'Mathe',
-    'firstName': 'Emese',
-    'nickName': 'Eme',
-    'number': '0740797202',
-    'email': 'emese.mathe.07@gmail.com'
-  };
   Widget _buildIcon() {
     return CircleAvatar(
       child: Icon(Icons.home),
@@ -50,16 +42,18 @@ class _ApartmentPageState extends State<ApartmentPage> {
     );
   }
 
-  Widget _buildUserLis() {
-   /*Widget usersCard;
-      usersCard = ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          UserInfoCard(_something);
-        },
-        itemCount: 1,
-      );
-    return usersCard;*/
-   return UserInfoCard(_something);
+  List<Widget> _buildUserLis() {
+    List<Widget> info = [];
+
+    info.add(_buildIcon());
+    info.add(_buildSizedBox());
+    info.add(_buildAddress());
+    info.add(_buildSizedBox());
+    for (var i = 0; i < widget.userList.length; ++i) {
+      info.add(UserInfoCard(widget.userList[i]));
+    }
+
+    return info;
   }
 
   Widget _buildAddress() {
@@ -72,13 +66,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
         padding: EdgeInsets.all(10.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildIcon(),
-            _buildSizedBox(),
-            _buildAddress(),
-            _buildSizedBox(),
-            _buildUserLis(),
-          ],
+          children: _buildUserLis(),
         ),
       ),
     );
