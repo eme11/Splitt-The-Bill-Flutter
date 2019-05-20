@@ -5,13 +5,14 @@ import '../widgets/more_list_titles/simple_list_title.dart';
 import '../more_page_details/account_page.dart';
 import '../more_page_details/about_page.dart';
 import '../more_page_details/report_issue_page.dart';
+import '../more_page_details/apartment_page.dart';
 
 class MorePage extends StatelessWidget {
   List<Widget> _initlizeList() {
     List<Widget> _returnList = [];
 
     _returnList.add(UserListTitle('Emese', 'Mathe',openNewPage,AccountInformation(),));
-    _returnList.add(SimpleListTitle('My Apartment', Icons.home),);
+    _returnList.add(SimpleListTitle('My Apartment', Icons.home,openNewPage:openNewPage, page: ApartmentPage()));
     _returnList.add(SimpleListTitle('Chat', Icons.chat));
     _returnList.add(SimpleListTitle('Change Theme', Icons.mode_edit));
     _returnList.add(SimpleListTitle('Settings', Icons.settings));
