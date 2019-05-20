@@ -7,4 +7,8 @@ class RegularExpressions {
   static bool isRealNumber(String value){
     return !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value);
   }
+
+  static bool isInteger(String value){
+    return !RegExp(r'^(?:[1-9]\d*|0)?$').hasMatch(value);
+  }
 }

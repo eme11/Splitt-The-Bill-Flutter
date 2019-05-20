@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../helpers/regular_expressions.dart';
 
 class ChoresForm extends StatefulWidget{
   final Function addChore;
@@ -61,8 +62,7 @@ class _ChoresFormState extends State<ChoresForm>{
           ? ''
           : _formData['change_interval'].toString(),
       validator: (String value) {
-        if (value.isEmpty ||
-            !RegExp(r'^(?:[1-9]\d*|0)?$').hasMatch(value)) {
+        if (value.isEmpty || RegularExpressions.isInteger(value)) {
           return 'Input should be a number.';
         }
       },
