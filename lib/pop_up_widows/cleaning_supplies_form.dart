@@ -16,7 +16,7 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Map<String, dynamic> _formData = {
     'name': null,
-    'type': null,
+    'type': 'Bathroom',
     'price': 0.0,
     'user': 'anonymous_user'
   };
