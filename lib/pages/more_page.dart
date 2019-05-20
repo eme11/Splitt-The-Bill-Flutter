@@ -13,9 +13,7 @@ class MorePage extends StatelessWidget {
 
     _returnList.add(UserListTitle('Emese', 'Mathe',openNewPage,AccountInformation(),));
     _returnList.add(SimpleListTitle('My Apartment', Icons.home,openNewPage:openNewPage, page: ApartmentPage()));
-    _returnList.add(SimpleListTitle('Chat', Icons.chat));
     _returnList.add(SimpleListTitle('Change Theme', Icons.mode_edit));
-    _returnList.add(SimpleListTitle('Settings', Icons.settings));
     _returnList.add(SimpleListTitle('About', Icons.info, openNewPage:openNewPage, page: AboutPage()));
     _returnList.add(SimpleListTitle('Report issue', Icons.warning, openNewPage: openNewPage, page: ReportIssuePage()));
 
