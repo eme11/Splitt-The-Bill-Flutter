@@ -72,7 +72,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
   }
 
   Widget _buildAddress() {
-    return TitleListTitle(widget.address, Icons.business);
+    return TitleListTitle(widget.address, Icons.business, ApartmentCreate(_deleteFalse, title: 'Edit Address') );
   }
 
   Widget _buildBody(BuildContext context) {

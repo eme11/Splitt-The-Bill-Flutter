@@ -3,8 +3,9 @@ import '../helpers/regular_expressions.dart';
 
 class ApartmentCreate extends StatefulWidget {
   final Function isNew;
+  final String title;
 
-  ApartmentCreate(this.isNew);
+  ApartmentCreate(this.isNew, {this.title = 'Create'});
 
   @override
   State<StatefulWidget> createState() {
@@ -134,7 +135,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return AlertDialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0))),
-      title: Text('Create'),
+      title: Text(widget.title),
       content: _buildBody(context),
       actions: <Widget>[
         FlatButton(
