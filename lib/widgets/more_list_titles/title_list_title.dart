@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../pop_up_widows/apparment_create.dart';
 
+import '../../models/apartment.dart';
+
 class TitleListTitle extends StatelessWidget {
-  final String title;
+  final Apartment title;
   final IconData icon;
   final ApartmentCreate page;
 
@@ -12,7 +14,7 @@ class TitleListTitle extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: CircleAvatar(child: Icon(icon)),
-        title: Text(title),
+        title: Text(title.getAddress()),
         trailing: IconButton(
           icon: Icon(Icons.edit),
           onPressed: () {

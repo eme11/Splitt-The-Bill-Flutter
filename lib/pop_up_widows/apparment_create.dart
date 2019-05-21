@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import '../helpers/regular_expressions.dart';
+import '../models/apartment.dart';
 
 class ApartmentCreate extends StatefulWidget {
+  Apartment apartment;
   final Function isNew;
   final String title;
 
-  ApartmentCreate(this.isNew, {this.title = 'Create'});
+  ApartmentCreate(this.isNew, this.apartment, {this.title = 'Create'});
 
   @override
   State<StatefulWidget> createState() {
@@ -16,13 +18,6 @@ class ApartmentCreate extends StatefulWidget {
 class _ApartmentCreateState extends State<ApartmentCreate> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<Map<String, dynamic>> userList = [];
-  Map<String, dynamic> _address = {
-    'city': null,
-    'country': null,
-    'street': null,
-    'building': null,
-    'number': 0
-  };
 
   Widget _buildSizedBox() {
     return SizedBox(
@@ -34,13 +29,14 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Street Address', filled: true, fillColor: Colors.white),
+      initialValue: widget.apartment.streetName == null ? '' : widget.apartment.streetName,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid Street name';
         }
       },
       onSaved: (String value) {
-        _address['street'] = value;
+        widget.apartment.streetName = value;
       },
     );
   }
@@ -49,13 +45,14 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Country', filled: true, fillColor: Colors.white),
+      initialValue: widget.apartment.country == null ? '' : widget.apartment.country,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid country name';
         }
       },
       onSaved: (String value) {
-        _address['country'] = value;
+        widget.apartment.country = value;
       },
     );
   }
@@ -64,13 +61,14 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'City', filled: true, fillColor: Colors.white),
+      initialValue: widget.apartment.city == null ? '' : widget.apartment.city,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid city name';
         }
       },
       onSaved: (String value) {
-        _address['city'] = value;
+        widget.apartment.city = value;
       },
     );
   }
@@ -79,13 +77,14 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Number', filled: true, fillColor: Colors.white),
+      initialValue: widget.apartment.number == null ? 0 : widget.apartment.number.toString(),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isInteger(value)) {
           return 'Invalid number';
         }
       },
       onSaved: (String value) {
-        _address['number'] = value;
+        widget.apartment.number = int.parse(value);
       },
     );
   }
