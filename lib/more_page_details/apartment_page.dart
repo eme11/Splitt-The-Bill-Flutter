@@ -10,23 +10,11 @@ import '../models/user.dart';
 
 class ApartmentPage extends StatefulWidget {
   bool _isDeleted = false;
-  List<Map<String, dynamic>> userList = [
-    {
-      'lastName': 'Mathe',
-      'firstName': 'Emese',
-      'nickName': 'Eme',
-      'number': '0740797202',
-      'email': 'emese.mathe.07@gmail.com'
-    },
-    {
-      'lastName': 'Mathe',
-      'firstName': 'Emese',
-      'nickName': 'Eme',
-      'number': '0740797202',
-      'email': 'emese.mathe.07@gmail.com'
-    }
+  List<User> userList = [
+    User('ss', 'Emese', 'Mathe', 'Eme', '0740797202', 'emese.@gmail.com'),
+    User('ss', 'Emese', 'Mathe', 'Eme', '0740797202', 'emese.@gmail.com')
   ];
-  Apartment address = Apartment('1', '', 0, '', '');
+  Apartment address = Apartment('1', 'Blah', 0, 'Timisoara', 'RO');
 
   @override
   State<StatefulWidget> createState() {
