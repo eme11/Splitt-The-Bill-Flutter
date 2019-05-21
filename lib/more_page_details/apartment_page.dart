@@ -5,25 +5,16 @@ import '../widgets/cards/user_information_card.dart';
 import '../pop_up_widows/add_user_form.dart';
 import '../pop_up_widows/delete_warning.dart';
 
+import '../models/apartment.dart';
+import '../models/user.dart';
+
 class ApartmentPage extends StatefulWidget {
   bool _isDeleted = false;
-  List<Map<String, dynamic>> userList = [
-    {
-      'lastName': 'Mathe',
-      'firstName': 'Emese',
-      'nickName': 'Eme',
-      'number': '0740797202',
-      'email': 'emese.mathe.07@gmail.com'
-    },
-    {
-      'lastName': 'Mathe',
-      'firstName': 'Emese',
-      'nickName': 'Eme',
-      'number': '0740797202',
-      'email': 'emese.mathe.07@gmail.com'
-    }
+  List<User> userList = [
+    User('ss', 'Emese', 'Mathe', 'Eme', '0740797202', 'emese.@gmail.com'),
+    User('ss', 'Emese', 'Mathe', 'Eme', '0740797202', 'emese.@gmail.com')
   ];
-  String address = 'Str. Biruintei nr. 1';
+  Apartment address = Apartment('1', 'Blah', 0, 'Timisoara', 'RO');
 
   @override
   State<StatefulWidget> createState() {
@@ -54,25 +45,27 @@ class _ApartmentPageState extends State<ApartmentPage> {
     info.add(_buildSizedBox());
     for (var i = 0; i < widget.userList.length; ++i) {
       info.add(Dismissible(
-          key: Key(i.toString()),
-          onDismissed: (DismissDirection direction) {
-            if (direction == DismissDirection.endToStart) {
-              info.remove(widget.userList[i]);
-            } else if (direction == DismissDirection.startToEnd) {
-              print('Swiped start to end');
-            } else {
-              print('Other swiping');
-            }
-          },
-          background: Container(color: Colors.red),
-          child: UserInfoCard(widget.userList[i]),));
+        key: Key(i.toString()),
+        onDismissed: (DismissDirection direction) {
+          if (direction == DismissDirection.endToStart) {
+            info.remove(widget.userList[i]);
+          } else if (direction == DismissDirection.startToEnd) {
+            print('Swiped start to end');
+          } else {
+            print('Other swiping');
+          }
+        },
+        background: Container(color: Colors.red),
+        child: UserInfoCard(widget.userList[i]),
+      ));
     }
 
     return info;
   }
 
   Widget _buildAddress() {
-    return TitleListTitle(widget.address, Icons.business);
+    return TitleListTitle(widget.address, Icons.business,
+        ApartmentCreate(_deleteFalse, widget.address, title: 'Edit Address'));
   }
 
   Widget _buildBody(BuildContext context) {
@@ -96,6 +89,12 @@ class _ApartmentPageState extends State<ApartmentPage> {
   void _deleteFalse() {
     setState(() {
       widget._isDeleted = false;
+    });
+  }
+
+  void _addUser(String email){
+    setState(() {
+      widget.userList.add(User('ss', 'Noemi', 'Mathe', 'Noci', '0740797202', email));
     });
   }
 
@@ -126,7 +125,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
             showDialog(
                 context: context,
                 builder: (BuildContext context) =>
-                    ApartmentCreate(_deleteFalse));
+                    ApartmentCreate(_deleteFalse, widget.address));
           },
           child: Icon(Icons.add),
           mini: true,
@@ -136,7 +135,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
           onPressed: () {
             showDialog(
                 context: context,
-                builder: (BuildContext context) => AddUserForm());
+                builder: (BuildContext context) => AddUserForm(_addUser));
           },
           child: Icon(Icons.account_circle),
           mini: true,

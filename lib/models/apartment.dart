@@ -1,17 +1,17 @@
 class Apartment {
-  final String id;
-  final String streetName;
-  final String number;
-  final String city;
-  final String country;
+  String id;
+  String streetName;
+  int number;
+  String city;
+  String country;
 
   Apartment(this.id, this.streetName, this.number, this.city, this.country);
 
   String getAddress() {
     return "str. " +
         streetName +
-        "nr. " +
-        number +
+        " nr. " +
+        number.toString() +
         ", " +
         this.city +
         " " +
