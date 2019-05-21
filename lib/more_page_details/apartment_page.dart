@@ -92,6 +92,12 @@ class _ApartmentPageState extends State<ApartmentPage> {
     });
   }
 
+  void _addUser(String email){
+    setState(() {
+      widget.userList.add(User('ss', 'Noemi', 'Mathe', 'Noci', '0740797202', email));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +135,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
           onPressed: () {
             showDialog(
                 context: context,
-                builder: (BuildContext context) => AddUserForm());
+                builder: (BuildContext context) => AddUserForm(_addUser));
           },
           child: Icon(Icons.account_circle),
           mini: true,

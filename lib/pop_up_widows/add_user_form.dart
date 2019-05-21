@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../helpers/regular_expressions.dart';
 class AddUserForm extends StatefulWidget{
+  final Function addUser;
+
+  AddUserForm(this.addUser);
   @override
   State<StatefulWidget> createState() {
     return _AddUserFormState();
@@ -43,6 +46,7 @@ class _AddUserFormState extends State<AddUserForm>{
     }
 
     _formKey.currentState.save();
+    widget.addUser(_email);
     Navigator.of(context).pop();
   }
 
