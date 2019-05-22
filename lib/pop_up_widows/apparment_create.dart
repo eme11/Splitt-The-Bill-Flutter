@@ -138,7 +138,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
           onPressed: () {
             _submitForm();
           },
-          child: Text('ADD'),
+          child: widget.title == 'Create' ? Text('ADD') : Text('EDIT'),
         ),
         FlatButton(
           onPressed: () {
