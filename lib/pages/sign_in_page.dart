@@ -58,7 +58,7 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  void _signUp(){
+  void _signUp() {
     Navigator.pushReplacementNamed(context, '/register');
   }
 
@@ -67,25 +67,27 @@ class _SignInPageState extends State<SignInPage> {
       return;
     }
     _formKey.currentState.save();
-    Navigator.pushReplacementNamed(context, '/initialPage');
+    Navigator.pushReplacementNamed(context, '/application');
   }
 
   Widget _buildBody() {
     return Container(
       margin: EdgeInsets.all(10.0),
-      child: Form(
-        key: _formKey,
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              _buildEmailField(),
-              _buildSizedBox(),
-              _buildPassword(),
-              _buildSizedBox(),
-              _buildSignInButton(),
-              _buildSizedBox(),
-              _buildRegisterButton()
-            ],
+      child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                _buildEmailField(),
+                _buildSizedBox(),
+                _buildPassword(),
+                _buildSizedBox(),
+                _buildSignInButton(),
+                _buildSizedBox(),
+                _buildRegisterButton()
+              ],
+            ),
           ),
         ),
       ),
