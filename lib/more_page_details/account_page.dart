@@ -43,7 +43,7 @@ class _AccountInfromationState extends State<AccountInformation> {
               height: 10,
             ),
             _buildCard(widget.information['firstName'], 'First Name',
-                openWindow: openPopUp, key: 'firstName'),
+                openWindow: openPopUp, key: 'firstName',),
             _buildCard(widget.information['lastName'], 'Last Name', openWindow: openPopUp, key: 'lastName'),
             _buildCard(widget.information['nickName'], 'NickName', openWindow: openPopUp, key: 'nickName'),
             _buildCard(widget.information['email'], 'E-Mail', editable: false),
@@ -65,7 +65,7 @@ class _AccountInfromationState extends State<AccountInformation> {
 
   Widget _buildWithEdit(String title, String description, Function openWindow, String key, isNumber){
     AccountInformationEditWindow popUp =
-    AccountInformationEditWindow(description, upDateField, key, isNumber: isNumber,);
+    AccountInformationEditWindow(description, upDateField, key, isNumber: isNumber, value: title,);
     return DescriptionListTitle(title, description, openWindow: openWindow, popUp: popUp);
   }
 

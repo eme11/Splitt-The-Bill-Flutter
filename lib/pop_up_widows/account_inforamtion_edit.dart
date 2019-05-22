@@ -6,9 +6,10 @@ class AccountInformationEditWindow extends StatefulWidget {
   final String informationKey;
   final String title;
   final bool isNumber;
+  final String value;
 
   AccountInformationEditWindow(this.title, this.update, this.informationKey,
-      {this.isNumber = false});
+      {this.isNumber = false, this.value});
 
   @override
   State<StatefulWidget> createState() {
@@ -23,9 +24,10 @@ class _AccountInformationEditWindowState
   Widget _buildInformationField() {
     return TextFormField(
       decoration: InputDecoration(labelText: widget.title),
+      initialValue: widget.value,
       validator: (String value) {
         if (widget.isNumber) {
-          if (value.isEmpty || RegularExpressions.isInteger(value)) {
+          if (value.isEmpty || RegularExpressions.isPhoneNumber(value)) {
             return 'Input should be a number.';
           }
         } else {
@@ -35,6 +37,8 @@ class _AccountInformationEditWindowState
         }
       },
       onSaved: (String value) {
+        int tmp;
+         if(widget.isNumber ) tmp = int.parse(widget.value);
         widget.update(widget.informationKey, value);
       },
     );

@@ -11,4 +11,8 @@ class RegularExpressions {
   static bool isInteger(String value){
     return !RegExp(r'^(?:[1-9]\d*|0)?$').hasMatch(value);
   }
+
+  static bool isPhoneNumber(String value){
+    return !RegExp(r'^(?:[+0]9)?[0-9]{10}$').hasMatch(value);
+  }
 }
