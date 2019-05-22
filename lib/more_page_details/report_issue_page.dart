@@ -122,8 +122,8 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    // To Do : send some stuff to the server
     _formKey.currentState.save();
+    _formKey.currentState.reset();
     _scaffold.currentState.showSnackBar(SnackBar(
       content: new Text("Sending Message"),
     ));
