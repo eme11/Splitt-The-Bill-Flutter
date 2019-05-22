@@ -6,16 +6,17 @@ import '../more_page_details/account_page.dart';
 import '../more_page_details/about_page.dart';
 import '../more_page_details/report_issue_page.dart';
 import '../more_page_details/apartment_page.dart';
+import '../more_page_details/change_theme_page.dart';
 
 class MorePage extends StatelessWidget {
   List<Widget> _initlizeList() {
     List<Widget> _returnList = [];
 
     _returnList.add(UserListTitle('Emese', 'Mathe',openNewPage,AccountInformation(),));
-    _returnList.add(SimpleListTitle('My Apartment', Icons.home,openNewPage:openNewPage, page: ApartmentPage()));
-    _returnList.add(SimpleListTitle('Change Theme', Icons.mode_edit));
-    _returnList.add(SimpleListTitle('About', Icons.info, openNewPage:openNewPage, page: AboutPage()));
-    _returnList.add(SimpleListTitle('Report issue', Icons.warning, openNewPage: openNewPage, page: ReportIssuePage()));
+    _returnList.add(SimpleListTitle('My Apartment', Icons.home, openNewPage, ApartmentPage()));
+    _returnList.add(SimpleListTitle('Change Theme', Icons.mode_edit, openNewPage, ChangeThemePage(),));
+    _returnList.add(SimpleListTitle('About', Icons.info, openNewPage, AboutPage()));
+    _returnList.add(SimpleListTitle('Report issue', Icons.warning, openNewPage, ReportIssuePage()));
 
     return _returnList;
   }
