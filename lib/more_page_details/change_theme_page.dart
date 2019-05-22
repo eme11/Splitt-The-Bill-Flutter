@@ -22,7 +22,8 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
 
   void changeColor(Color color) {
     DynamicTheme.of(context).setThemeData(new ThemeData(
-        primarySwatch: color
+      primarySwatch: color,
+      secondaryHeaderColor: color,
     ));
   }
 
@@ -33,7 +34,10 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           CircleAvatar(
-              minRadius: 3.0, child: Icon(Icons.color_lens, color: backround), backgroundColor: backround,),
+            minRadius: 3.0,
+            child: Icon(Icons.color_lens, color: backround),
+            backgroundColor: backround,
+          ),
           SizedBox(
             width: 5.0,
           ),
@@ -46,12 +50,17 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
   DropdownMenuItem<Brightness> _buildDropDownItemBrightness(
       bool dark, Color backround) {
     return DropdownMenuItem<Brightness>(
-      value:  dark ? Brightness.dark : Brightness.light ,
+      value: dark ? Brightness.dark : Brightness.light,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           CircleAvatar(
-              minRadius: 3.0, child: Icon(Icons.more_horiz,), backgroundColor: backround,),
+            minRadius: 3.0,
+            child: Icon(
+              Icons.more_horiz,
+            ),
+            backgroundColor: backround,
+          ),
           SizedBox(
             width: 5.0,
           ),
@@ -83,7 +92,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
       items: _colors,
       hint: Text('Select a color'),
       onChanged: (value) => setState(() {
-        _currentColor = value;
+            _currentColor = value;
           }),
     );
   }
@@ -108,11 +117,11 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
     );
   }
 
-  Widget _buildButton(){
+  Widget _buildButton() {
     return ThemedButton(_submitForm, 'Change Theme');
   }
 
-  void _submitForm(){
+  void _submitForm() {
     changeColor(_currentColor);
     changeBrightness(_currentBrightness);
   }
