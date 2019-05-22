@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import '../helpers/regular_expressions.dart';
 import '../models/apartment.dart';
+import '../models/user.dart';
 
 class ApartmentCreate extends StatefulWidget {
-  Apartment apartment;
   final Function isNew;
+  final Function addUser;
+  final Function addAddress;
   final String title;
 
-  ApartmentCreate(this.isNew, this.apartment, {this.title = 'Create'});
+  ApartmentCreate(this.isNew, this.addUser, this.addAddress, {this.title = 'Create'});
 
   @override
   State<StatefulWidget> createState() {
@@ -16,6 +18,7 @@ class ApartmentCreate extends StatefulWidget {
 }
 
 class _ApartmentCreateState extends State<ApartmentCreate> {
+  Apartment _apartment = Apartment('b', '', 0, '', '');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<Map<String, dynamic>> userList = [];
 
@@ -29,14 +32,14 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Street Address', filled: true, fillColor: Colors.white),
-      initialValue: widget.apartment.streetName == null ? '' : widget.apartment.streetName,
+      initialValue: _apartment.streetName == null ? '' : _apartment.streetName,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid Street name';
         }
       },
       onSaved: (String value) {
-        widget.apartment.streetName = value;
+        _apartment.streetName = value;
       },
     );
   }
@@ -45,14 +48,14 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Country', filled: true, fillColor: Colors.white),
-      initialValue: widget.apartment.country == null ? '' : widget.apartment.country,
+      initialValue: _apartment.country == null ? '' : _apartment.country,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid country name';
         }
       },
       onSaved: (String value) {
-        widget.apartment.country = value;
+        _apartment.country = value;
       },
     );
   }
@@ -61,14 +64,14 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'City', filled: true, fillColor: Colors.white),
-      initialValue: widget.apartment.city == null ? '' : widget.apartment.city,
+      initialValue: _apartment.city == null ? '' : _apartment.city,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid city name';
         }
       },
       onSaved: (String value) {
-        widget.apartment.city = value;
+        _apartment.city = value;
       },
     );
   }
@@ -77,30 +80,19 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Number', filled: true, fillColor: Colors.white),
-      initialValue: widget.apartment.number == null ? 0 : widget.apartment.number.toString(),
+      initialValue: _apartment.number == null ? 0 : _apartment.number.toString(),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isInteger(value)) {
           return 'Invalid number';
         }
       },
       onSaved: (String value) {
-        widget.apartment.number = int.parse(value);
+        _apartment.number = int.parse(value);
       },
     );
   }
 
-  void _addCurrentUser() {
-    return userList.add({
-      'lastName': 'Mathe',
-      'firstName': 'Emese',
-      'nickName': 'Eme',
-      'number': '0740797202',
-      'email': 'emese.mathe.07@gmail.com'
-    });
-  }
-
   Widget _buildBody(BuildContext context) {
-    _addCurrentUser();
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -125,6 +117,8 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
       return;
     }
     widget.isNew();
+    widget.addAddress(_apartment);
+    widget.addUser(User('fff', 'Admin','Blah', 'example', '0755555555', 'something@gmail.com'));
     _formKey.currentState.save();
     Navigator.of(context).pop();
   }
