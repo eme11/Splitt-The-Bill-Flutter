@@ -26,7 +26,7 @@ class _BillBoardFormState extends State<BillBoardForm> {
   Widget _buildTitleTextField() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Title', filled: true, fillColor: Colors.white),
+          labelText: 'Title',),
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid Title';

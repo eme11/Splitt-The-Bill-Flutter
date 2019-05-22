@@ -27,7 +27,7 @@ class _ChoresFormState extends State<ChoresForm>{
   Widget _buildName() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Name', filled: true, fillColor: Colors.white),
+          labelText: 'Name',),
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Name too short';
@@ -42,7 +42,7 @@ class _ChoresFormState extends State<ChoresForm>{
   Widget _buildDescription() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Descrition', filled: true, fillColor: Colors.white),
+          labelText: 'Descrition',),
       validator: (String value) {
         if (value.isEmpty || value.length < 10) {
           return 'Descrition too short';

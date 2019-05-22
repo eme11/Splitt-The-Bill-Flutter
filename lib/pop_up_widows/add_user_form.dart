@@ -21,7 +21,7 @@ class _AddUserFormState extends State<AddUserForm> {
   Widget _buildEmail() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'User E-Mail', filled: true, fillColor: Colors.white),
+          labelText: 'User E-Mail',),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isEmail(value)) {
           return 'Invalid e-mail';
