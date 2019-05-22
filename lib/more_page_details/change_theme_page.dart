@@ -12,9 +12,9 @@ class ChangeThemePage extends StatefulWidget {
 class _ChangeThemePageState extends State<ChangeThemePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<DropdownMenuItem<Color>> _colors = [];
-  List<DropdownMenuItem<bool>> _brigtness = [];
-  Map<String, dynamic> _formData = {'dark': null};
+  List<DropdownMenuItem<Brightness>> _brigtness = [];
   Color _currentColor = Colors.red;
+  Brightness _currentBrightness = Brightness.light;
 
   void changeBrightness(Brightness brightness) {
     DynamicTheme.of(context).setBrightness(brightness);
@@ -43,10 +43,10 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
     );
   }
 
-  DropdownMenuItem<bool> _buildDropDownItemBrightness(
-      bool value, Color backround) {
-    return DropdownMenuItem<bool>(
-      value: value,
+  DropdownMenuItem<Brightness> _buildDropDownItemBrightness(
+      bool dark, Color backround) {
+    return DropdownMenuItem<Brightness>(
+      value:  dark ? Brightness.dark : Brightness.light ,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -55,7 +55,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
           SizedBox(
             width: 5.0,
           ),
-          value ? Text('Dark') : Text('Light'),
+          dark ? Text('Dark') : Text('Light'),
         ],
       ),
     );
@@ -94,11 +94,11 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
     _brigtness.add(_buildDropDownItemBrightness(false, Colors.white));
 
     return DropdownButtonFormField(
-        value: _formData['dark'],
+        value: _currentBrightness,
         items: _brigtness,
         hint: Text('Select a theme'),
         onChanged: (value) => setState(() {
-              _formData['dark'] = value;
+              _currentBrightness = value;
             }));
   }
 
@@ -114,6 +114,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
 
   void _submitForm(){
     changeColor(_currentColor);
+    changeBrightness(_currentBrightness);
   }
 
   Widget _buildBody() {
