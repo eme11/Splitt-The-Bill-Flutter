@@ -21,9 +21,8 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
   }
 
   void changeColor(Color color) {
-    DynamicTheme.of(context).setThemeData(new ThemeData(
-      primarySwatch: color,
-      secondaryHeaderColor: color,
+    DynamicTheme.of(context).setThemeData(ThemeData(
+        primarySwatch: color
     ));
   }
 
@@ -117,12 +116,19 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
     );
   }
 
-  Widget _buildButton() {
-    return ThemedButton(_submitForm, 'Change Theme');
+  Widget _buildChangeColor() {
+    return ThemedButton(_changeColor, 'Change Color');
   }
 
-  void _submitForm() {
+  Widget _buildChangeBackGround() {
+    return ThemedButton(_changeBrightness, 'Change Background');
+  }
+
+  void _changeColor() {
     changeColor(_currentColor);
+  }
+
+  void _changeBrightness(){
     changeBrightness(_currentBrightness);
   }
 
@@ -138,7 +144,9 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
               _buildSizedBox(),
               _buildDropDownBrightnessList(),
               _buildSizedBox(),
-              _buildButton()
+              _buildChangeColor(),
+              _buildSizedBox(),
+              _buildChangeBackGround(),
             ],
           ),
         ),
