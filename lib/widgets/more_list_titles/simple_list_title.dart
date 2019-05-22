@@ -8,7 +8,7 @@ class SimpleListTitle extends StatefulWidget {
 
   // later add function parameter
 
-  SimpleListTitle(this.title, this.icon, {this.openNewPage, this.page});
+  SimpleListTitle(this.title, this.icon, this.openNewPage, this.page);
 
   @override
   State<StatefulWidget> createState() {
