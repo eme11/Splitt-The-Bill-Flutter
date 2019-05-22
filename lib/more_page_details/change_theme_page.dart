@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/ui_elements/themed_button.dart';
+import 'package:dynamic_theme/dynamic_theme.dart';
 
 class ChangeThemePage extends StatefulWidget {
   @override
@@ -10,13 +11,24 @@ class ChangeThemePage extends StatefulWidget {
 
 class _ChangeThemePageState extends State<ChangeThemePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List<DropdownMenuItem<String>> _colors = [];
+  List<DropdownMenuItem<Color>> _colors = [];
   List<DropdownMenuItem<bool>> _brigtness = [];
-  Map<String, dynamic> _formData = {'name': null, 'color': null, 'dark': null};
+  Map<String, dynamic> _formData = {'dark': null};
+  Color _currentColor = Colors.red;
 
-  DropdownMenuItem<String> _buildDropDownItem(String value, Color backround) {
-    return DropdownMenuItem<String>(
-      value: value,
+  void changeBrightness(Brightness brightness) {
+    DynamicTheme.of(context).setBrightness(brightness);
+  }
+
+  void changeColor(Color color) {
+    DynamicTheme.of(context).setThemeData(new ThemeData(
+        primarySwatch: color
+    ));
+  }
+
+  DropdownMenuItem<Color> _buildDropDownItem(String value, Color backround) {
+    return DropdownMenuItem<Color>(
+      value: backround,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -56,25 +68,22 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
     _colors.add(_buildDropDownItem('Light Orange', Colors.orange));
     _colors.add(_buildDropDownItem('Gold', Colors.amber));
     _colors.add(_buildDropDownItem('Yellow', Colors.yellow));
-    _colors.add(_buildDropDownItem('Dark Pink', Colors.pink));
-    _colors.add(_buildDropDownItem('Light Pink', Colors.pinkAccent));
-    _colors.add(_buildDropDownItem('Cyclam', Colors.purpleAccent));
+    _colors.add(_buildDropDownItem('Pink', Colors.pink));
     _colors.add(_buildDropDownItem('Light Purple', Colors.purple));
     _colors.add(_buildDropDownItem('Dark Purple', Colors.deepPurple));
-    _colors.add(_buildDropDownItem('Light Blue', Colors.lightBlueAccent));
-    _colors.add(_buildDropDownItem('Dark Blue', Colors.blueAccent));
+    _colors.add(_buildDropDownItem('Blue', Colors.blue));
     _colors.add(_buildDropDownItem('Green', Colors.green));
-    _colors.add(_buildDropDownItem('Green Accent', Colors.greenAccent));
+    _colors.add(_buildDropDownItem('Light Green', Colors.lightGreen));
     _colors.add(_buildDropDownItem('Black', Colors.black));
     _colors.add(_buildDropDownItem('Gray', Colors.grey));
     _colors.add(_buildDropDownItem('White', Colors.white));
 
     return DropdownButtonFormField(
-      value: _formData['name'],
+      value: _currentColor,
       items: _colors,
       hint: Text('Select a color'),
       onChanged: (value) => setState(() {
-            _formData['name'] = value;
+        _currentColor = value;
           }),
     );
   }
@@ -104,7 +113,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
   }
 
   void _submitForm(){
-
+    changeColor(_currentColor);
   }
 
   Widget _buildBody() {

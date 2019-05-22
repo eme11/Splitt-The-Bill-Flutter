@@ -4,20 +4,29 @@ import 'pages/bill_board_page.dart';
 import 'pages/cleaning_supply_page.dart';
 import 'pages/chores_page.dart';
 
+import 'package:dynamic_theme/dynamic_theme.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
-      home: MyHomePage(title: 'Split the Bill'),
+    return new DynamicTheme(
+        defaultBrightness: Brightness.light,
+        data: (brightness) => new ThemeData(
+          primarySwatch: Colors.red,
+          brightness: brightness,
+        ),
+        themedWidgetBuilder: (context, theme) {
+          return new MaterialApp(
+            theme: theme,
+            home: new MyHomePage(title: 'Split the Bill'),
+          );
+        }
     );
   }
+
 }
 
 class MyHomePage extends StatefulWidget {
