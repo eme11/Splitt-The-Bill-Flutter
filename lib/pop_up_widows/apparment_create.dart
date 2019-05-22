@@ -32,7 +32,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
   Widget _buildStreet() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Street Address', filled: true, fillColor: Colors.white),
+          labelText: 'Street Address',),
       initialValue: widget.apartment.streetName == null ? '' : widget.apartment.streetName,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
@@ -48,7 +48,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
   Widget _buildCountry() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Country', filled: true, fillColor: Colors.white),
+          labelText: 'Country',),
       initialValue: widget.apartment.country == null ? '' : widget.apartment.country,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
@@ -64,7 +64,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
   Widget _buildCity() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'City', filled: true, fillColor: Colors.white),
+          labelText: 'City',),
       initialValue: widget.apartment.city == null ? '' : widget.apartment.city,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
@@ -80,7 +80,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
   Widget _buildNumber() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Number', filled: true, fillColor: Colors.white),
+          labelText: 'Number'),
       initialValue: widget.apartment.number == null ? 0 : widget.apartment.number.toString(),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isInteger(value)) {

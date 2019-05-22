@@ -25,7 +25,7 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
   Widget _buildName(){
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Name', filled: true, fillColor: Colors.white),
+          labelText: 'Name',),
       validator: (String value) {
         if (value.isEmpty || value.length < 4 ) {
           return 'Name too short';
