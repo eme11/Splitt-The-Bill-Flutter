@@ -96,14 +96,15 @@ class _ApartmentPageState extends State<ApartmentPage> {
   void _addUser(User user) {
     setState(() {
       widget.userList.add(user);
-      info.add(UserInfoCard(user));
+      info.add(UserInfoCard(user, delete: _deleteUser,));
     });
   }
 
-  void _deleteUser(User user, {UserInfoCard card}) {
+  void _deleteUser(User user) {
     setState(() {
+      int tmp = widget.userList.indexOf(user);
       widget.userList.remove(user);
-      info.remove(card);
+      info.removeAt(tmp + 4);
     });
   }
 
