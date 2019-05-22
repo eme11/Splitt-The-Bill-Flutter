@@ -13,7 +13,7 @@ class ApartmentPage extends StatefulWidget {
   List<User> userList = [
     User('ss', 'Emese', 'Mathe', 'Eme', '0740797202', 'emese.@gmail.com')
   ];
-  Apartment address = Apartment('1', 'Blah', 0, 'Timisoara', 'RO');
+  Apartment address = new Apartment('1', 'Blah', 0, 'Timisoara', 'RO');
 
   @override
   State<StatefulWidget> createState() {
@@ -60,7 +60,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
     return TitleListTitle(
         widget.address,
         Icons.business,
-        ApartmentCreate(_deleteFalse, _addAddress, _addAddress,
+        ApartmentCreate(widget.address,_deleteFalse, _addAddress, _addUser,
             title: 'Edit Address'));
   }
 
@@ -78,16 +78,18 @@ class _ApartmentPageState extends State<ApartmentPage> {
     );
   }
 
-  void _deleteTrue() {
+  bool _deleteTrue() {
     setState(() {
       widget._isDeleted = true;
     });
+    return true;
   }
 
-  void _deleteFalse() {
+  bool _deleteFalse() {
     setState(() {
       widget._isDeleted = false;
     });
+    return false;
   }
 
   void _addUser(User user) {
@@ -100,14 +102,13 @@ class _ApartmentPageState extends State<ApartmentPage> {
   void _deleteUser(User user, {UserInfoCard card}) {
     setState(() {
       widget.userList.remove(user);
-      print('FFFFFFFF ' + info.length.toString());
       info.remove(card);
     });
   }
 
   void _addAddress(Apartment apartment) {
     setState(() {
-      widget.address = apartment;
+      widget.address = Apartment.clone(apartment);
     });
   }
 
@@ -138,7 +139,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
             showDialog(
                 context: context,
                 builder: (BuildContext context) =>
-                    ApartmentCreate(_deleteFalse, _addUser, _addAddress));
+                    ApartmentCreate(widget.address, _deleteFalse, _addAddress, _addUser));
           },
           child: Icon(Icons.add),
           mini: true,

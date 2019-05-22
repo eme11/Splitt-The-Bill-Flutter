@@ -8,8 +8,9 @@ class ApartmentCreate extends StatefulWidget {
   final Function addUser;
   final Function addAddress;
   final String title;
+  final Apartment apartment;
 
-  ApartmentCreate(this.isNew, this.addUser, this.addAddress, {this.title = 'Create'});
+  ApartmentCreate(this.apartment, this.isNew, this.addAddress, this.addUser,{this.title = 'Create'});
 
   @override
   State<StatefulWidget> createState() {
@@ -32,7 +33,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Street Address', filled: true, fillColor: Colors.white),
-      initialValue: _apartment.streetName == null ? '' : _apartment.streetName,
+      initialValue: widget.apartment.streetName == null ? '' : widget.apartment.streetName,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid Street name';
@@ -48,7 +49,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Country', filled: true, fillColor: Colors.white),
-      initialValue: _apartment.country == null ? '' : _apartment.country,
+      initialValue: widget.apartment.country == null ? '' : widget.apartment.country,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid country name';
@@ -64,7 +65,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'City', filled: true, fillColor: Colors.white),
-      initialValue: _apartment.city == null ? '' : _apartment.city,
+      initialValue: widget.apartment.city == null ? '' : widget.apartment.city,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid city name';
@@ -80,7 +81,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Number', filled: true, fillColor: Colors.white),
-      initialValue: _apartment.number == null ? 0 : _apartment.number.toString(),
+      initialValue: widget.apartment.number == null ? 0 : widget.apartment.number.toString(),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isInteger(value)) {
           return 'Invalid number';
@@ -116,10 +117,12 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    widget.isNew();
-    widget.addAddress(_apartment);
-    widget.addUser(User('fff', 'Admin','Blah', 'example', '0755555555', 'something@gmail.com'));
     _formKey.currentState.save();
+
+    if(widget.isNew()){
+      widget.addUser(User('fff', 'Admin','Blah', 'example', '0755555555', 'something@gmail.com'));
+    }
+    widget.addAddress(_apartment);
     Navigator.of(context).pop();
   }
 
