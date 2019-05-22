@@ -8,6 +8,7 @@ import '../pop_up_widows/delete_warning.dart';
 import '../models/apartment.dart';
 import '../models/user.dart';
 
+// ignore: must_be_immutable
 class ApartmentPage extends StatefulWidget {
   bool _isDeleted = false;
   List<User> userList = [
@@ -109,6 +110,8 @@ class _ApartmentPageState extends State<ApartmentPage> {
   void _addAddress(Apartment apartment) {
     setState(() {
       widget.address = Apartment.clone(apartment);
+      info.removeAt(2);
+      info.insert(2, _buildAddress());
     });
   }
 
