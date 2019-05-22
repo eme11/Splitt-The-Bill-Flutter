@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import '../helpers/regular_expressions.dart';
 import '../models/apartment.dart';
+import '../models/user.dart';
 
 class ApartmentCreate extends StatefulWidget {
-  Apartment apartment;
   final Function isNew;
+  final Function addUser;
+  final Function addAddress;
   final String title;
+  final Apartment apartment;
 
-  ApartmentCreate(this.isNew, this.apartment, {this.title = 'Create'});
+  ApartmentCreate(this.apartment, this.isNew, this.addAddress, this.addUser,{this.title = 'Create'});
 
   @override
   State<StatefulWidget> createState() {
@@ -16,6 +19,7 @@ class ApartmentCreate extends StatefulWidget {
 }
 
 class _ApartmentCreateState extends State<ApartmentCreate> {
+  Apartment _apartment = Apartment('b', '', 0, '', '');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<Map<String, dynamic>> userList = [];
 
@@ -36,7 +40,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
         }
       },
       onSaved: (String value) {
-        widget.apartment.streetName = value;
+        _apartment.streetName = value;
       },
     );
   }
@@ -52,7 +56,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
         }
       },
       onSaved: (String value) {
-        widget.apartment.country = value;
+        _apartment.country = value;
       },
     );
   }
@@ -68,7 +72,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
         }
       },
       onSaved: (String value) {
-        widget.apartment.city = value;
+        _apartment.city = value;
       },
     );
   }
@@ -84,23 +88,12 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
         }
       },
       onSaved: (String value) {
-        widget.apartment.number = int.parse(value);
+        _apartment.number = int.parse(value);
       },
     );
   }
 
-  void _addCurrentUser() {
-    return userList.add({
-      'lastName': 'Mathe',
-      'firstName': 'Emese',
-      'nickName': 'Eme',
-      'number': '0740797202',
-      'email': 'emese.mathe.07@gmail.com'
-    });
-  }
-
   Widget _buildBody(BuildContext context) {
-    _addCurrentUser();
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -124,8 +117,12 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    widget.isNew();
     _formKey.currentState.save();
+
+    if(widget.isNew()){
+      widget.addUser(User('fff', 'Admin','Blah', 'example', '0755555555', 'something@gmail.com'));
+    }
+    widget.addAddress(_apartment);
     Navigator.of(context).pop();
   }
 
@@ -141,7 +138,7 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
           onPressed: () {
             _submitForm();
           },
-          child: Text('ADD'),
+          child: widget.title == 'Create' ? Text('ADD') : Text('EDIT'),
         ),
         FlatButton(
           onPressed: () {

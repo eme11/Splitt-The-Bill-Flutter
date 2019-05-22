@@ -8,13 +8,13 @@ import '../pop_up_widows/delete_warning.dart';
 import '../models/apartment.dart';
 import '../models/user.dart';
 
+// ignore: must_be_immutable
 class ApartmentPage extends StatefulWidget {
   bool _isDeleted = false;
   List<User> userList = [
-    User('ss', 'Emese', 'Mathe', 'Eme', '0740797202', 'emese.@gmail.com'),
     User('ss', 'Emese', 'Mathe', 'Eme', '0740797202', 'emese.@gmail.com')
   ];
-  Apartment address = Apartment('1', 'Blah', 0, 'Timisoara', 'RO');
+  Apartment address = new Apartment('1', 'Blah', 0, 'Timisoara', 'RO');
 
   @override
   State<StatefulWidget> createState() {
@@ -23,6 +23,17 @@ class ApartmentPage extends StatefulWidget {
 }
 
 class _ApartmentPageState extends State<ApartmentPage> {
+  List<Widget> info = [];
+
+  initState() {
+    info.add(_buildIcon());
+    info.add(_buildSizedBox());
+    info.add(_buildAddress());
+    info.add(_buildSizedBox());
+    _buildUserLis();
+    super.initState();
+  }
+
   Widget _buildIcon() {
     return CircleAvatar(
       child: Icon(Icons.home),
@@ -36,65 +47,72 @@ class _ApartmentPageState extends State<ApartmentPage> {
     );
   }
 
-  List<Widget> _buildUserLis() {
-    List<Widget> info = [];
-
-    info.add(_buildIcon());
-    info.add(_buildSizedBox());
-    info.add(_buildAddress());
-    info.add(_buildSizedBox());
+  void _buildUserLis() {
     for (var i = 0; i < widget.userList.length; ++i) {
-      info.add(Dismissible(
-        key: Key(i.toString()),
-        onDismissed: (DismissDirection direction) {
-          if (direction == DismissDirection.endToStart) {
-            info.remove(widget.userList[i]);
-          } else if (direction == DismissDirection.startToEnd) {
-            print('Swiped start to end');
-          } else {
-            print('Other swiping');
-          }
-        },
-        background: Container(color: Colors.red),
-        child: UserInfoCard(widget.userList[i]),
-      ));
+      UserInfoCard card = UserInfoCard(
+        widget.userList[i],
+        delete: _deleteUser,
+      );
+      info.add(card);
     }
-
-    return info;
   }
 
   Widget _buildAddress() {
-    return TitleListTitle(widget.address, Icons.business,
-        ApartmentCreate(_deleteFalse, widget.address, title: 'Edit Address'));
+    return TitleListTitle(
+        widget.address,
+        Icons.business,
+        ApartmentCreate(widget.address,_deleteFalse, _addAddress, _addUser,
+            title: 'Edit Address'));
   }
 
   Widget _buildBody(BuildContext context) {
-    return SingleChildScrollView(
+    return Container(
       child: Padding(
         padding: EdgeInsets.all(10.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: _buildUserLis(),
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return Column(children: <Widget>[info[index]]);
+          },
+          itemCount: info.length,
         ),
       ),
     );
   }
 
-  void _deleteTrue() {
+  bool _deleteTrue() {
     setState(() {
       widget._isDeleted = true;
     });
+    return true;
   }
 
-  void _deleteFalse() {
+  bool _deleteFalse() {
     setState(() {
       widget._isDeleted = false;
     });
+    return false;
   }
 
-  void _addUser(String email){
+  void _addUser(User user) {
     setState(() {
-      widget.userList.add(User('ss', 'Noemi', 'Mathe', 'Noci', '0740797202', email));
+      widget.userList.add(user);
+      info.add(UserInfoCard(user, delete: _deleteUser,));
+    });
+  }
+
+  void _deleteUser(User user) {
+    setState(() {
+      int tmp = widget.userList.indexOf(user);
+      widget.userList.remove(user);
+      info.removeAt(tmp + 4);
+    });
+  }
+
+  void _addAddress(Apartment apartment) {
+    setState(() {
+      widget.address = Apartment.clone(apartment);
+      info.removeAt(2);
+      info.insert(2, _buildAddress());
     });
   }
 
@@ -125,7 +143,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
             showDialog(
                 context: context,
                 builder: (BuildContext context) =>
-                    ApartmentCreate(_deleteFalse, widget.address));
+                    ApartmentCreate(widget.address, _deleteFalse, _addAddress, _addUser));
           },
           child: Icon(Icons.add),
           mini: true,
