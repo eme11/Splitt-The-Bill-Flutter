@@ -6,27 +6,40 @@ import 'pages/chores_page.dart';
 
 import 'package:dynamic_theme/dynamic_theme.dart';
 
+import 'pages/sign_in_page.dart';
+import 'pages/sign_up_page.dart';
+
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _MyApp();
+  }
+}
+
+class _MyApp extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return new DynamicTheme(
         defaultBrightness: Brightness.light,
         data: (brightness) => new ThemeData(
-          primarySwatch: Colors.red,
-          brightness: brightness,
-        ),
+              primarySwatch: Colors.red,
+              brightness: brightness,
+            ),
         themedWidgetBuilder: (context, theme) {
           return new MaterialApp(
             theme: theme,
-            home: new MyHomePage(title: 'Split the Bill'),
+            routes: {
+              '/': (BuildContext context) => SignInPage(),
+              '/application': (BuildContext context) =>
+                  new MyHomePage(title: 'Split the Bill'),
+              '/register': (BuildContext context) => SignUpPage()
+            },
           );
-        }
-    );
+        });
   }
-
 }
 
 class MyHomePage extends StatefulWidget {

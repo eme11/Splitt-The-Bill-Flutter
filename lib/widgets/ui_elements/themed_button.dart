@@ -16,3 +16,18 @@ class ThemedButton extends StatelessWidget{
   }
 
 }
+
+class ThemedTextButton extends StatelessWidget{
+  final Function pressed;
+  final String text;
+
+  ThemedTextButton(this.pressed, this.text);
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      onPressed: pressed,
+      textColor: Theme.of(context).primaryColor,
+      child: Text(text),
+    );
+  }
+}
