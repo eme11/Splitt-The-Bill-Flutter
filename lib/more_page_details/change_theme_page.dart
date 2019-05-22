@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/ui_elements/themed_button.dart';
 
 class ChangeThemePage extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<DropdownMenuItem<String>> _colors = [];
   List<DropdownMenuItem<bool>> _brigtness = [];
-  Map<String, dynamic> _formData = {'name': null, 'color': null, 'dark': false};
+  Map<String, dynamic> _formData = {'name': null, 'color': null, 'dark': null};
 
   DropdownMenuItem<String> _buildDropDownItem(String value, Color backround) {
     return DropdownMenuItem<String>(
@@ -98,6 +99,14 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
     );
   }
 
+  Widget _buildButton(){
+    return ThemedButton(_submitForm, 'Change Theme');
+  }
+
+  void _submitForm(){
+
+  }
+
   Widget _buildBody() {
     return SingleChildScrollView(
       child: Form(
@@ -109,6 +118,8 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
               _buildDropDownColorList(),
               _buildSizedBox(),
               _buildDropDownBrightnessList(),
+              _buildSizedBox(),
+              _buildButton()
             ],
           ),
         ),
