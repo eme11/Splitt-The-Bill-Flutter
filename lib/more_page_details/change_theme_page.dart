@@ -21,9 +21,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
   }
 
   void changeColor(Color color) {
-    DynamicTheme.of(context).setThemeData(ThemeData(
-        primarySwatch: color
-    ));
+    DynamicTheme.of(context).setThemeData(ThemeData(primarySwatch: color));
   }
 
   DropdownMenuItem<Color> _buildDropDownItem(String value, Color backround) {
@@ -128,7 +126,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
     changeColor(_currentColor);
   }
 
-  void _changeBrightness(){
+  void _changeBrightness() {
     changeBrightness(_currentBrightness);
   }
 
@@ -144,9 +142,14 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
               _buildSizedBox(),
               _buildDropDownBrightnessList(),
               _buildSizedBox(),
-              _buildChangeColor(),
-              _buildSizedBox(),
-              _buildChangeBackGround(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  _buildChangeBackGround(),
+                  _buildChangeColor(),
+                ],
+              ),
             ],
           ),
         ),
