@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../helpers/regular_expressions.dart';
 
+import '../models/chores.dart';
+
 class ChoresForm extends StatefulWidget{
   final Function addChore;
 
@@ -17,12 +19,7 @@ class _ChoresFormState extends State<ChoresForm>{
   List<DropdownMenuItem<String>> _type = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Map<String, dynamic> _formData = {
-    'name': null,
-    'descrition':null,
-    'change_interval': 0,
-    'user': 'anonymous_user'
-  };
+  Chore _formData = Chore('3', '', '', 3);
 
   Widget _buildName() {
     return TextFormField(
@@ -34,7 +31,7 @@ class _ChoresFormState extends State<ChoresForm>{
         }
       },
       onSaved: (String value) {
-        _formData['name'] = value;
+        _formData.name = value;
       },
     );
   }
@@ -49,7 +46,7 @@ class _ChoresFormState extends State<ChoresForm>{
         }
       },
       onSaved: (String value) {
-        _formData['descrition'] = value;
+        _formData.description = value;
       },
     );
   }
@@ -58,16 +55,16 @@ class _ChoresFormState extends State<ChoresForm>{
     return TextFormField(
       keyboardType: TextInputType.number,
       decoration: InputDecoration(labelText: 'Changing Interval'),
-      initialValue: _formData['change_interval'] == null
+      initialValue: _formData.changingInterval == null
           ? ''
-          : _formData['change_interval'].toString(),
+          : _formData.changingInterval.toString(),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isInteger(value)) {
           return 'Input should be a number.';
         }
       },
       onSaved: (String value) {
-        _formData['change_interval'] = double.parse(value);
+        _formData.changingInterval = int.parse(value);
       },
     );
   }
