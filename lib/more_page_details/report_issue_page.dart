@@ -21,8 +21,7 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
 
   Widget _buildTitleTextField() {
     return TextFormField(
-      decoration: InputDecoration(
-          labelText: 'Title'),
+      decoration: InputDecoration(labelText: 'Title'),
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid Title';
@@ -97,25 +96,28 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
   }
 
   Widget _buildBody() {
-    return SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Column(
-            children: <Widget>[
-              _buildTitleTextField(),
-              _buildSizedBox(),
-              _buildDescription(),
-              _buildSizedBox(),
-              _buildDropDownTypeList(),
-              _buildSizedBox(),
-              _buildSubmitButton()
-            ],
+    return Container(
+        child: Center(
+      child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Column(
+              children: <Widget>[
+                _buildTitleTextField(),
+                _buildSizedBox(),
+                _buildDescription(),
+                _buildSizedBox(),
+                _buildDropDownTypeList(),
+                _buildSizedBox(),
+                _buildSubmitButton()
+              ],
+            ),
           ),
         ),
       ),
-    );
+    ));
   }
 
   void _submitForm() {
