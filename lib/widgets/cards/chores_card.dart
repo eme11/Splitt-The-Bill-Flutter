@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../models/chores.dart';
 
 class ChoresCard extends StatefulWidget {
-  final Map<String, dynamic> value;
+  Chore value;
 
   ChoresCard(this.value);
 
@@ -21,14 +22,14 @@ class _ChoresCardState extends State<ChoresCard> {
             leading: CircleAvatar(
               child: Text('EM'),
             ),
-            title: Text(widget.value['name']),
+            title: Text(widget.value.name),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text(widget.value['descrition']),
+                Text(widget.value.description),
                 //Text('Person resposible: ' + widget.value['user']),
                 Text('Changing Interval: ' +
-                    widget.value['change_interval'].toString()),
+                    widget.value.changingInterval.toString()),
               ],
             ),
           )

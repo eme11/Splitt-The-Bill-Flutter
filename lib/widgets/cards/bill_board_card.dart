@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../../models/bill_board.dart';
+
 class BillBoardCard extends StatefulWidget {
-  final Map<String, dynamic> value;
+  BillBoard value;
   int _okayScore = 0;
   int _noScore = 0;
   double _percent;
@@ -17,7 +19,7 @@ class BillBoardCard extends StatefulWidget {
 
 class _BillBoardCardState extends State<BillBoardCard> {
   Widget _buildTrailing() {
-    return widget.value['type'] == false
+    return widget.value.type == false
         ? Text('')
         : Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -47,8 +49,8 @@ class _BillBoardCardState extends State<BillBoardCard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text(widget.value['description']),
-        Text('Published by: ' + widget.value['user'])
+        Text(widget.value.descrition),
+        Text('Published by: ' + widget.value.userId)
       ],
     );
   }
@@ -58,7 +60,7 @@ class _BillBoardCardState extends State<BillBoardCard> {
         ? 0.0
         : widget._okayScore / (widget._noScore + widget._okayScore);
 
-    return widget.value['type'] == false
+    return widget.value.type == false
         ? Text('')
         : LinearPercentIndicator(
             lineHeight: 10.0,
@@ -74,7 +76,7 @@ class _BillBoardCardState extends State<BillBoardCard> {
       child: Column(
         children: <Widget>[
           ListTile(
-            title: Text(widget.value['title']),
+            title: Text(widget.value.title),
             subtitle: _buildDescription(),
           ),
           Container(

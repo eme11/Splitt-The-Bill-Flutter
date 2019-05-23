@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../ui_elements/price_tag.dart';
+import '../../models/cleaning_suppliy.dart';
 
 class CleaningSupplyCard extends StatefulWidget {
-  final Map<String, dynamic> value;
+  CleainingSupply value;
 
   CleaningSupplyCard(this.value);
 
@@ -15,11 +16,11 @@ class CleaningSupplyCard extends StatefulWidget {
 class _CleaningSupplyCardState extends State<CleaningSupplyCard> {
   IconData _getIcon() {
     IconData icon = null;
-    if (widget.value['type'] == 'Bathroom') {
+    if (widget.value.type == 'Bathroom') {
       icon = Icons.invert_colors;
-    } else if (widget.value['type'] == 'Kitchen') {
+    } else if (widget.value.type == 'Kitchen') {
       icon = Icons.free_breakfast;
-    } else if (widget.value['type'] == 'Living') {
+    } else if (widget.value.type == 'Living') {
       icon = Icons.event_seat;
     } else {
       icon = Icons.more_horiz;
@@ -35,9 +36,9 @@ class _CleaningSupplyCardState extends State<CleaningSupplyCard> {
         children: <Widget>[
           ListTile(
             leading: CircleAvatar(child: Icon(_getIcon())),
-            title: Text(widget.value['name']),
-            subtitle: Text('Buyer: ' + widget.value['user']),
-            trailing: PriceTag(widget.value['price'])
+            title: Text(widget.value.name),
+            subtitle: Text('Buyer: ' + widget.value.name),
+            trailing: PriceTag(widget.value.price)
           )
         ],
       ),

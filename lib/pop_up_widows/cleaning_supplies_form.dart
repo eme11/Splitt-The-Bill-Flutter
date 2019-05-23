@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../helpers/regular_expressions.dart';
+import '../models/cleaning_suppliy.dart';
 
 class CleaningSuppliesForm extends StatefulWidget {
   final Function addSupply;
@@ -15,12 +16,7 @@ class CleaningSuppliesForm extends StatefulWidget {
 class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
   List<DropdownMenuItem<String>> _type = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Map<String, dynamic> _formData = {
-    'name': null,
-    'type': 'Bathroom',
-    'price': 0.0,
-    'user': 'anonymous_user'
-  };
+  CleainingSupply _formData = CleainingSupply('1', '', 'Bathroom', 0.0, '2');
 
   Widget _buildName(){
     return TextFormField(
@@ -32,7 +28,7 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
         }
       },
       onSaved: (String value) {
-        _formData['name'] = value;
+        _formData.name = value;
       },
     );
   }
@@ -61,7 +57,7 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
     _type.add(_buildDropDownItem('Other', Icons.more_horiz));
 
     return DropdownButtonFormField(
-      value: _formData['type'],
+      value: _formData.type,
       items: _type,
       hint: Text('Select a type'),
       onChanged: (value) => _typeChanged(value),
@@ -70,7 +66,7 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
 
   void _typeChanged(String newSelection) {
     setState(() {
-      _formData['type'] = newSelection;
+      _formData.type = newSelection;
     });
   }
 
@@ -84,16 +80,16 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
     return TextFormField(
       keyboardType: TextInputType.number,
       decoration: InputDecoration(labelText: 'Price'),
-      initialValue: _formData['price'] == null
+      initialValue: _formData.price == null
           ? ''
-          : _formData['price'].toString(),
+          : _formData.price.toString(),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isRealNumber(value)) {
           return 'Input should be a number.';
         }
       },
       onSaved: (String value) {
-        _formData['price'] = double.parse(value);
+        _formData.price = double.parse(value);
       },
     );
   }

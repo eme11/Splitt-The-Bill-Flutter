@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../pop_up_widows/chores_form.dart';
 import '../widgets/cards/chores_card.dart';
 
-class ChoresPage extends StatefulWidget{
-  List<Widget> _choresCards = [];
+import '../scoped_models/main_model.dart';
+import '../models/chores.dart';
+
+class ChoresPage extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() {
     return _ChoresPageState();
@@ -12,18 +16,18 @@ class ChoresPage extends StatefulWidget{
 
 }
 
-class _ChoresPageState extends State<ChoresPage>{
+class _ChoresPageState extends State<ChoresPage> {
 
-  Widget _buildBody(){
+  Widget _buildBody(List<Chore> list, Function delete) {
     Widget choresCard;
-    if (widget._choresCards.length > 0) {
+    if (list.length > 0) {
       choresCard = ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Dismissible(
             key: Key(index.toString()),
             onDismissed: (DismissDirection direction) {
               if (direction == DismissDirection.endToStart) {
-                deleteChoresCard(widget._choresCards[index]);
+                delete(index);
               } else if (direction == DismissDirection.startToEnd) {
                 print('Swiped start to end');
               } else {
@@ -32,43 +36,34 @@ class _ChoresPageState extends State<ChoresPage>{
             },
             background: Container(color: Colors.red),
             child: Column(
-              children: <Widget>[widget._choresCards[index]],
+              children: <Widget>[ChoresCard(list[index])],
             ),
           );
         },
-        itemCount: widget._choresCards.length,
+        itemCount: list.length,
       );
     } else
       choresCard = Container();
     return choresCard;
   }
 
-  void addChoresCard(Map<String,dynamic> value){
-    setState(() {
-      widget._choresCards.add(ChoresCard(value));
-    });
-  }
-
-  void deleteChoresCard(ChoresCard card){
-    setState(() {
-      widget._choresCards.remove(card);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) => ChoresForm(addChoresCard));
-        },
-        child: Icon(Icons.add),
-        mini: true,
-      ),
-    );
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
+          return Scaffold(
+            body: _buildBody(model.chores, model.deleteChoreAt),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        ChoresForm(model.addChore));
+              },
+              child: Icon(Icons.add),
+              mini: true,
+            ),
+          );
+        });
   }
-
 }
