@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../helpers/regular_expressions.dart';
 
+import '../models/bill_board.dart';
+
 class BillBoardForm extends StatefulWidget {
   final Function addToBillBoard;
 
@@ -14,13 +16,7 @@ class BillBoardForm extends StatefulWidget {
 
 class _BillBoardFormState extends State<BillBoardForm> {
   List<DropdownMenuItem<bool>> _type = [];
-  Map<String, dynamic> _formData = {
-    'title': null,
-    'type': false,
-    'description': null,
-    'expiration': 24,
-    'user':'anonymous_user'
-  };
+  BillBoard _formData = BillBoard('2', '', '', false, 24.0, '2');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildTitleTextField() {
@@ -33,7 +29,7 @@ class _BillBoardFormState extends State<BillBoardForm> {
         }
       },
       onSaved: (String value) {
-        _formData['title'] = value;
+        _formData.title = value;
       },
     );
   }
@@ -54,7 +50,7 @@ class _BillBoardFormState extends State<BillBoardForm> {
     ));
 
     return DropdownButtonFormField(
-      value: _formData['type'],
+      value: _formData.type,
       items: _type,
       hint: Text('Select a type'),
       onChanged: (value) => _typeChanged(value),
@@ -63,7 +59,7 @@ class _BillBoardFormState extends State<BillBoardForm> {
 
   void _typeChanged(bool newSelection) {
     setState(() {
-      _formData['type'] = newSelection;
+      _formData.type = newSelection;
     });
   }
 
@@ -84,7 +80,7 @@ class _BillBoardFormState extends State<BillBoardForm> {
         }
       },
       onSaved: (String value) {
-        _formData['description'] = value;
+        _formData.descrition = value;
       },
     );
   }
@@ -93,16 +89,16 @@ class _BillBoardFormState extends State<BillBoardForm> {
     return TextFormField(
       keyboardType: TextInputType.number,
       decoration: InputDecoration(labelText: 'Expiration(hours)'),
-      initialValue: _formData['expiration'] == null
+      initialValue: _formData.expirationTime == null
           ? ''
-          : _formData['expiration'].toString(),
+          : _formData.expirationTime.toString(),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isRealNumber(value)) {
           return 'Input should be a number.';
         }
       },
       onSaved: (String value) {
-        _formData['expiration'] = double.parse(value);
+        _formData.expirationTime = double.parse(value);
       },
     );
   }

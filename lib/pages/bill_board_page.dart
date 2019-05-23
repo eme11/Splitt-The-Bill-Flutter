@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 import '../pop_up_widows/bill_board_announcement.dart';
 import '../widgets/cards/bill_board_card.dart';
+import '../models/bill_board.dart';
+
+import '../scoped_models/main_model.dart';
 
 class BillBoardPage extends StatefulWidget {
-  List<Widget> _billBoardCards = [];
-
   @override
   State<StatefulWidget> createState() {
     return _BillBoardPageState();
@@ -12,30 +15,17 @@ class BillBoardPage extends StatefulWidget {
 }
 
 class _BillBoardPageState extends State<BillBoardPage> {
-  void addToBillBoard(Map<String, dynamic> value) {
-    if (value != null) {
-      setState(() {
-        widget._billBoardCards.add(BillBoardCard(value));
-      });
-    }
-  }
 
-  void deleteFromBillBoard(BillBoardCard value) {
-    setState(() {
-      widget._billBoardCards.remove(value);
-    });
-  }
-
-  Widget _buildBody() {
+  Widget _buildBody(List<BillBoard> list, Function delete ) {
     Widget billBoardCards;
-    if (widget._billBoardCards.length > 0) {
+    if (list.length > 0) {
       billBoardCards = ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Dismissible(
             key: Key(index.toString()),
             onDismissed: (DismissDirection direction) {
               if (direction == DismissDirection.endToStart) {
-                deleteFromBillBoard(widget._billBoardCards[index]);
+                delete(index);
               } else if (direction == DismissDirection.startToEnd) {
                 print('Swiped start to end');
               } else {
@@ -44,11 +34,11 @@ class _BillBoardPageState extends State<BillBoardPage> {
             },
             background: Container(color: Colors.red),
             child: Column(
-              children: <Widget>[widget._billBoardCards[index]],
+              children: <Widget>[BillBoardCard(list[index])],
             ),
           );
         },
-        itemCount: widget._billBoardCards.length,
+        itemCount: list.length,
       );
     } else
       billBoardCards = Container();
@@ -57,17 +47,21 @@ class _BillBoardPageState extends State<BillBoardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) => BillBoardForm(addToBillBoard));
-        },
-        child: Icon(Icons.add),
-        mini: true,
-      ),
-    );
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return Scaffold(
+        body: _buildBody(model.announcement, model.deleteAnnouncementAt),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    BillBoardForm(model.addAnnouncements));
+          },
+          child: Icon(Icons.add),
+          mini: true,
+        ),
+      );
+    });
   }
 }
