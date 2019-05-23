@@ -9,4 +9,28 @@ mixin UserModel on Model{
     return _currentUser;
   }
 
+  void set currentUser(User user){
+    _currentUser = user;
+  }
+
+  void updateFirstName(String firstName){
+    _currentUser.firstName = firstName;
+    notifyListeners();
+  }
+
+  void updateLastName(String lastName){
+    _currentUser.lastName = lastName;
+    notifyListeners();
+  }
+
+  void updateNickName(String nickName){
+    _currentUser.nickName = nickName;
+    notifyListeners();
+  }
+
+  void updateNumber(String number){
+    _currentUser.phone = number;
+    notifyListeners();
+  }
+
 }
