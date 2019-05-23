@@ -3,12 +3,11 @@ import '../helpers/regular_expressions.dart';
 
 class AccountInformationEditWindow extends StatefulWidget {
   final Function update;
-  final String informationKey;
   final String title;
   final bool isNumber;
   final String value;
 
-  AccountInformationEditWindow(this.title, this.update, this.informationKey,
+  AccountInformationEditWindow(this.title, this.update,
       {this.isNumber = false, this.value});
 
   @override
@@ -39,7 +38,7 @@ class _AccountInformationEditWindowState
       onSaved: (String value) {
         int tmp;
          if(widget.isNumber ) tmp = int.parse(widget.value);
-        widget.update(widget.informationKey, value);
+        widget.update(value);
       },
     );
   }

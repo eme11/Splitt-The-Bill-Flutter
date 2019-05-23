@@ -8,9 +8,6 @@ import '../models/user.dart';
 import '../scoped_models/main_model.dart';
 
 class AccountInformation extends StatefulWidget {
-  User information =
-  User('4', 'Emese', 'Mathe', 'Eme', 'emese@gmaill.com', '0740797202');
-
   @override
   State<StatefulWidget> createState() {
     return _AccountInfromationState();
@@ -40,18 +37,18 @@ class _AccountInfromationState extends State<AccountInformation> {
               height: 10,
             ),
             _buildCard(
-              widget.information.firstName,
+              model.currentUser.firstName,
               'First Name',
               openWindow: openPopUp,
-              key: 'firstName',
+              key: model.updateFirstName,
             ),
-            _buildCard(widget.information.lastName, 'Last Name',
-                openWindow: openPopUp, key: 'lastName'),
-            _buildCard(widget.information.nickName, 'NickName',
-                openWindow: openPopUp, key: 'nickName'),
-            _buildCard(widget.information.email, 'E-Mail', editable: false),
-            _buildCard(widget.information.phone, 'Phone Number',
-                openWindow: openPopUp, key: 'number', isNumber: true),
+            _buildCard(model.currentUser.lastName, 'Last Name',
+                openWindow: openPopUp, key: model.updateLastName),
+            _buildCard(model.currentUser.nickName, 'NickName',
+                openWindow: openPopUp, key: model.updateNickName),
+            _buildCard(model.currentUser.email, 'E-Mail', editable: false),
+            _buildCard(model.currentUser.phone, 'Phone Number',
+                openWindow: openPopUp, key: model.updateNumber, isNumber: true),
           ],
         ),
       ),
@@ -61,7 +58,7 @@ class _AccountInfromationState extends State<AccountInformation> {
   Widget _buildCard(String title, String description,
       {bool editable = true,
         Function openWindow,
-        String key = '',
+        Function key,
         isNumber = false}) {
     return (editable == false)
         ? _buildWithoutEdit(title, description)
@@ -73,10 +70,9 @@ class _AccountInfromationState extends State<AccountInformation> {
   }
 
   Widget _buildWithEdit(String title, String description, Function openWindow,
-      String key, isNumber) {
+      Function key, isNumber) {
     AccountInformationEditWindow popUp = AccountInformationEditWindow(
       description,
-      upDateField,
       key,
       isNumber: isNumber,
       value: title,

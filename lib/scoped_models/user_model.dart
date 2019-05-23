@@ -3,7 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../models/user.dart';
 
 mixin UserModel on Model{
-  User _currentUser;
+  User _currentUser =  User('4', 'Emese', 'Mathe', 'Eme', 'emese@gmaill.com', '0740797202');
 
   User get currentUser{
     return _currentUser;
