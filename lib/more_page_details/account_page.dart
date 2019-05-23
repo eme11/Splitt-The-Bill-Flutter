@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../widgets/more_list_titles/description_list_title.dart';
 import '../pop_up_widows/account_inforamtion_edit.dart';
 
-class AccountInformation extends StatefulWidget {
-  Map<String, dynamic> information = {
-    'lastName': 'Mathe',
-    'firstName': 'Emese',
-    'nickName': 'Eme',
-    'number': '0740797202',
-    'email': 'emese.mathe.07@gmail.com'
-  };
+import '../models/user.dart';
+import '../scoped_models/main_model.dart';
 
+class AccountInformation extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _AccountInfromationState();
@@ -19,17 +15,11 @@ class AccountInformation extends StatefulWidget {
 }
 
 class _AccountInfromationState extends State<AccountInformation> {
-  void upDateField(String key, String value) {
-    setState(() {
-      widget.information[key] = value;
-    });
-  }
-
-  void openPopUp(AccountInformationEditWindow popUp) {
+   void openPopUp(AccountInformationEditWindow popUp) {
     showDialog(context: context, builder: (BuildContext context) => popUp);
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(MainModel model) {
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(10.0),
@@ -42,12 +32,19 @@ class _AccountInfromationState extends State<AccountInformation> {
             SizedBox(
               height: 10,
             ),
-            _buildCard(widget.information['firstName'], 'First Name',
-                openWindow: openPopUp, key: 'firstName',),
-            _buildCard(widget.information['lastName'], 'Last Name', openWindow: openPopUp, key: 'lastName'),
-            _buildCard(widget.information['nickName'], 'NickName', openWindow: openPopUp, key: 'nickName'),
-            _buildCard(widget.information['email'], 'E-Mail', editable: false),
-            _buildCard(widget.information['number'], 'Phone Number',openWindow: openPopUp, key: 'number', isNumber: true),
+            _buildCard(
+              model.currentUser.firstName,
+              'First Name',
+              openWindow: openPopUp,
+              key: model.updateFirstName,
+            ),
+            _buildCard(model.currentUser.lastName, 'Last Name',
+                openWindow: openPopUp, key: model.updateLastName),
+            _buildCard(model.currentUser.nickName, 'NickName',
+                openWindow: openPopUp, key: model.updateNickName),
+            _buildCard(model.currentUser.email, 'E-Mail', editable: false),
+            _buildCard(model.currentUser.phone, 'Phone Number',
+                openWindow: openPopUp, key: model.updateNumber, isNumber: true),
           ],
         ),
       ),
@@ -55,28 +52,42 @@ class _AccountInfromationState extends State<AccountInformation> {
   }
 
   Widget _buildCard(String title, String description,
-      {bool editable = true, Function openWindow, String key = '', isNumber = false}) {
-    return (editable == false ) ? _buildWithoutEdit(title, description) : _buildWithEdit(title, description, openWindow, key, isNumber);
+      {bool editable = true,
+        Function openWindow,
+        Function key,
+        isNumber = false}) {
+    return (editable == false)
+        ? _buildWithoutEdit(title, description)
+        : _buildWithEdit(title, description, openWindow, key, isNumber);
   }
 
-  Widget _buildWithoutEdit(String title, String description){
+  Widget _buildWithoutEdit(String title, String description) {
     return DescriptionListTitle(title, description, isEditable: false);
   }
 
-  Widget _buildWithEdit(String title, String description, Function openWindow, String key, isNumber){
-    AccountInformationEditWindow popUp =
-    AccountInformationEditWindow(description, upDateField, key, isNumber: isNumber, value: title,);
-    return DescriptionListTitle(title, description, openWindow: openWindow, popUp: popUp);
+  Widget _buildWithEdit(String title, String description, Function openWindow,
+      Function key, isNumber) {
+    AccountInformationEditWindow popUp = AccountInformationEditWindow(
+      description,
+      key,
+      isNumber: isNumber,
+      value: title,
+    );
+    return DescriptionListTitle(title, description,
+        openWindow: openWindow, popUp: popUp);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: Text('Account Information'),
-      ),
-      body: _buildBody(),
-    );
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
+          return Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: true,
+              title: Text('Account Information'),
+            ),
+            body: _buildBody(model),
+          );
+        });
   }
 }

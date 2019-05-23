@@ -1,10 +1,10 @@
 class User {
-  final String id;
-  final String firstName;
-  final String lastName;
+  String id;
+  String firstName;
+  String lastName;
   final String email;
-  final String phone;
-  final String nickName;
+  String phone;
+  String nickName;
 
   User(this.id, this.firstName, this.lastName, this.nickName, this.email,
       this.phone);
