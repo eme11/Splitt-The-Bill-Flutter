@@ -131,26 +131,30 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
   }
 
   Widget _buildBody() {
-    return SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Column(
-            children: <Widget>[
-              _buildDropDownColorList(),
-              _buildSizedBox(),
-              _buildDropDownBrightnessList(),
-              _buildSizedBox(),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Container(
+      child: Center(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Column(
                 children: <Widget>[
-                  _buildChangeBackGround(),
-                  _buildChangeColor(),
+                  _buildDropDownColorList(),
+                  _buildSizedBox(),
+                  _buildDropDownBrightnessList(),
+                  _buildSizedBox(),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      _buildChangeBackGround(),
+                      _buildChangeColor(),
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
