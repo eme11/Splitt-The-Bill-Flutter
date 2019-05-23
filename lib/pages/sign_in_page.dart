@@ -32,6 +32,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget _buildPassword() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Password'),
+      obscureText: true,
       initialValue: signIn['password'],
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {

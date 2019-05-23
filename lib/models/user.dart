@@ -2,7 +2,7 @@ class User {
   String id;
   String firstName;
   String lastName;
-  final String email;
+  String email;
   String phone;
   String nickName;
 
