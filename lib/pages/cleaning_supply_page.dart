@@ -7,7 +7,6 @@ import '../models/cleaning_suppliy.dart';
 import '../scoped_models/main_model.dart';
 
 class CleaningSuppliesPage extends StatefulWidget{
-  List<Widget> _cleaningSuppliesCard = [];
   @override
   State<StatefulWidget> createState() {
     return _CleaningSuppliesPageState();
