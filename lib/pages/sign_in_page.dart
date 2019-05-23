@@ -73,20 +73,22 @@ class _SignInPageState extends State<SignInPage> {
   Widget _buildBody() {
     return Container(
       margin: EdgeInsets.all(10.0),
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                _buildEmailField(),
-                _buildSizedBox(),
-                _buildPassword(),
-                _buildSizedBox(),
-                _buildSignInButton(),
-                _buildSizedBox(),
-                _buildRegisterButton()
-              ],
+      child: Center(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  _buildEmailField(),
+                  _buildSizedBox(),
+                  _buildPassword(),
+                  _buildSizedBox(),
+                  _buildSignInButton(),
+                  _buildSizedBox(),
+                  _buildRegisterButton()
+                ],
+              ),
             ),
           ),
         ),
