@@ -15,11 +15,7 @@ class AccountInformation extends StatefulWidget {
 }
 
 class _AccountInfromationState extends State<AccountInformation> {
-  void upDateField(Function update, String value) {
-    update(value);
-  }
-
-  void openPopUp(AccountInformationEditWindow popUp) {
+   void openPopUp(AccountInformationEditWindow popUp) {
     showDialog(context: context, builder: (BuildContext context) => popUp);
   }
 
