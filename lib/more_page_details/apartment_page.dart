@@ -38,13 +38,41 @@ class _ApartmentPageState extends State<ApartmentPage> {
     return UserInfoCard(user, delete: delete);
   }
 
+  Widget _buildIcon() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 10,
+          ),
+          CircleAvatar(
+            child: Icon(Icons.home),
+            maxRadius: 25,
+          ),
+          SizedBox(
+            height: 10,
+          )
+        ],
+      ),
+    );
+  }
+
   Widget _buildAddress(
       Apartment address, Function addAddress, Function addUser) {
-    return TitleListTitle(
-        address,
-        Icons.business,
-        ApartmentCreate(address, _deleteFalse, addAddress, addUser,
-            title: 'Edit Address'));
+    return Container(
+      child: Column(
+        children: <Widget>[
+          TitleListTitle(
+              address,
+              Icons.business,
+              ApartmentCreate(address, _deleteFalse, addAddress, addUser,
+                  title: 'Edit Address')),
+          SizedBox(
+            height: 10,
+          )
+        ],
+      ),
+    );
   }
 
   Widget _buildBody(BuildContext context, MainModel model) {
@@ -52,14 +80,15 @@ class _ApartmentPageState extends State<ApartmentPage> {
       itemBuilder: (BuildContext context, int index) {
         return Column(children: <Widget>[
           index == 0
-              ? _buildCard(
-              isUserCard: false,
-              apartment: model.currentApartmnet,
-              addAddress: model.setcurrentApartment,
-              addUser: model.addUser)
-              : _buildCard(
-              user: model.userList[index], delete: model.deleteUser)
-
+              ? _buildIcon()
+              : index == 1
+                  ? _buildCard(
+                      isUserCard: false,
+                      apartment: model.currentApartmnet,
+                      addAddress: model.setcurrentApartment,
+                      addUser: model.addUser)
+                  : _buildCard(
+                      user: model.userList[index], delete: model.deleteUser)
         ]);
       },
       itemCount: model.userList.length,
