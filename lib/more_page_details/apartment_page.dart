@@ -48,27 +48,21 @@ class _ApartmentPageState extends State<ApartmentPage> {
   }
 
   Widget _buildBody(BuildContext context, MainModel model) {
-    return SingleChildScrollView(
-      child: Container(
-        child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              return Column(children: <Widget>[
-                index == 0
-                    ? _buildCard(
-                        isUserCard: false,
-                        apartment: model.currentApartmnet,
-                        addAddress: model.setcurrentApartment,
-                        addUser: model.addUser)
-                    : _buildCard(
-                        user: model.userList[index], delete: model.deleteUser)
-              ]);
-            },
-            itemCount: model.userList.length,
-          ),
-        ),
-      ),
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+        return Column(children: <Widget>[
+          index == 0
+              ? _buildCard(
+              isUserCard: false,
+              apartment: model.currentApartmnet,
+              addAddress: model.setcurrentApartment,
+              addUser: model.addUser)
+              : _buildCard(
+              user: model.userList[index], delete: model.deleteUser)
+
+        ]);
+      },
+      itemCount: model.userList.length,
     );
   }
 
