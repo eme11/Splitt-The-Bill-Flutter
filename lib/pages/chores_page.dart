@@ -22,7 +22,6 @@ class _ChoresPageState extends State<ChoresPage> {
   @override
   initState() {
     widget.model.fetchChoreList();
-
     super.initState();
   }
 
