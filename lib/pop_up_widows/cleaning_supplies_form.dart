@@ -120,6 +120,7 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
       return;
     }
     _formData.setCleaningUID(uid);
+    _formData.setApartmentId('blahblah');
     _formKey.currentState.save();
     widget.addSupply(_formData);
     Navigator.of(context).pop();
