@@ -26,6 +26,7 @@ dependencies:
   percent_indicator: ^1.0.16
   dynamic_theme: ^1.0.0
   scoped_model: ^1.0.1
+  http: ^0.12.0+2
 
 dev_dependencies:
   flutter_test:
