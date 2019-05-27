@@ -40,12 +40,6 @@ mixin SupplyModel on Model {
     });
   }
 
-  void deleteSupply(CleainingSupply supply) {
-    _isLoading = true;
-    _supplies.remove(supply);
-    notifyListeners();
-  }
-
   bool get isLoading {
     return _isLoading;
   }

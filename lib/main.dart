@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage>
     _bottomNavigation = [
       CleaningSuppliesPage(widget.model),
       BillBoardPage(),
-      ChoresPage(),
+      ChoresPage(widget.model),
       MorePage()
     ];
     _tabController =
