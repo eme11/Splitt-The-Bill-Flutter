@@ -16,7 +16,7 @@ class BillBoardForm extends StatefulWidget {
 
 class _BillBoardFormState extends State<BillBoardForm> {
   List<DropdownMenuItem<bool>> _type = [];
-  BillBoard _formData = BillBoard('2', '', '', false, 24.0, '2');
+  BillBoard _formData = BillBoard('', '', false, 24.0, '2', 0, 0);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildTitleTextField() {

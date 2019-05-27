@@ -8,6 +8,10 @@ import '../models/bill_board.dart';
 import '../scoped_models/main_model.dart';
 
 class BillBoardPage extends StatefulWidget {
+  MainModel model;
+
+  BillBoardPage(this.model);
+
   @override
   State<StatefulWidget> createState() {
     return _BillBoardPageState();
@@ -15,10 +19,15 @@ class BillBoardPage extends StatefulWidget {
 }
 
 class _BillBoardPageState extends State<BillBoardPage> {
+  @override
+  initState() {
+    widget.model.fetchBillBoard();
+    super.initState();
+  }
 
-  Widget _buildBody(List<BillBoard> list, Function delete ) {
+  Widget _buildBody(List<BillBoard> list, Function delete, bool isLoading) {
     Widget billBoardCards;
-    if (list.length > 0) {
+    if (list.length > 0 && !isLoading) {
       billBoardCards = ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Dismissible(
@@ -34,11 +43,15 @@ class _BillBoardPageState extends State<BillBoardPage> {
             },
             background: Container(color: Colors.red),
             child: Column(
-              children: <Widget>[BillBoardCard(list[index])],
+              children: <Widget>[BillBoardCard(list[index], index)],
             ),
           );
         },
         itemCount: list.length,
+      );
+    } else if (isLoading) {
+      billBoardCards = Center(
+        child: CircularProgressIndicator(),
       );
     } else
       billBoardCards = Container();
@@ -50,7 +63,8 @@ class _BillBoardPageState extends State<BillBoardPage> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-        body: _buildBody(model.announcement, model.deleteAnnouncementAt),
+        body: _buildBody(model.announcement, model.deleteAnnouncementAt,
+            model.isBillBoardLoading),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(
