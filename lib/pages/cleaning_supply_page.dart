@@ -6,28 +6,28 @@ import '../widgets/cards/cleaning_supply_card.dart';
 import '../models/cleaning_suppliy.dart';
 import '../scoped_models/main_model.dart';
 
-class CleaningSuppliesPage extends StatefulWidget{
+class CleaningSuppliesPage extends StatefulWidget {
   MainModel model;
 
   CleaningSuppliesPage(this.model);
+
   @override
   State<StatefulWidget> createState() {
     return _CleaningSuppliesPageState();
   }
-
 }
 
-class _CleaningSuppliesPageState extends State<CleaningSuppliesPage>{
-
+class _CleaningSuppliesPageState extends State<CleaningSuppliesPage> {
   @override
-  initState(){
+  initState() {
     widget.model.fetchCleaningSupplies();
     super.initState();
   }
 
-  Widget _buildBody(List<CleainingSupply> supplies, Function delete){
+  Widget _buildBody(
+      List<CleainingSupply> supplies, Function delete, bool isLoading) {
     Widget cleaningSupplyCard;
-    if (supplies.length > 0) {
+    if (supplies.length > 0 && !isLoading) {
       cleaningSupplyCard = ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Dismissible(
@@ -49,18 +49,23 @@ class _CleaningSuppliesPageState extends State<CleaningSuppliesPage>{
         },
         itemCount: supplies.length,
       );
-    } else
+    } else if (isLoading) {
+      cleaningSupplyCard = Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
       cleaningSupplyCard = Container();
+    }
+
     return cleaningSupplyCard;
   }
 
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
-      builder: (BuildContext context, Widget child, MainModel model)
-    {
+        builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
-        body: _buildBody(model.supplies, model.deleteSupplyAt),
+        body: _buildBody(model.supplies, model.deleteSupplyAt, model.isLoading),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(
@@ -73,10 +78,5 @@ class _CleaningSuppliesPageState extends State<CleaningSuppliesPage>{
         ),
       );
     });
-
-
   }
-
-
-
 }

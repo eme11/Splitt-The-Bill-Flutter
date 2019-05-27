@@ -41,6 +41,7 @@ mixin SupplyModel on Model {
   }
 
   void fetchCleaningSupplies() {
+    _isLoading = true;
     notifyListeners();
     http
         .get(
@@ -66,6 +67,7 @@ mixin SupplyModel on Model {
         fetchedList.add(product);
       });
       _supplies = fetchedList;
+      _isLoading = false;
       notifyListeners();
     });
   }
