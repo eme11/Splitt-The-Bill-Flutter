@@ -7,6 +7,9 @@ import '../models/cleaning_suppliy.dart';
 import '../scoped_models/main_model.dart';
 
 class CleaningSuppliesPage extends StatefulWidget{
+  MainModel model;
+
+  CleaningSuppliesPage(this.model);
   @override
   State<StatefulWidget> createState() {
     return _CleaningSuppliesPageState();
@@ -15,6 +18,12 @@ class CleaningSuppliesPage extends StatefulWidget{
 }
 
 class _CleaningSuppliesPageState extends State<CleaningSuppliesPage>{
+
+  @override
+  initState(){
+    widget.model.fetchCleaningSupplies();
+    super.initState();
+  }
 
   Widget _buildBody(List<CleainingSupply> supplies, Function delete){
     Widget cleaningSupplyCard;

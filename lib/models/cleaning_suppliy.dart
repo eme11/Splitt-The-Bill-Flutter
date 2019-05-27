@@ -1,11 +1,12 @@
 class CleainingSupply{
+  String id;
   String name;
   String type;
   double price;
   String userId;
   String aid;
 
-  CleainingSupply(this.name, this.type, this.price, this.userId);
+  CleainingSupply(this.id, this.name, this.type, this.price, {this.userId, this.aid});
 
   Map<String, dynamic> getSupplyMap(){
     final Map<String, dynamic> supply = {

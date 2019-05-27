@@ -24,8 +24,9 @@ class _MyApp extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    MainModel model = MainModel();
     return ScopedModel<MainModel>(
-      model: MainModel(),
+      model: model,
       child: new DynamicTheme(
           defaultBrightness: Brightness.light,
           data: (brightness) => new ThemeData(
@@ -38,7 +39,7 @@ class _MyApp extends State<MyApp> {
               routes: {
                 '/': (BuildContext context) => SignInPage(),
                 '/application': (BuildContext context) =>
-                    new MyHomePage(title: 'Split the Bill'),
+                    new MyHomePage(model, title: 'Split the Bill'),
                 '/register': (BuildContext context) => SignUpPage()
               },
             );
@@ -48,7 +49,8 @@ class _MyApp extends State<MyApp> {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MainModel model;
+  MyHomePage(this.model, {Key key, this.title}) : super(key: key);
   final String title;
 
   @override
@@ -58,17 +60,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   int _currentIndex = 0;
-  List<Widget> _bottomNavigation = [
-    CleaningSuppliesPage(),
-    BillBoardPage(),
-    ChoresPage(),
-    MorePage()
-  ];
+  List<Widget> _bottomNavigation = [];
   TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _bottomNavigation = [
+      CleaningSuppliesPage(widget.model),
+      BillBoardPage(),
+      ChoresPage(),
+      MorePage()
+    ];
     _tabController =
         TabController(length: _bottomNavigation.length, vsync: this);
   }

@@ -7,6 +7,7 @@ import '../models/cleaning_suppliy.dart';
 
 mixin SupplyModel on Model {
   List<CleainingSupply> _supplies = [];
+  bool _isLoading = false;
 
   List<CleainingSupply> get supplies {
     return List.from(_supplies);
@@ -33,5 +34,39 @@ mixin SupplyModel on Model {
   void deleteSupply(CleainingSupply supply) {
     _supplies.remove(supply);
     notifyListeners();
+  }
+
+  bool get isLoading {
+    return _isLoading;
+  }
+
+  void fetchCleaningSupplies() {
+    notifyListeners();
+    http
+        .get(
+            'https://split-the-bill-flutter.firebaseio.com/cleaning_supply.json')
+        .then((http.Response response) {
+          print('AAAAAAAA');
+      final List<CleainingSupply> fetchedList = [];
+      final Map<String, dynamic> listData = json.decode(response.body);
+      if (listData == null) {
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+      listData.forEach((String productId, dynamic data) {
+        final CleainingSupply product = CleainingSupply(
+          productId,
+          data['name'],
+          data['type'],
+          data['price'],
+          userId: data['userId'],
+          aid: data['aid']
+        );
+        fetchedList.add(product);
+      });
+      _supplies = fetchedList;
+      notifyListeners();
+    });
   }
 }

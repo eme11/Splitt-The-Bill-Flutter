@@ -20,7 +20,7 @@ class CleaningSuppliesForm extends StatefulWidget {
 class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
   List<DropdownMenuItem<String>> _type = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  CleainingSupply _formData = CleainingSupply('', 'Bathroom', 0.0, null);
+  CleainingSupply _formData = CleainingSupply('ff','', 'Bathroom', 0.0);
 
   Widget _buildName() {
     return TextFormField(
