@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 import '../models/chores.dart';
 
@@ -9,8 +12,16 @@ mixin ChoresModel on Model{
   }
 
   void addChore(Chore chore){
-    _chores.add(chore);
-    notifyListeners();
+    final Map<String, dynamic> choreMap = chore.getChoreMap();
+    http
+        .post(
+        'https://split-the-bill-flutter.firebaseio.com/chores.json',
+        body: json.encode(choreMap))
+        .then((http.Response response) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      _chores.add(chore);
+      notifyListeners();
+    });
   }
 
   void deleteChoreAt(int index){
