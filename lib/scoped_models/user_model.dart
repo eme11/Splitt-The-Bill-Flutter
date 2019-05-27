@@ -33,4 +33,8 @@ mixin UserModel on Model{
     notifyListeners();
   }
 
+  String get uid {
+    return _currentUser.id;
+  }
+
 }
