@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 
 import '../models/user.dart';
@@ -35,6 +38,14 @@ mixin UserModel on Model{
 
   String get uid {
     return _currentUser.id;
+  }
+
+  void registerUser(User user){
+    final Map<String, dynamic> userMap = user.getUserMap();
+    http
+        .post(
+        'https://split-the-bill-flutter.firebaseio.com/user_information.json',
+        body: json.encode(userMap));
   }
 
 }
