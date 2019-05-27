@@ -15,4 +15,8 @@ class CleainingSupply{
     };
     return supply;
   }
+
+  void setCleaningUID(String uid){
+    userId = uid;
+  }
 }
