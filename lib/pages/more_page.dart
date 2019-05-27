@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/more_list_titles/user_list_title.dart';
 import '../widgets/more_list_titles/simple_list_title.dart';
+import '../widgets/more_list_titles/sign_out_title.dart';
 
 import '../more_page_details/account_page.dart';
 import '../more_page_details/about_page.dart';
@@ -18,7 +19,7 @@ class MorePage extends StatelessWidget {
     _returnList.add(SimpleListTitle('Change Theme', Icons.mode_edit, openNewPage, ChangeThemePage(),));
     _returnList.add(SimpleListTitle('About', Icons.info, openNewPage, AboutPage()));
     _returnList.add(SimpleListTitle('Report issue', Icons.warning, openNewPage, ReportIssuePage()));
-    _returnList.add(SimpleListTitle('Sign Out', Icons.exit_to_app, openNewPage, SignInPage()));
+    _returnList.add(SignOutListTitle('Sign Out', Icons.exit_to_app, '/'));
 
     return _returnList;
   }
