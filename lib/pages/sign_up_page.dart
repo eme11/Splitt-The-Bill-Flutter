@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../models/user.dart';
 import '../widgets/ui_elements/themed_button.dart';
 import '../helpers/regular_expressions.dart';
+
+import '../scoped_models/main_model.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -15,11 +18,12 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
-  User _user = User('7', '', '', '', '','');
+  User _user = User('7', '', '', '', '', '');
   String _password = '';
   bool _accepted = false;
+  Function _register;
 
-  Widget _buildEmailField(){
+  Widget _buildEmailField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'E-Mail'),
       controller: _emailTextController,
@@ -36,9 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildEmailConfirmTextField() {
     return TextFormField(
-      decoration: InputDecoration(
-          labelText: 'Confirm Email'),
-      obscureText: true,
+      decoration: InputDecoration(labelText: 'Confirm Email'),
       validator: (String value) {
         if (_emailTextController.text != value) {
           return 'Emails do not match.';
@@ -49,8 +51,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildPasswordTextField() {
     return TextFormField(
-      decoration: InputDecoration(
-          labelText: 'Password'),
+      decoration: InputDecoration(labelText: 'Password'),
       obscureText: true,
       controller: _passwordTextController,
       validator: (String value) {
@@ -66,8 +67,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildPasswordConfirmTextField() {
     return TextFormField(
-      decoration: InputDecoration(
-          labelText: 'Confirm Password'),
+      decoration: InputDecoration(labelText: 'Confirm Password'),
       obscureText: true,
       validator: (String value) {
         if (_passwordTextController.text != value) {
@@ -77,7 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildFirstNameField(){
+  Widget _buildFirstNameField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'First Name'),
       validator: (String value) {
@@ -91,7 +91,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildLastNameField(){
+  Widget _buildLastNameField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Last Name'),
       validator: (String value) {
@@ -105,7 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildNickNameField(){
+  Widget _buildNickNameField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Nick Name'),
       validator: (String value) {
@@ -119,7 +119,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _builPhoneNumberField(){
+  Widget _builPhoneNumberField() {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Phone Number'),
       validator: (String value) {
@@ -139,7 +139,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
   Widget _buildRegisterButton() {
-    return ThemedButton(_submitForm, 'NO ACCOUNT? SIGN UP');
+    return ThemedButton(_submitForm, 'SIGN UP');
   }
 
   void _submitForm(){
@@ -147,6 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
       return;
     }
     _formKey.currentState.save();
+    _register(_user);
     Navigator.pushReplacementNamed(context, '/');
   }
 
@@ -162,7 +163,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(Function register) {
     return Container(
       margin: EdgeInsets.all(10.0),
       child: Center(
@@ -202,13 +203,17 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Text('Sign Up'),
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pushReplacementNamed(context, '/'))),
-      body: _buildBody(),
-    );
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
+          _register = model.registerUser;
+      return Scaffold(
+        appBar: AppBar(
+            title: Text('Sign Up'),
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pushReplacementNamed(context, '/'))),
+        body: _buildBody(model.registerUser),
+      );
+    });
   }
 }
