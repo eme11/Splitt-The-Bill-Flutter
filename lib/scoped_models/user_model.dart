@@ -6,39 +6,39 @@ import 'package:scoped_model/scoped_model.dart';
 import '../models/user.dart';
 import '../helpers/auth_mode.dart';
 
-mixin UserModel on Model{
-  User _currentUser =  User('4', 'Emese', 'Mathe', 'Eme', 'emese@gmaill.com', '0740797202');
+mixin UserModel on Model {
+  User _currentUser =
+      User('4', 'Emese', 'Mathe', 'Eme', 'emese@gmaill.com', '0740797202');
   bool _isLoading = false;
 
-  bool get isApplicationLoading{
+  bool get isApplicationLoading {
     return _isLoading;
   }
 
-
-  User get currentUser{
+  User get currentUser {
     return _currentUser;
   }
 
-  void set currentUser(User user){
+  void set currentUser(User user) {
     _currentUser = user;
   }
 
-  void updateFirstName(String firstName){
+  void updateFirstName(String firstName) {
     _currentUser.firstName = firstName;
     notifyListeners();
   }
 
-  void updateLastName(String lastName){
+  void updateLastName(String lastName) {
     _currentUser.lastName = lastName;
     notifyListeners();
   }
 
-  void updateNickName(String nickName){
+  void updateNickName(String nickName) {
     _currentUser.nickName = nickName;
     notifyListeners();
   }
 
-  void updateNumber(String number){
+  void updateNumber(String number) {
     _currentUser.phone = number;
     notifyListeners();
   }
@@ -47,10 +47,9 @@ mixin UserModel on Model{
     return _currentUser.id;
   }
 
-  void registerUser(User user, String password){
+  void registerUser(User user, String password) {
     final Map<String, dynamic> userMap = user.getUserMap();
-    http
-        .post(
+    http.post(
         'https://split-the-bill-flutter.firebaseio.com/user_information.json',
         body: json.encode(userMap));
     authenticate(user.email, password, AuthMode.Register);
@@ -87,6 +86,7 @@ mixin UserModel on Model{
     if (responseData.containsKey('idToken')) {
       hasError = false;
       message = 'Authentication succeeded!';
+      fetchCurrentUser(email);
     } else if (responseData['error']['message'] == 'EMAIL_EXISTS') {
       message = 'This email already exists.';
     } else if (responseData['error']['message'] == 'EMAIL_NOT_FOUND') {
@@ -99,4 +99,35 @@ mixin UserModel on Model{
     return {'success': !hasError, 'message': message};
   }
 
+  void fetchCurrentUser(String email) {
+    _isLoading = true;
+    notifyListeners();
+    http
+        .get('https://split-the-bill-flutter.firebaseio.com/user_information.json')
+        .then((http.Response response) {
+      final Map<String, dynamic> listData = json.decode(response.body);
+      if (listData == null) {
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+      listData.forEach((String productId, dynamic data) {
+        if (data['email'] == email) {
+          _currentUser = User(
+            productId,
+            data['firstName'],
+            data['lastName'],
+            data['nickName'],
+            data['email'],
+            data['number'],
+          );
+          _isLoading = false;
+          notifyListeners();
+          return;
+        }
+      });
+      _isLoading = false;
+      notifyListeners();
+    });
+  }
 }
