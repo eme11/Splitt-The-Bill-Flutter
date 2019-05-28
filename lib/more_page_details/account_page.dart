@@ -15,8 +15,12 @@ class AccountInformation extends StatefulWidget {
 }
 
 class _AccountInfromationState extends State<AccountInformation> {
-   void openPopUp(AccountInformationEditWindow popUp) {
+  void openPopUp(AccountInformationEditWindow popUp) {
     showDialog(context: context, builder: (BuildContext context) => popUp);
+  }
+
+  String _getInitials(String first, String last) {
+    return first[0].toUpperCase() + last[0].toUpperCase();
   }
 
   Widget _buildBody(MainModel model) {
@@ -26,7 +30,8 @@ class _AccountInfromationState extends State<AccountInformation> {
         child: Column(
           children: <Widget>[
             CircleAvatar(
-              child: Text('EM'),
+              child: Text(_getInitials(
+                  model.currentUser.firstName, model.currentUser.lastName)),
               maxRadius: 25,
             ),
             SizedBox(
@@ -53,9 +58,9 @@ class _AccountInfromationState extends State<AccountInformation> {
 
   Widget _buildCard(String title, String description,
       {bool editable = true,
-        Function openWindow,
-        Function key,
-        isNumber = false}) {
+      Function openWindow,
+      Function key,
+      isNumber = false}) {
     return (editable == false)
         ? _buildWithoutEdit(title, description)
         : _buildWithEdit(title, description, openWindow, key, isNumber);
@@ -81,13 +86,13 @@ class _AccountInfromationState extends State<AccountInformation> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-          return Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: true,
-              title: Text('Account Information'),
-            ),
-            body: _buildBody(model),
-          );
-        });
+      return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          title: Text('Account Information'),
+        ),
+        body: _buildBody(model),
+      );
+    });
   }
 }
