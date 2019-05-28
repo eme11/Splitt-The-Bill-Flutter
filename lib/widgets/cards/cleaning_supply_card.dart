@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import '../../scoped_models/main_model.dart';
+
 import '../ui_elements/price_tag.dart';
 import '../../models/cleaning_suppliy.dart';
 
@@ -31,17 +35,19 @@ class _CleaningSupplyCardState extends State<CleaningSupplyCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: CircleAvatar(child: Icon(_getIcon())),
-            title: Text(widget.value.name),
-            subtitle: Text('Buyer: ' + widget.value.name),
-            trailing: PriceTag(widget.value.price)
-          )
-        ],
-      ),
-    );
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return Card(
+        child: Column(
+          children: <Widget>[
+            ListTile(
+                leading: CircleAvatar(child: Icon(_getIcon())),
+                title: Text(widget.value.name),
+                subtitle: Text('Buyer: ' + model.currentUser.nickName),
+                trailing: PriceTag(widget.value.price))
+          ],
+        ),
+      );
+    });
   }
 }
