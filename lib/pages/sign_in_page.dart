@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import '../scoped_models/main_model.dart';
 import '../helpers/regular_expressions.dart';
 import '../widgets/ui_elements/themed_button.dart';
 
@@ -11,6 +14,7 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   Map<String, String> signIn = {'email': null, 'password': null};
+  Function _login;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -63,12 +67,35 @@ class _SignInPageState extends State<SignInPage> {
     Navigator.pushReplacementNamed(context, '/register');
   }
 
-  void _signIn() {
+  void _signIn() async{
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
-    Navigator.pushReplacementNamed(context, '/application');
+    Map<String, dynamic> successInformation;
+    successInformation = await _login(
+        signIn['email'], signIn['password']);
+    if (successInformation['success']) {
+      Navigator.pushReplacementNamed(context, '/application');
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('An Error Occurred!'),
+            content: Text(successInformation['message']),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        },
+      );
+    }
   }
 
   Widget _buildBody() {
@@ -103,7 +130,11 @@ class _SignInPageState extends State<SignInPage> {
       appBar: AppBar(
         title: Text('Sign In'),
       ),
-      body: _buildBody(),
+      body: ScopedModelDescendant(
+          builder: (BuildContext context, Widget child, MainModel model) {
+            _login = model.authenticate;
+        return _buildBody();
+      }),
     );
   }
 }

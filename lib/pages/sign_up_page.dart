@@ -147,7 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
       return;
     }
     _formKey.currentState.save();
-    _register(_user);
+    _register(_user, _password);
     Navigator.pushReplacementNamed(context, '/');
   }
 
