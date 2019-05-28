@@ -24,23 +24,59 @@ mixin UserModel on Model {
   }
 
   void updateFirstName(String firstName) {
-    _currentUser.firstName = firstName;
-    notifyListeners();
+    http.put(
+        'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/firstName.json',
+        body: json.encode(firstName))
+        .then((http.Response reponse) {
+      _currentUser.firstName = firstName;
+      notifyListeners();
+      return true;
+    }).catchError((error) {
+      notifyListeners();
+      return false;
+    });
   }
 
   void updateLastName(String lastName) {
-    _currentUser.lastName = lastName;
-    notifyListeners();
+    http.put(
+        'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/lastName.json',
+        body: json.encode(lastName))
+        .then((http.Response reponse) {
+      _currentUser.lastName = lastName;
+      notifyListeners();
+      return true;
+    }).catchError((error) {
+      notifyListeners();
+      return false;
+    });
   }
 
   void updateNickName(String nickName) {
-    _currentUser.nickName = nickName;
-    notifyListeners();
+    http.put(
+        'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/nickName.json',
+        body: json.encode(nickName))
+        .then((http.Response reponse) {
+      _currentUser.nickName = nickName;
+      notifyListeners();
+      return true;
+    }).catchError((error) {
+      notifyListeners();
+      return false;
+    });
   }
 
   void updateNumber(String number) {
-    _currentUser.phone = number;
-    notifyListeners();
+    http.put(
+        'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/number.json',
+        body: json.encode(number))
+        .then((http.Response reponse) {
+      _currentUser.phone = number;
+      notifyListeners();
+      return true;
+    }).catchError((error) {
+      notifyListeners();
+      return false;
+    });
   }
 
   String get uid {
