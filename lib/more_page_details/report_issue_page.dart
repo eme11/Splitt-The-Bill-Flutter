@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../widgets/ui_elements/themed_button.dart';
+import '../scoped_models/main_model.dart';
+import '../models/user.dart';
 
 class ReportIssuePage extends StatefulWidget {
   @override
@@ -18,6 +22,7 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
     'type': null,
     'description': null
   };
+  User _currentUser;
 
   Widget _buildTitleTextField() {
     return TextFormField(
@@ -120,15 +125,33 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
     ));
   }
 
+  void _launchURL(String toMailId, String subject, String body) async {
+    print("SENNNNDING");
+    print(toMailId);
+    print(subject);
+    print(body);
+
+    var url = 'mailto:$toMailId?subject=$subject&body=$body%20';
+    if (await canLaunch(url)) {
+      await launch(url);
+      _scaffold.currentState.showSnackBar(SnackBar(
+        content: new Text("Sending Email"),
+      ));
+    } else {
+      _scaffold.currentState.showSnackBar(SnackBar(
+        content: new Text("Could not launch $url"),
+      ));
+    }
+  }
+
   void _submitForm() {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
+    _launchURL('emese.mathe.07@gmail.com', _formData['type'] + ' : ' + _formData['title'], _formData['description']);
+    //_send(_currentUser.email, _formData['type'] + ' : ' + _formData['title'], _formData['description'] );
     _formKey.currentState.reset();
-    _scaffold.currentState.showSnackBar(SnackBar(
-      content: new Text("Sending Message"),
-    ));
   }
 
   @override
@@ -139,7 +162,10 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
         automaticallyImplyLeading: true,
         title: Text('Report Issue'),
       ),
-      body: _buildBody(),
+      body: ScopedModelDescendant(builder: (BuildContext context, Widget child, MainModel model){
+        _currentUser = model.currentUser;
+        return _buildBody();
+    }),
     );
   }
 }
