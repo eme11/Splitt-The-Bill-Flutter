@@ -142,13 +142,34 @@ class _SignUpPageState extends State<SignUpPage> {
     return ThemedButton(_submitForm, 'SIGN UP');
   }
 
-  void _submitForm(){
+  void _submitForm() async{
     if (!_formKey.currentState.validate() || !_accepted) {
       return;
     }
     _formKey.currentState.save();
-    _register(_user, _password);
-    Navigator.pushReplacementNamed(context, '/');
+    Map<String, dynamic> successInformation;
+    successInformation = await _register(_user, _password);
+    if (successInformation['success']) {
+      Navigator.pushReplacementNamed(context, '/');
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('An Error Occurred!'),
+            content: Text(successInformation['message']),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        },
+      );
+    }
   }
 
   Widget _buildAcceptSwitch() {

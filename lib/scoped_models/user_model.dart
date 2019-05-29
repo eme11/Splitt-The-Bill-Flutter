@@ -83,12 +83,12 @@ mixin UserModel on Model {
     return _currentUser.id;
   }
 
-  void registerUser(User user, String password) {
+  Future<Map<String, dynamic>> registerUser(User user, String password) async{
     final Map<String, dynamic> userMap = user.getUserMap();
     http.post(
         'https://split-the-bill-flutter.firebaseio.com/user_information.json',
         body: json.encode(userMap));
-    authenticate(user.email, password, AuthMode.Register);
+    return await authenticate(user.email, password, AuthMode.Register);
   }
 
   Future<Map<String, dynamic>> authenticate(String email, String password,
