@@ -126,17 +126,9 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
   }
 
   void _launchURL(String toMailId, String subject, String body) async {
-    print("SENNNNDING");
-    print(toMailId);
-    print(subject);
-    print(body);
-
     var url = 'mailto:$toMailId?subject=$subject&body=$body%20';
     if (await canLaunch(url)) {
       await launch(url);
-      _scaffold.currentState.showSnackBar(SnackBar(
-        content: new Text("Sending Email"),
-      ));
     } else {
       _scaffold.currentState.showSnackBar(SnackBar(
         content: new Text("Could not launch $url"),
