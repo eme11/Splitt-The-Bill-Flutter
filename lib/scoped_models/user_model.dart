@@ -132,7 +132,6 @@ mixin UserModel on Model {
     final Map<String, dynamic> responseData = json.decode(response.body);
     bool hasError = true;
     String message = 'Something went wrong.';
-    print(responseData);
     if (responseData.containsKey('idToken')) {
       hasError = false;
       message = 'Authentication succeeded!';

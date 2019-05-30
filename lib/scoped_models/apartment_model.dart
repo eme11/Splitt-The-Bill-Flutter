@@ -50,7 +50,6 @@ mixin ApartmentModel on Model {
         .then((http.Response response) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       apartment.setId(responseData['name']);
-      print(apartment.id + 'hhhhhhhhh');
       _currentApartment = apartment;
       fetchCurrentApartment(_currentApartment.id);
       _isLoading = false;

@@ -129,7 +129,6 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     }
     _formKey.currentState.save();
     if (!widget.isNew()) {
-      print('aaaaaa');
       await model.addApartment(_apartment).then((bool) {
         model.addCurrentUserAid(model.currentApartmnet.id);
         Navigator.of(context).pop();
