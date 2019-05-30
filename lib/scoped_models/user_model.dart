@@ -37,6 +37,20 @@ mixin UserModel on Model {
     });
   }
 
+  void addCurrentUserAid(String aid){
+    http.put(
+        'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/aid.json',
+        body: json.encode(aid))
+        .then((http.Response reponse) {
+      _currentUser.aid = aid;
+      notifyListeners();
+      return true;
+    }).catchError((error) {
+      notifyListeners();
+      return false;
+    });
+  }
+
   void updateLastName(String lastName) {
     http.put(
         'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/lastName.json',
@@ -156,6 +170,7 @@ mixin UserModel on Model {
             data['nickName'],
             data['email'],
             data['number'],
+            aid: data['aid']
           );
           _isLoading = false;
           notifyListeners();

@@ -39,21 +39,23 @@ mixin ApartmentModel on Model {
     notifyListeners();
   }
 
-  void addApartment(Apartment apartment){
+  Future<bool> addApartment(Apartment apartment){
     _isLoading = true;
     notifyListeners();
     final Map<String, dynamic> value = apartment.getApartmentMap();
-    http
+    return http
         .post(
         'https://split-the-bill-flutter.firebaseio.com/apartment_info.json',
         body: json.encode(value))
         .then((http.Response response) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       apartment.setId(responseData['name']);
+      print(apartment.id + 'hhhhhhhhh');
       _currentApartment = apartment;
-      fetchCurrentApartment();
+      fetchCurrentApartment(_currentApartment.id);
       _isLoading = false;
       notifyListeners();
+      return true;
     });
   }
 
@@ -65,7 +67,7 @@ mixin ApartmentModel on Model {
     _currentApartment = apartment;
   }
 
-  void fetchCurrentApartment(){
+  void fetchCurrentApartment(String aid){
     _isLoading = true;
     notifyListeners();
     http
@@ -78,7 +80,7 @@ mixin ApartmentModel on Model {
         return;
       }
       listData.forEach((String productId, dynamic data) {
-        if (productId == _currentApartment.id) {
+        if (productId == aid) {
           _currentApartment = Apartment(
             productId,
             data['street'],

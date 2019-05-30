@@ -123,45 +123,45 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     );
   }
 
-  void _submitForm(MainModel model) {
+  void _submitForm(MainModel model) async {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
-    if( model.currentUser.aid == null) {
-      model.addApartment(_apartment);
-      if (!widget.isNew()) {
-        //model.addUser(model.currentUser);
-        // model.addAidToUser(_apartment.id);
-      }
+    if (model.currentUser.aid == null) {
+      await model.addApartment(_apartment).then((bool) {
+        if (!widget.isNew()) {
+          model.addCurrentUserAid(model.currentApartmnet.id);
+        }
+        Navigator.of(context).pop();
+      });
     }
-    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(25.0))),
-            title: Text(widget.title),
-            content: _buildBody(context, model),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  _submitForm(model);
-                },
-                child: widget.title == 'Create' ? Text('ADD') : Text('EDIT'),
-              ),
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('CANCEL'),
-              )
-            ],
-          );
-        });
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25.0))),
+        title: Text(widget.title),
+        content: _buildBody(context, model),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              _submitForm(model);
+            },
+            child: widget.title == 'Create' ? Text('ADD') : Text('EDIT'),
+          ),
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('CANCEL'),
+          )
+        ],
+      );
+    });
   }
 }

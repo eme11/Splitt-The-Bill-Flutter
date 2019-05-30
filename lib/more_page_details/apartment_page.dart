@@ -24,6 +24,7 @@ class ApartmentPage extends StatefulWidget {
 }
 
 class _ApartmentPageState extends State<ApartmentPage> {
+
   Widget _buildCard(
       {bool isUserCard = true,
         MainModel model,
@@ -106,7 +107,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
           if (model.currentUser != null && model.currentUser.aid != null) {
-            model.fetchCurrentApartment();
+            model.fetchCurrentApartment(model.currentUser.aid);
           }
           return Scaffold(
             appBar: AppBar(
