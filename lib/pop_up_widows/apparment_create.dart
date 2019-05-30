@@ -10,7 +10,8 @@ class ApartmentCreate extends StatefulWidget {
   final String title;
   final Apartment apartment;
 
-  ApartmentCreate(this.apartment, this.isNew, this.addAddress, this.addUser,{this.title = 'Create'});
+  ApartmentCreate(this.apartment, this.isNew, this.addAddress, this.addUser,
+      {this.title = 'Create'});
 
   @override
   State<StatefulWidget> createState() {
@@ -32,8 +33,11 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
   Widget _buildStreet() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Street Address',),
-      initialValue: widget.apartment.streetName == null ? '' : widget.apartment.streetName,
+        labelText: 'Street Address',
+      ),
+      initialValue: widget.apartment.streetName == null
+          ? ''
+          : widget.apartment.streetName,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid Street name';
@@ -48,8 +52,10 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
   Widget _buildCountry() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Country',),
-      initialValue: widget.apartment.country == null ? '' : widget.apartment.country,
+        labelText: 'Country',
+      ),
+      initialValue:
+          widget.apartment.country == null ? '' : widget.apartment.country,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid country name';
@@ -64,7 +70,8 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
   Widget _buildCity() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'City',),
+        labelText: 'City',
+      ),
       initialValue: widget.apartment.city == null ? '' : widget.apartment.city,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
@@ -79,9 +86,10 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
 
   Widget _buildNumber() {
     return TextFormField(
-      decoration: InputDecoration(
-          labelText: 'Number'),
-      initialValue: widget.apartment.number == null ? 0 : widget.apartment.number.toString(),
+      decoration: InputDecoration(labelText: 'Number'),
+      initialValue: widget.apartment.number == null
+          ? 0
+          : widget.apartment.number.toString(),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isInteger(value)) {
           return 'Invalid number';
@@ -119,8 +127,9 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     }
     _formKey.currentState.save();
 
-    if(widget.isNew()){
-      widget.addUser(User('fff', 'Admin','Blah', 'example', '0755555555', 'something@gmail.com'));
+    if (widget.isNew()) {
+      widget.addUser(User('fff', 'Admin', 'Blah', 'example', '0755555555',
+          'something@gmail.com'));
     }
     widget.addAddress(_apartment);
     Navigator.of(context).pop();
