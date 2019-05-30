@@ -59,6 +59,21 @@ mixin ApartmentModel on Model {
     });
   }
 
+  void updateAddress(Apartment apartment){
+    Map<String, dynamic> value = apartment.getApartmentMap();
+    http.put(
+        'https://split-the-bill-flutter.firebaseio.com//apartment_info/${_currentApartment.id}.json',
+        body: json.encode(value))
+        .then((http.Response reponse) {
+      _currentApartment = apartment;
+      notifyListeners();
+      return true;
+    }).catchError((error) {
+      notifyListeners();
+      return false;
+    });
+  }
+
   Apartment get currentApartmnet {
     return _currentApartment;
   }

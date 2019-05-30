@@ -128,13 +128,14 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
       return;
     }
     _formKey.currentState.save();
-    if (model.currentUser.aid == null) {
+    if (!widget.isNew()) {
+      print('aaaaaa');
       await model.addApartment(_apartment).then((bool) {
-        if (!widget.isNew()) {
-          model.addCurrentUserAid(model.currentApartmnet.id);
-        }
+        model.addCurrentUserAid(model.currentApartmnet.id);
         Navigator.of(context).pop();
       });
+    } else {
+      model.updateAddress(_apartment);
     }
   }
 
