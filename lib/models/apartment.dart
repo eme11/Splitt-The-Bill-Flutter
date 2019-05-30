@@ -23,4 +23,19 @@ class Apartment {
         " " +
         this.country;
   }
+
+
+  void setId(String value){
+    id = value;
+  }
+
+  Map<String, dynamic> getApartmentMap(){
+    Map<String, dynamic> _map ={
+      'street':streetName,
+      'number':number,
+      'city':city,
+      'country':country,
+    };
+    return _map;
+  }
 }
