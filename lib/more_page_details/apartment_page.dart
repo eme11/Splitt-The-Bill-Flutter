@@ -79,7 +79,6 @@ class _ApartmentPageState extends State<ApartmentPage> {
       Function delete) {
     Widget info;
     if (!widget._isDeleted && !isLoading) {
-
       info = ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Column(children: <Widget>[
@@ -116,28 +115,27 @@ class _ApartmentPageState extends State<ApartmentPage> {
     return false;
   }
 
-  Widget _buildAddApartmentButton(){
+  Widget _buildAddApartmentButton() {
     return FloatingActionButton(
       heroTag: null,
       onPressed: () {
         showDialog(
             context: context,
-            builder: (BuildContext context) =>
-                ApartmentCreate(_deleteFalse));
+            builder: (BuildContext context) => ApartmentCreate(_deleteFalse));
       },
       child: Icon(Icons.add),
       mini: true,
     );
   }
 
-  Widget _buildAddUserButton(Function addUser){
+  Widget _buildAddUserButton(Function addUser, Function updateAid, String aid) {
     return FloatingActionButton(
       heroTag: null,
       onPressed: () {
         showDialog(
             context: context,
             builder: (BuildContext context) =>
-                AddUserForm(addUser));
+                AddUserForm(addUser, updateAid, aid));
       },
       child: Icon(Icons.account_circle),
       mini: true,
@@ -169,7 +167,8 @@ class _ApartmentPageState extends State<ApartmentPage> {
         floatingActionButton:
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
           model.currentUser.aid == null ? _buildAddApartmentButton() : Text(''),
-          _buildAddUserButton(model.addUser)
+          _buildAddUserButton(
+              model.addUser, model.addEmailUserAid, model.currentApartmnet.id)
         ]),
       );
     });

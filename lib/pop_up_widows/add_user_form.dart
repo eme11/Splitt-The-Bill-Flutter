@@ -5,8 +5,10 @@ import '../models/user.dart';
 
 class AddUserForm extends StatefulWidget {
   final Function addUser;
+  final Function updateAid;
+  final String aid;
 
-  AddUserForm(this.addUser);
+  AddUserForm(this.addUser, this.updateAid, this.aid);
 
   @override
   State<StatefulWidget> createState() {
@@ -45,7 +47,7 @@ class _AddUserFormState extends State<AddUserForm> {
     }
 
     _formKey.currentState.save();
-    widget.addUser(User('gggg', 'Emese', 'Mathe', 'Eme', '0740797202', _email));
+    widget.updateAid(_email, widget.aid, widget.addUser);
     Navigator.of(context).pop();
   }
 
