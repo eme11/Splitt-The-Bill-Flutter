@@ -8,10 +8,6 @@ import '../models/bill_board.dart';
 import '../scoped_models/main_model.dart';
 
 class BillBoardPage extends StatefulWidget {
-  MainModel model;
-
-  BillBoardPage(this.model);
-
   @override
   State<StatefulWidget> createState() {
     return _BillBoardPageState();
@@ -19,12 +15,6 @@ class BillBoardPage extends StatefulWidget {
 }
 
 class _BillBoardPageState extends State<BillBoardPage> {
-  @override
-  initState() {
-    widget.model.fetchBillBoard();
-    super.initState();
-  }
-
   Widget _buildBody(List<BillBoard> list, Function delete, bool isLoading) {
     Widget billBoardCards;
     if (list.length > 0 && !isLoading) {

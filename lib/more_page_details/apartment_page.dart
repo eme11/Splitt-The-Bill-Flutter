@@ -8,14 +8,11 @@ import '../pop_up_widows/add_user_form.dart';
 import '../pop_up_widows/delete_warning.dart';
 
 import '../models/user.dart';
+import '../models/apartment.dart';
 import '../scoped_models/main_model.dart';
 
-// ignore: must_be_immutable
 class ApartmentPage extends StatefulWidget {
   bool _isDeleted = false;
-  MainModel model;
-
-  ApartmentPage(this.model);
 
   @override
   State<StatefulWidget> createState() {
@@ -24,13 +21,21 @@ class ApartmentPage extends StatefulWidget {
 }
 
 class _ApartmentPageState extends State<ApartmentPage> {
+  @override
+  initState() {
+    setState(() {
+      widget._isDeleted = false;
+    });
+    super.initState();
+  }
+
   Widget _buildCard({
     bool isUserCard = true,
-    MainModel model,
+    Apartment apartment,
     User user,
     Function delete,
   }) {
-    return isUserCard ? _buildUserCard(user, delete) : _buildAddress(model);
+    return isUserCard ? _buildUserCard(user, delete) : _buildAddress(apartment);
   }
 
   Widget _buildUserCard(User user, Function delete) {
@@ -56,11 +61,11 @@ class _ApartmentPageState extends State<ApartmentPage> {
     );
   }
 
-  Widget _buildAddress(MainModel model) {
+  Widget _buildAddress(Apartment apartment) {
     return Container(
       child: Column(
         children: <Widget>[
-          TitleListTitle(model.currentApartmnet, Icons.business,
+          TitleListTitle(apartment, Icons.business,
               ApartmentCreate(_deleteFalse, title: 'Edit Address')),
           SizedBox(
             height: 10,
@@ -70,20 +75,32 @@ class _ApartmentPageState extends State<ApartmentPage> {
     );
   }
 
-  Widget _buildBody(BuildContext context, MainModel model) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return Column(children: <Widget>[
-          index == 0
-              ? _buildIcon()
-              : index == 1
-                  ? _buildCard(isUserCard: false, model: model)
-                  : _buildCard(
-                      user: model.userList[index - 2], delete: model.deleteUser)
-        ]);
-      },
-      itemCount: model.userList.length,
-    );
+  Widget _buildBody(Apartment apartment, List<User> userList, bool isLoading,
+      Function delete) {
+    Widget info;
+    if (!widget._isDeleted && !isLoading) {
+
+      info = ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          print('ggggggggggggggg');
+          return Column(children: <Widget>[
+            index == 0
+                ? _buildIcon()
+                : index == 1
+                    ? _buildCard(isUserCard: false, apartment: apartment)
+                    : _buildCard(user: userList[index - 2], delete: delete)
+          ]);
+        },
+        itemCount: userList.length + 2,
+      );
+    } else if (isLoading) {
+      info = Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      info = Container();
+    }
+    return info;
   }
 
   bool _deleteTrue() {
@@ -102,14 +119,9 @@ class _ApartmentPageState extends State<ApartmentPage> {
 
   @override
   Widget build(BuildContext context) {
-    MainModel model = ScopedModel.of(context);
-    print('hhhhhhhhhhhh');
-    print(model.currentUser.getUserMap());
-    if (model.currentUser != null && model.currentUser.aid != null) {
-      print('dddddddd');
-      model.fetchCurrentApartment(model.currentUser.aid);
-    }
-    return Scaffold(
+    return ScopedModelDescendant(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: true,
           title: Text('Apartment'),
@@ -125,9 +137,8 @@ class _ApartmentPageState extends State<ApartmentPage> {
             )
           ],
         ),
-        body: widget._isDeleted == true
-            ? Container()
-            : _buildBody(context, model),
+        body: _buildBody(model.currentApartmnet, model.userList,
+            model.isApartmentLoading, model.deleteUser),
         floatingActionButton:
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
           FloatingActionButton(
@@ -154,5 +165,6 @@ class _ApartmentPageState extends State<ApartmentPage> {
           ),
         ]),
       );
+    });
   }
 }

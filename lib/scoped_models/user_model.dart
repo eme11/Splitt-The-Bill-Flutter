@@ -8,7 +8,7 @@ import '../helpers/auth_mode.dart';
 
 mixin UserModel on Model {
   User _currentUser =
-      User('4', 'Emese', 'Mathe', 'Eme', 'emese@gmaill.com', '0740797202');
+      User('', '', '', '', '', '');
   bool _isLoading = false;
 
   bool get isApplicationLoading {
@@ -148,19 +148,20 @@ mixin UserModel on Model {
     return {'success': !hasError, 'message': message};
   }
 
-  void fetchCurrentUser(String email) {
+  Future<bool> fetchCurrentUser(String email) {
     _isLoading = true;
     notifyListeners();
-    http
+    return http
         .get('https://split-the-bill-flutter.firebaseio.com/user_information.json')
         .then((http.Response response) {
       final Map<String, dynamic> listData = json.decode(response.body);
       if (listData == null) {
         _isLoading = false;
         notifyListeners();
-        return;
+        return false;
       }
       listData.forEach((String productId, dynamic data) {
+        print(data['email'] + ' ggg ' + email);
         if (data['email'] == email) {
           _currentUser = User(
             productId,
@@ -168,12 +169,12 @@ mixin UserModel on Model {
             data['lastName'],
             data['nickName'],
             data['email'],
-            data['number'],
-            aid: data['aid']
+            data['number']
           );
+          _currentUser.setAid(data['aid']);
           _isLoading = false;
           notifyListeners();
-          return;
+          return true;
         }
       });
       _isLoading = false;

@@ -8,10 +8,6 @@ import '../scoped_models/main_model.dart';
 import '../models/chores.dart';
 
 class ChoresPage extends StatefulWidget {
-  MainModel model;
-
-  ChoresPage(this.model);
-
   @override
   State<StatefulWidget> createState() {
     return _ChoresPageState();
@@ -19,12 +15,6 @@ class ChoresPage extends StatefulWidget {
 }
 
 class _ChoresPageState extends State<ChoresPage> {
-  @override
-  initState() {
-    widget.model.fetchChoreList();
-    super.initState();
-  }
-
   Widget _buildBody(List<Chore> list, Function delete, bool isLoading) {
     Widget choresCard;
     if (list.length > 0 && !isLoading) {
@@ -60,22 +50,21 @@ class _ChoresPageState extends State<ChoresPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ScopedModelDescendant(
-          builder: (BuildContext context, Widget child, MainModel model) {
-        return _buildBody(
-            model.chores, model.deleteChoreAt, model.isChoreLoading);
-      }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) =>
-                  ChoresForm(widget.model.addChore));
-        },
-        child: Icon(Icons.add),
-        mini: true,
-      ),
-    );
+    return ScopedModelDescendant(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return Scaffold(
+        body:
+            _buildBody(model.chores, model.deleteChoreAt, model.isChoreLoading),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => ChoresForm(model.addChore));
+          },
+          child: Icon(Icons.add),
+          mini: true,
+        ),
+      );
+    });
   }
 }

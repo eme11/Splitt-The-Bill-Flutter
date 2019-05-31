@@ -18,7 +18,7 @@ class MorePage extends StatelessWidget {
     List<Widget> _returnList = [];
 
     _returnList.add(UserListTitle(openNewPage,AccountInformation(),));
-    _returnList.add(SimpleListTitle('My Apartment', Icons.home, openNewPage, ApartmentPage(model)));
+    _returnList.add(SimpleListTitle('My Apartment', Icons.home, openNewPage, ApartmentPage()));
     _returnList.add(SimpleListTitle('Change Theme', Icons.mode_edit, openNewPage, ChangeThemePage(),));
     _returnList.add(SimpleListTitle('About', Icons.info, openNewPage, AboutPage()));
     _returnList.add(SimpleListTitle('Report issue', Icons.warning, openNewPage, ReportIssuePage()));

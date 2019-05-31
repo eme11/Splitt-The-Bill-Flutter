@@ -7,8 +7,7 @@ import '../models/apartment.dart';
 import '../models/user.dart';
 
 mixin ApartmentModel on Model {
-  Apartment _currentApartment =
-      Apartment('', '', 0, '', '');
+  Apartment _currentApartment = Apartment('', '', 0, '', '');
   List<User> _userList = [];
   bool _isLoading;
 
@@ -35,14 +34,14 @@ mixin ApartmentModel on Model {
     notifyListeners();
   }
 
-  Future<bool> addApartment(Apartment apartment){
+  Future<bool> addApartment(Apartment apartment) {
     _isLoading = true;
     notifyListeners();
     final Map<String, dynamic> value = apartment.getApartmentMap();
     return http
         .post(
-        'https://split-the-bill-flutter.firebaseio.com/apartment_info.json',
-        body: json.encode(value))
+            'https://split-the-bill-flutter.firebaseio.com/apartment_info.json',
+            body: json.encode(value))
         .then((http.Response response) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       apartment.setId(responseData['name']);
@@ -54,11 +53,12 @@ mixin ApartmentModel on Model {
     });
   }
 
-  void updateAddress(Apartment apartment){
+  void updateAddress(Apartment apartment) {
     Map<String, dynamic> value = apartment.getApartmentMap();
-    http.put(
-        'https://split-the-bill-flutter.firebaseio.com/apartment_info/${_currentApartment.id}.json',
-        body: json.encode(value))
+    http
+        .put(
+            'https://split-the-bill-flutter.firebaseio.com/apartment_info/${_currentApartment.id}.json',
+            body: json.encode(value))
         .then((http.Response reponse) {
       _currentApartment = apartment;
       notifyListeners();
@@ -77,34 +77,26 @@ mixin ApartmentModel on Model {
     _currentApartment = apartment;
   }
 
-  void fetchCurrentApartment(String aid){
+  Future<bool> fetchCurrentApartment(String aid) {
     _isLoading = true;
     notifyListeners();
-    http
-        .get('https://split-the-bill-flutter.firebaseio.com/apartment_info.json')
+    return http
+        .get(
+            'https://split-the-bill-flutter.firebaseio.com/apartment_info/$aid.json')
         .then((http.Response response) {
-      final Map<String, dynamic> listData = json.decode(response.body);
-      if (listData == null) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      print('AAAAAAAAAA');
+      print(response.body);
+      if (data == null) {
         _isLoading = false;
         notifyListeners();
-        return;
+        return false;
       }
-      listData.forEach((String productId, dynamic data) {
-        if (productId == aid) {
-          _currentApartment = Apartment(
-            productId,
-            data['street'],
-            data['number'],
-            data['city'],
-            data['country']
-          );
-          _isLoading = false;
-          notifyListeners();
-          return;
-        }
-      });
+      _currentApartment = Apartment(
+          aid, data['street'], data['number'], data['city'], data['country']);
       _isLoading = false;
       notifyListeners();
+      return true;
     });
   }
 
@@ -112,7 +104,8 @@ mixin ApartmentModel on Model {
     _isLoading = true;
     notifyListeners();
     http
-        .get('https://split-the-bill-flutter.firebaseio.com/user_information.json')
+        .get(
+            'https://split-the-bill-flutter.firebaseio.com/user_information.json')
         .then((http.Response response) {
       final Map<String, dynamic> listData = json.decode(response.body);
       if (listData == null) {
@@ -122,15 +115,9 @@ mixin ApartmentModel on Model {
       }
       listData.forEach((String productId, dynamic data) {
         if (_currentApartment.id == data['aid']) {
-          final User user = User(
-            productId,
-            data['firstName'],
-            data['lastName'],
-            data['nickName'],
-            data['email'],
-            data['number'],
-            aid: data['aid']
-          );
+          final User user = User(productId, data['firstName'], data['lastName'],
+              data['nickName'], data['email'], data['number'],
+              aid: data['aid']);
           _userList.add(user);
         }
       });
