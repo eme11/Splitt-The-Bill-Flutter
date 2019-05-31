@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 import '../helpers/regular_expressions.dart';
 import '../models/apartment.dart';
-import '../models/user.dart';
+
+import '../scoped_models/main_model.dart';
 
 class ApartmentCreate extends StatefulWidget {
   final Function isNew;
-  final Function addUser;
-  final Function addAddress;
   final String title;
-  final Apartment apartment;
 
-  ApartmentCreate(this.apartment, this.isNew, this.addAddress, this.addUser,
-      {this.title = 'Create'});
+  ApartmentCreate(this.isNew, {this.title = 'Create'});
 
   @override
   State<StatefulWidget> createState() {
@@ -20,7 +19,7 @@ class ApartmentCreate extends StatefulWidget {
 }
 
 class _ApartmentCreateState extends State<ApartmentCreate> {
-  Apartment _apartment = Apartment('b', '', 0, '', '');
+  Apartment _apartment = Apartment('', '', 0, '', '');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<Map<String, dynamic>> userList = [];
 
@@ -30,14 +29,14 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     );
   }
 
-  Widget _buildStreet() {
+  Widget _buildStreet(MainModel model) {
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Street Address',
       ),
-      initialValue: widget.apartment.streetName == null
+      initialValue: model.currentApartmnet.streetName == null
           ? ''
-          : widget.apartment.streetName,
+          : model.currentApartmnet.streetName,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid Street name';
@@ -49,13 +48,14 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     );
   }
 
-  Widget _buildCountry() {
+  Widget _buildCountry(MainModel model) {
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Country',
       ),
-      initialValue:
-          widget.apartment.country == null ? '' : widget.apartment.country,
+      initialValue: model.currentApartmnet.country == null
+          ? ''
+          : model.currentApartmnet.country,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid country name';
@@ -67,12 +67,14 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     );
   }
 
-  Widget _buildCity() {
+  Widget _buildCity(MainModel model) {
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'City',
       ),
-      initialValue: widget.apartment.city == null ? '' : widget.apartment.city,
+      initialValue: model.currentApartmnet.city == null
+          ? ''
+          : model.currentApartmnet.city,
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid city name';
@@ -84,12 +86,12 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     );
   }
 
-  Widget _buildNumber() {
+  Widget _buildNumber(MainModel model) {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Number'),
-      initialValue: widget.apartment.number == null
+      initialValue: model.currentApartmnet.number == null
           ? 0
-          : widget.apartment.number.toString(),
+          : model.currentApartmnet.number.toString(),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isInteger(value)) {
           return 'Invalid number';
@@ -101,61 +103,65 @@ class _ApartmentCreateState extends State<ApartmentCreate> {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  Widget _buildBody(BuildContext context, MainModel model) {
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
         child: Column(
           children: <Widget>[
-            _buildStreet(),
+            _buildStreet(model),
             _buildSizedBox(),
             _buildSizedBox(),
-            _buildNumber(),
+            _buildNumber(model),
             _buildSizedBox(),
-            _buildCity(),
+            _buildCity(model),
             _buildSizedBox(),
-            _buildCountry(),
+            _buildCountry(model),
           ],
         ),
       ),
     );
   }
 
-  void _submitForm() {
+  void _submitForm(MainModel model) async {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
-
-    if (widget.isNew()) {
-      widget.addUser(User('fff', 'Admin', 'Blah', 'example', '0755555555',
-          'something@gmail.com'));
+    if (!widget.isNew()) {
+      await model.addApartment(_apartment).then((bool) {
+        model.addCurrentUserAid(model.currentApartmnet.id);
+        Navigator.of(context).pop();
+      });
+    } else {
+      model.updateAddress(_apartment);
     }
-    widget.addAddress(_apartment);
-    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25.0))),
-      title: Text(widget.title),
-      content: _buildBody(context),
-      actions: <Widget>[
-        FlatButton(
-          onPressed: () {
-            _submitForm();
-          },
-          child: widget.title == 'Create' ? Text('ADD') : Text('EDIT'),
-        ),
-        FlatButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('CANCEL'),
-        )
-      ],
-    );
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25.0))),
+        title: Text(widget.title),
+        content: _buildBody(context, model),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              _submitForm(model);
+            },
+            child: widget.title == 'Create' ? Text('ADD') : Text('EDIT'),
+          ),
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('CANCEL'),
+          )
+        ],
+      );
+    });
   }
 }

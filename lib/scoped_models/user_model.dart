@@ -7,8 +7,7 @@ import '../models/user.dart';
 import '../helpers/auth_mode.dart';
 
 mixin UserModel on Model {
-  User _currentUser =
-      User('4', 'Emese', 'Mathe', 'Eme', 'emese@gmaill.com', '0740797202');
+  User _currentUser = User('', '', '', '', '', '');
   bool _isLoading = false;
 
   bool get isApplicationLoading {
@@ -24,9 +23,10 @@ mixin UserModel on Model {
   }
 
   void updateFirstName(String firstName) {
-    http.put(
-        'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/firstName.json',
-        body: json.encode(firstName))
+    http
+        .put(
+            'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/firstName.json',
+            body: json.encode(firstName))
         .then((http.Response reponse) {
       _currentUser.firstName = firstName;
       notifyListeners();
@@ -37,10 +37,46 @@ mixin UserModel on Model {
     });
   }
 
+  void addCurrentUserAid(String aid) {
+    http
+        .put(
+            'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/aid.json',
+            body: json.encode(aid))
+        .then((http.Response reponse) {
+      _currentUser.aid = aid;
+      notifyListeners();
+      return true;
+    }).catchError((error) {
+      notifyListeners();
+      return false;
+    });
+  }
+
+  void addEmailUserAid(String email, String aid, Function add) async {
+    await _fetchUserByEmail(email).then((User user) {
+      if (user != null) {
+        add(user);
+        notifyListeners();
+        http
+            .put(
+                'https://split-the-bill-flutter.firebaseio.com/user_information/${user.id}/aid.json',
+                body: json.encode(aid))
+            .then((http.Response reponse) {
+          notifyListeners();
+          return true;
+        }).catchError((error) {
+          notifyListeners();
+          return false;
+        });
+      }
+    });
+  }
+
   void updateLastName(String lastName) {
-    http.put(
-        'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/lastName.json',
-        body: json.encode(lastName))
+    http
+        .put(
+            'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/lastName.json',
+            body: json.encode(lastName))
         .then((http.Response reponse) {
       _currentUser.lastName = lastName;
       notifyListeners();
@@ -52,9 +88,10 @@ mixin UserModel on Model {
   }
 
   void updateNickName(String nickName) {
-    http.put(
-        'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/nickName.json',
-        body: json.encode(nickName))
+    http
+        .put(
+            'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/nickName.json',
+            body: json.encode(nickName))
         .then((http.Response reponse) {
       _currentUser.nickName = nickName;
       notifyListeners();
@@ -66,9 +103,10 @@ mixin UserModel on Model {
   }
 
   void updateNumber(String number) {
-    http.put(
-        'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/number.json',
-        body: json.encode(number))
+    http
+        .put(
+            'https://split-the-bill-flutter.firebaseio.com/user_information/${_currentUser.id}/number.json',
+            body: json.encode(number))
         .then((http.Response reponse) {
       _currentUser.phone = number;
       notifyListeners();
@@ -83,7 +121,7 @@ mixin UserModel on Model {
     return _currentUser.id;
   }
 
-  Future<Map<String, dynamic>> registerUser(User user, String password) async{
+  Future<Map<String, dynamic>> registerUser(User user, String password) async {
     final Map<String, dynamic> userMap = user.getUserMap();
     http.post(
         'https://split-the-bill-flutter.firebaseio.com/user_information.json',
@@ -118,7 +156,6 @@ mixin UserModel on Model {
     final Map<String, dynamic> responseData = json.decode(response.body);
     bool hasError = true;
     String message = 'Something went wrong.';
-    print(responseData);
     if (responseData.containsKey('idToken')) {
       hasError = false;
       message = 'Authentication succeeded!';
@@ -135,28 +172,52 @@ mixin UserModel on Model {
     return {'success': !hasError, 'message': message};
   }
 
-  void fetchCurrentUser(String email) {
+  Future<bool> fetchCurrentUser(String email) async {
     _isLoading = true;
     notifyListeners();
-    http
-        .get('https://split-the-bill-flutter.firebaseio.com/user_information.json')
+    return http
+        .get(
+            'https://split-the-bill-flutter.firebaseio.com/user_information.json')
         .then((http.Response response) {
       final Map<String, dynamic> listData = json.decode(response.body);
       if (listData == null) {
         _isLoading = false;
         notifyListeners();
-        return;
+        return false;
       }
       listData.forEach((String productId, dynamic data) {
         if (data['email'] == email) {
-          _currentUser = User(
-            productId,
-            data['firstName'],
-            data['lastName'],
-            data['nickName'],
-            data['email'],
-            data['number'],
-          );
+          _currentUser = User(productId, data['firstName'], data['lastName'],
+              data['nickName'], data['email'], data['number']);
+          _currentUser.setAid(data['aid']);
+          _isLoading = false;
+          notifyListeners();
+          return true;
+        }
+      });
+      _isLoading = false;
+      notifyListeners();
+    });
+  }
+
+  Future<User> _fetchUserByEmail(String email) async{
+    _isLoading = true;
+    notifyListeners();
+    return http
+        .get(
+            'https://split-the-bill-flutter.firebaseio.com/user_information.json')
+        .then((http.Response response) {
+      final Map<String, dynamic> listData = json.decode(response.body);
+      if (listData == null) {
+        _isLoading = false;
+        notifyListeners();
+        return null;
+      }
+      User user;
+      listData.forEach((String productId, dynamic data) {
+        if (data['email'] == email) {
+          user = User(productId, data['firstName'], data['lastName'],
+              data['nickName'], data['email'], data['number'], aid: data['aid']);
           _isLoading = false;
           notifyListeners();
           return;
@@ -164,6 +225,7 @@ mixin UserModel on Model {
       });
       _isLoading = false;
       notifyListeners();
+      return user;
     });
   }
 }

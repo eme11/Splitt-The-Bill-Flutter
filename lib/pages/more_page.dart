@@ -10,7 +10,10 @@ import '../more_page_details/report_issue_page.dart';
 import '../more_page_details/apartment_page.dart';
 import '../more_page_details/change_theme_page.dart';
 
+import '../scoped_models/main_model.dart';
+
 class MorePage extends StatelessWidget {
+  MainModel model;
   List<Widget> _initlizeList() {
     List<Widget> _returnList = [];
 

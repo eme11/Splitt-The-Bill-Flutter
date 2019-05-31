@@ -21,4 +21,8 @@ class User {
     };
     return _user;
   }
+
+  void setAid(String value){
+    this.aid = value;
+  }
 }

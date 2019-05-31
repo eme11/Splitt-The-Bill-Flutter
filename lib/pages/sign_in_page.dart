@@ -67,6 +67,18 @@ class _SignInPageState extends State<SignInPage> {
     Navigator.pushReplacementNamed(context, '/register');
   }
 
+  void _fetchData(String email) async{
+    MainModel model = ScopedModel.of(context);
+    await model.fetchCurrentUser(email).then((bool value) async{
+      model.fetchBillBoard();
+      model.fetchChoreList();
+      model.fetchCleaningSupplies();
+      await model.fetchCurrentApartment(model.currentUser.aid);
+      model.fetchUsersForApartment();
+    });
+
+  }
+
   void _signIn() async{
     if (!_formKey.currentState.validate()) {
       return;
@@ -77,6 +89,7 @@ class _SignInPageState extends State<SignInPage> {
         signIn['email'], signIn['password']);
     if (successInformation['success']) {
       Navigator.pushReplacementNamed(context, '/application');
+      _fetchData(signIn['email']);
     } else {
       showDialog(
         context: context,

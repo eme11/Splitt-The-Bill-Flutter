@@ -7,11 +7,10 @@ import '../widgets/cards/user_information_card.dart';
 import '../pop_up_widows/add_user_form.dart';
 import '../pop_up_widows/delete_warning.dart';
 
-import '../models/apartment.dart';
 import '../models/user.dart';
+import '../models/apartment.dart';
 import '../scoped_models/main_model.dart';
 
-// ignore: must_be_immutable
 class ApartmentPage extends StatefulWidget {
   bool _isDeleted = false;
 
@@ -22,16 +21,21 @@ class ApartmentPage extends StatefulWidget {
 }
 
 class _ApartmentPageState extends State<ApartmentPage> {
-  Widget _buildCard(
-      {bool isUserCard = true,
-      Apartment apartment,
-      User user,
-      Function delete,
-      Function addUser,
-      Function addAddress}) {
-    return isUserCard
-        ? _buildUserCard(user, delete)
-        : _buildAddress(apartment, addAddress, addUser);
+  @override
+  initState() {
+    setState(() {
+      widget._isDeleted = false;
+    });
+    super.initState();
+  }
+
+  Widget _buildCard({
+    bool isUserCard = true,
+    Apartment apartment,
+    User user,
+    Function delete,
+  }) {
+    return isUserCard ? _buildUserCard(user, delete) : _buildAddress(apartment);
   }
 
   Widget _buildUserCard(User user, Function delete) {
@@ -57,16 +61,12 @@ class _ApartmentPageState extends State<ApartmentPage> {
     );
   }
 
-  Widget _buildAddress(
-      Apartment address, Function addAddress, Function addUser) {
+  Widget _buildAddress(Apartment apartment) {
     return Container(
       child: Column(
         children: <Widget>[
-          TitleListTitle(
-              address,
-              Icons.business,
-              ApartmentCreate(address, _deleteFalse, addAddress, addUser,
-                  title: 'Edit Address')),
+          TitleListTitle(apartment, Icons.business,
+              ApartmentCreate(_deleteFalse, title: 'Edit Address')),
           SizedBox(
             height: 10,
           )
@@ -75,24 +75,30 @@ class _ApartmentPageState extends State<ApartmentPage> {
     );
   }
 
-  Widget _buildBody(BuildContext context, MainModel model) {
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return Column(children: <Widget>[
-          index == 0
-              ? _buildIcon()
-              : index == 1
-                  ? _buildCard(
-                      isUserCard: false,
-                      apartment: model.currentApartmnet,
-                      addAddress: model.setcurrentApartment,
-                      addUser: model.addUser)
-                  : _buildCard(
-                      user: model.userList[index], delete: model.deleteUser)
-        ]);
-      },
-      itemCount: model.userList.length,
-    );
+  Widget _buildBody(Apartment apartment, List<User> userList, bool isLoading,
+      Function delete) {
+    Widget info;
+    if (!widget._isDeleted && !isLoading) {
+      info = ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return Column(children: <Widget>[
+            index == 0
+                ? _buildIcon()
+                : index == 1
+                    ? _buildCard(isUserCard: false, apartment: apartment)
+                    : _buildCard(user: userList[index - 2], delete: delete)
+          ]);
+        },
+        itemCount: userList.length + 2,
+      );
+    } else if (isLoading) {
+      info = Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      info = Container();
+    }
+    return info;
   }
 
   bool _deleteTrue() {
@@ -109,9 +115,36 @@ class _ApartmentPageState extends State<ApartmentPage> {
     return false;
   }
 
+  Widget _buildAddApartmentButton() {
+    return FloatingActionButton(
+      heroTag: null,
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) => ApartmentCreate(_deleteFalse));
+      },
+      child: Icon(Icons.add),
+      mini: true,
+    );
+  }
+
+  Widget _buildAddUserButton(Function addUser, Function updateAid, String aid) {
+    return FloatingActionButton(
+      heroTag: null,
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) =>
+                AddUserForm(addUser, updateAid, aid));
+      },
+      child: Icon(Icons.account_circle),
+      mini: true,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<MainModel>(
+    return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
         appBar: AppBar(
@@ -129,34 +162,13 @@ class _ApartmentPageState extends State<ApartmentPage> {
             )
           ],
         ),
-        body: widget._isDeleted ? Container() : _buildBody(context, model),
+        body: _buildBody(model.currentApartmnet, model.userList,
+            model.isApartmentLoading, model.deleteUser),
         floatingActionButton:
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-          FloatingActionButton(
-            heroTag: null,
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) => ApartmentCreate(
-                      model.currentApartmnet,
-                      _deleteFalse,
-                      model.setcurrentApartment,
-                      model.addUser));
-            },
-            child: Icon(Icons.add),
-            mini: true,
-          ),
-          FloatingActionButton(
-            heroTag: null,
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      AddUserForm(model.addUser));
-            },
-            child: Icon(Icons.account_circle),
-            mini: true,
-          ),
+          model.currentUser.aid == null ? _buildAddApartmentButton() : Text(''),
+          _buildAddUserButton(
+              model.addUser, model.addEmailUserAid, model.currentApartmnet.id)
         ]),
       );
     });

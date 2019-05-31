@@ -67,9 +67,9 @@ class _MyHomePageState extends State<MyHomePage>
   void initState() {
     super.initState();
     _bottomNavigation = [
-      CleaningSuppliesPage(widget.model),
-      BillBoardPage(widget.model),
-      ChoresPage(widget.model),
+      CleaningSuppliesPage(),
+      BillBoardPage(),
+      ChoresPage(),
       MorePage()
     ];
     _tabController =

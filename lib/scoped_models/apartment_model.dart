@@ -1,19 +1,22 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
 
 import '../models/apartment.dart';
 import '../models/user.dart';
 
 mixin ApartmentModel on Model {
-  Apartment _currentApartment =
-      Apartment('2', 'blah blah', 2, 'Timisoara', 'Romania');
-  List<User> _userList = [
-    User('5', 'Emese', 'Mathe', 'Eme', '0740797202', 'emese@e.e'),
-    User('5', 'Noemi', 'Mathe', 'Noci', '074022222', 'nnnn@e.e'),
-    User('5', 'fggre', 'Mathe', 'Eme', '0740444444', 'grger@e.e')
-  ];
+  Apartment _currentApartment = Apartment('', '', 0, '', '');
+  List<User> _userList = [];
+  bool _isLoading;
 
   List<User> get userList {
     return List.from(_userList);
+  }
+
+  bool get isApartmentLoading {
+    return _isLoading;
   }
 
   void addUser(User user) {
@@ -31,11 +34,93 @@ mixin ApartmentModel on Model {
     notifyListeners();
   }
 
+  Future<bool> addApartment(Apartment apartment) {
+    _isLoading = true;
+    notifyListeners();
+    final Map<String, dynamic> value = apartment.getApartmentMap();
+    return http
+        .post(
+            'https://split-the-bill-flutter.firebaseio.com/apartment_info.json',
+            body: json.encode(value))
+        .then((http.Response response) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      apartment.setId(responseData['name']);
+      _currentApartment = apartment;
+      fetchCurrentApartment(_currentApartment.id);
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    });
+  }
+
+  void updateAddress(Apartment apartment) {
+    Map<String, dynamic> value = apartment.getApartmentMap();
+    http
+        .put(
+            'https://split-the-bill-flutter.firebaseio.com/apartment_info/${_currentApartment.id}.json',
+            body: json.encode(value))
+        .then((http.Response reponse) {
+      _currentApartment = apartment;
+      notifyListeners();
+      return true;
+    }).catchError((error) {
+      notifyListeners();
+      return false;
+    });
+  }
+
   Apartment get currentApartmnet {
     return _currentApartment;
   }
 
   void setcurrentApartment(Apartment apartment) {
     _currentApartment = apartment;
+  }
+
+  Future<bool> fetchCurrentApartment(String aid) {
+    _isLoading = true;
+    notifyListeners();
+    return http
+        .get(
+            'https://split-the-bill-flutter.firebaseio.com/apartment_info/$aid.json')
+        .then((http.Response response) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      if (data == null) {
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+      _currentApartment = Apartment(
+          aid, data['street'], data['number'], data['city'], data['country']);
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    });
+  }
+
+  void fetchUsersForApartment() {
+    _isLoading = true;
+    notifyListeners();
+    http
+        .get(
+            'https://split-the-bill-flutter.firebaseio.com/user_information.json')
+        .then((http.Response response) {
+      final Map<String, dynamic> listData = json.decode(response.body);
+      if (listData == null) {
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+      listData.forEach((String productId, dynamic data) {
+        if (_currentApartment.id == data['aid']) {
+          final User user = User(productId, data['firstName'], data['lastName'],
+              data['nickName'], data['email'], data['number'],
+              aid: data['aid']);
+          _userList.add(user);
+        }
+      });
+      _isLoading = false;
+      notifyListeners();
+    });
   }
 }
