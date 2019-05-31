@@ -24,15 +24,13 @@ class ApartmentPage extends StatefulWidget {
 }
 
 class _ApartmentPageState extends State<ApartmentPage> {
-
-  Widget _buildCard(
-      {bool isUserCard = true,
-        MainModel model,
-        User user,
-        Function delete,}) {
-    return isUserCard
-        ? _buildUserCard(user, delete)
-        : _buildAddress(model);
+  Widget _buildCard({
+    bool isUserCard = true,
+    MainModel model,
+    User user,
+    Function delete,
+  }) {
+    return isUserCard ? _buildUserCard(user, delete) : _buildAddress(model);
   }
 
   Widget _buildUserCard(User user, Function delete) {
@@ -79,9 +77,9 @@ class _ApartmentPageState extends State<ApartmentPage> {
           index == 0
               ? _buildIcon()
               : index == 1
-              ? _buildCard(isUserCard: false, model: model)
-              : _buildCard(
-              user: model.userList[index], delete: model.deleteUser)
+                  ? _buildCard(isUserCard: false, model: model)
+                  : _buildCard(
+                      user: model.userList[index - 2], delete: model.deleteUser)
         ]);
       },
       itemCount: model.userList.length,
@@ -104,54 +102,57 @@ class _ApartmentPageState extends State<ApartmentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<MainModel>(
-        builder: (BuildContext context, Widget child, MainModel model) {
-          if (model.currentUser != null && model.currentUser.aid != null) {
-            model.fetchCurrentApartment(model.currentUser.aid);
-          }
-          return Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: true,
-              title: Text('Apartment'),
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            DeleteWarningMessage(_deleteTrue));
-                  },
-                )
-              ],
-            ),
-            body: widget._isDeleted ? Container() : _buildBody(context, model),
-            floatingActionButton:
+    MainModel model = ScopedModel.of(context);
+    print('hhhhhhhhhhhh');
+    print(model.currentUser.getUserMap());
+    if (model.currentUser != null && model.currentUser.aid != null) {
+      print('dddddddd');
+      model.fetchCurrentApartment(model.currentUser.aid);
+    }
+    return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          title: Text('Apartment'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        DeleteWarningMessage(_deleteTrue));
+              },
+            )
+          ],
+        ),
+        body: widget._isDeleted == true
+            ? Container()
+            : _buildBody(context, model),
+        floatingActionButton:
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-              FloatingActionButton(
-                heroTag: null,
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          ApartmentCreate(_deleteFalse));
-                },
-                child: Icon(Icons.add),
-                mini: true,
-              ),
-              FloatingActionButton(
-                heroTag: null,
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          AddUserForm(model.addUser));
-                },
-                child: Icon(Icons.account_circle),
-                mini: true,
-              ),
-            ]),
-          );
-        });
+          FloatingActionButton(
+            heroTag: null,
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      ApartmentCreate(_deleteFalse));
+            },
+            child: Icon(Icons.add),
+            mini: true,
+          ),
+          FloatingActionButton(
+            heroTag: null,
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      AddUserForm(model.addUser));
+            },
+            child: Icon(Icons.account_circle),
+            mini: true,
+          ),
+        ]),
+      );
   }
 }

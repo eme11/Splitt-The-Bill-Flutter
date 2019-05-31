@@ -9,11 +9,7 @@ import '../models/user.dart';
 mixin ApartmentModel on Model {
   Apartment _currentApartment =
       Apartment('', '', 0, '', '');
-  List<User> _userList = [
-    User('5', 'Emese', 'Mathe', 'Eme', '0740797202', 'emese@e.e'),
-    User('5', 'Noemi', 'Mathe', 'Noci', '074022222', 'nnnn@e.e'),
-    User('5', 'fggre', 'Mathe', 'Eme', '0740444444', 'grger@e.e')
-  ];
+  List<User> _userList = [];
   bool _isLoading;
 
   List<User> get userList {
@@ -61,7 +57,7 @@ mixin ApartmentModel on Model {
   void updateAddress(Apartment apartment){
     Map<String, dynamic> value = apartment.getApartmentMap();
     http.put(
-        'https://split-the-bill-flutter.firebaseio.com//apartment_info/${_currentApartment.id}.json',
+        'https://split-the-bill-flutter.firebaseio.com/apartment_info/${_currentApartment.id}.json',
         body: json.encode(value))
         .then((http.Response reponse) {
       _currentApartment = apartment;
@@ -105,6 +101,37 @@ mixin ApartmentModel on Model {
           _isLoading = false;
           notifyListeners();
           return;
+        }
+      });
+      _isLoading = false;
+      notifyListeners();
+    });
+  }
+
+  void fetchUsersForApartment() {
+    _isLoading = true;
+    notifyListeners();
+    http
+        .get('https://split-the-bill-flutter.firebaseio.com/user_information.json')
+        .then((http.Response response) {
+      final Map<String, dynamic> listData = json.decode(response.body);
+      if (listData == null) {
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+      listData.forEach((String productId, dynamic data) {
+        if (_currentApartment.id == data['aid']) {
+          final User user = User(
+            productId,
+            data['firstName'],
+            data['lastName'],
+            data['nickName'],
+            data['email'],
+            data['number'],
+            aid: data['aid']
+          );
+          _userList.add(user);
         }
       });
       _isLoading = false;
