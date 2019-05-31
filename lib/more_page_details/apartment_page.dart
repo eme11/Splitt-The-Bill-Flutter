@@ -82,7 +82,6 @@ class _ApartmentPageState extends State<ApartmentPage> {
 
       info = ListView.builder(
         itemBuilder: (BuildContext context, int index) {
-          print('ggggggggggggggg');
           return Column(children: <Widget>[
             index == 0
                 ? _buildIcon()

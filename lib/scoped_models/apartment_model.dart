@@ -85,8 +85,6 @@ mixin ApartmentModel on Model {
             'https://split-the-bill-flutter.firebaseio.com/apartment_info/$aid.json')
         .then((http.Response response) {
       final Map<String, dynamic> data = json.decode(response.body);
-      print('AAAAAAAAAA');
-      print(response.body);
       if (data == null) {
         _isLoading = false;
         notifyListeners();

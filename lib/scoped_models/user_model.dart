@@ -161,7 +161,6 @@ mixin UserModel on Model {
         return false;
       }
       listData.forEach((String productId, dynamic data) {
-        print(data['email'] + ' ggg ' + email);
         if (data['email'] == email) {
           _currentUser = User(
             productId,

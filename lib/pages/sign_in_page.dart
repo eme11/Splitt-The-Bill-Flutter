@@ -74,9 +74,7 @@ class _SignInPageState extends State<SignInPage> {
       model.fetchChoreList();
       model.fetchCleaningSupplies();
       await model.fetchCurrentApartment(model.currentUser.aid);
-
-      print(model.currentUser.getUserMap());
-      print(model.currentApartmnet.getApartmentMap());
+      model.fetchUsersForApartment();
     });
 
   }
