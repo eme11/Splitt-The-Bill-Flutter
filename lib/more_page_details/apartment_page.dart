@@ -116,6 +116,34 @@ class _ApartmentPageState extends State<ApartmentPage> {
     return false;
   }
 
+  Widget _buildAddApartmentButton(){
+    return FloatingActionButton(
+      heroTag: null,
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) =>
+                ApartmentCreate(_deleteFalse));
+      },
+      child: Icon(Icons.add),
+      mini: true,
+    );
+  }
+
+  Widget _buildAddUserButton(Function addUser){
+    return FloatingActionButton(
+      heroTag: null,
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) =>
+                AddUserForm(addUser));
+      },
+      child: Icon(Icons.account_circle),
+      mini: true,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
@@ -140,28 +168,8 @@ class _ApartmentPageState extends State<ApartmentPage> {
             model.isApartmentLoading, model.deleteUser),
         floatingActionButton:
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-          FloatingActionButton(
-            heroTag: null,
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      ApartmentCreate(_deleteFalse));
-            },
-            child: Icon(Icons.add),
-            mini: true,
-          ),
-          FloatingActionButton(
-            heroTag: null,
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      AddUserForm(model.addUser));
-            },
-            child: Icon(Icons.account_circle),
-            mini: true,
-          ),
+          model.currentUser.aid == null ? _buildAddApartmentButton() : Text(''),
+          _buildAddUserButton(model.addUser)
         ]),
       );
     });
