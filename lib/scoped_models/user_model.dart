@@ -72,6 +72,25 @@ mixin UserModel on Model {
     });
   }
 
+  Future<bool> deleteUserAid(User user) async {
+    user.setAid(null);
+    Map<String, dynamic> value = user.getUserMap();
+    return await http
+        .put(
+            'https://split-the-bill-flutter.firebaseio.com/user_information/${user.id}.json',
+            body: json.encode(value))
+        .then((http.Response response) {
+      print(response.body);
+      print('FFFFFFFFFFFFF');
+      print(user.getUserMap());
+      notifyListeners();
+      return true;
+    }).catchError((error) {
+      notifyListeners();
+      return false;
+    });
+  }
+
   void updateLastName(String lastName) {
     http
         .put(
@@ -200,7 +219,7 @@ mixin UserModel on Model {
     });
   }
 
-  Future<User> _fetchUserByEmail(String email) async{
+  Future<User> _fetchUserByEmail(String email) async {
     _isLoading = true;
     notifyListeners();
     return http
@@ -217,7 +236,8 @@ mixin UserModel on Model {
       listData.forEach((String productId, dynamic data) {
         if (data['email'] == email) {
           user = User(productId, data['firstName'], data['lastName'],
-              data['nickName'], data['email'], data['number'], aid: data['aid']);
+              data['nickName'], data['email'], data['number'],
+              aid: data['aid']);
           _isLoading = false;
           notifyListeners();
           return;

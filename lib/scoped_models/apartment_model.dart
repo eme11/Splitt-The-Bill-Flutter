@@ -24,13 +24,26 @@ mixin ApartmentModel on Model {
     notifyListeners();
   }
 
-  void deleteUserAt(int index) {
+  void deleteUserAt(int index, Function updateUserInfo) async {
+    _isLoading = true;
+    notifyListeners();
+    final User user = _userList.elementAt(index);
     _userList.removeAt(index);
+    await updateUserInfo(user.id, user.aid);
+    _isLoading = false;
     notifyListeners();
   }
 
-  void deleteUser(User user) {
+  void deleteUser(User user, Function updateUserInfo) async {
+    print('JJJJJJJJJ');
+    print(_userList.length.toString());
     _userList.remove(user);
+    await updateUserInfo(user).then((bool value) {
+      if (value) {
+        fetchUsersForApartment();
+        notifyListeners();
+      }
+    });
     notifyListeners();
   }
 
