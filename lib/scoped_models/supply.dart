@@ -65,6 +65,7 @@ mixin SupplyModel on Model {
           data['type'],
           data['price'],
           userId: data['userId'],
+          buyerNickName: data['buyerNickName'],
           aid: data['aid']
         );
         if(data['aid'] == aid)
