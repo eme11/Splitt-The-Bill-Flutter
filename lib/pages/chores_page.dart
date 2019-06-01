@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../pop_up_widows/chores_form.dart';
+import '../pop_up_widows/chores_setting_form.dart';
 import '../widgets/cards/chores_card.dart';
 
 import '../scoped_models/main_model.dart';
@@ -60,6 +61,19 @@ class _ChoresPageState extends State<ChoresPage> {
     return ScopedModelDescendant(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
+        appBar: AppBar(
+          title: Text('Split the bill'),
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => ChoresSettingsForm());
+                })
+          ],
+        ),
         body:
             _buildBody(model.chores, model.deleteChoreAt, model.isChoreLoading),
         floatingActionButton: FloatingActionButton(

@@ -54,24 +54,6 @@ class _ChoresFormState extends State<ChoresForm> {
     );
   }
 
-  Widget _buildChangingInterval() {
-    return TextFormField(
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(labelText: 'Changing Interval'),
-      initialValue: _formData.changingInterval == null
-          ? ''
-          : _formData.changingInterval.toString(),
-      validator: (String value) {
-        if (value.isEmpty || RegularExpressions.isInteger(value)) {
-          return 'Input should be a number.';
-        }
-      },
-      onSaved: (String value) {
-        _formData.changingInterval = int.parse(value);
-      },
-    );
-  }
-
   Widget _buildSizedBox() {
     return SizedBox(
       height: 10.0,
@@ -86,9 +68,7 @@ class _ChoresFormState extends State<ChoresForm> {
           children: <Widget>[
             _buildName(),
             _buildSizedBox(),
-            _buildDescription(),
-            _buildSizedBox(),
-            _buildChangingInterval()
+            _buildDescription()
           ],
         ),
       ),

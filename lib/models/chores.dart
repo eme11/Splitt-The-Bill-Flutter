@@ -28,6 +28,10 @@ class Chore{
     id = value;
   }
 
+  void setInterval(int interval){
+    changingInterval = interval;
+  }
+
   Map<String, dynamic> getChoreMap(){
     final Map<String, dynamic> chore  = {
       'aid':aid,
@@ -38,4 +42,6 @@ class Chore{
     };
     return chore;
   }
+
+
 }

@@ -30,13 +30,23 @@ mixin ChoresModel on Model {
     });
   }
 
+  void changeChoreInterval(String aid, int interval) async {
+    for (int i = 0; i < _chores.length; ++i) {
+      _chores[i].setInterval(interval);
+      final Map<String, dynamic> value = _chores[i].getChoreMap();
+      await http
+          .put('https://split-the-bill-flutter.firebaseio.com/chores/${_chores[i].id}.json',
+              body: json.encode(value));
+    }
+  }
+
   void deleteChoreAt(int index) {
     _isLoading = true;
     final String id = _chores.elementAt(index).id;
     _chores.removeAt(index);
     http
         .delete(
-        'https://split-the-bill-flutter.firebaseio.com/chores/${id}.json')
+            'https://split-the-bill-flutter.firebaseio.com/chores/${id}.json')
         .then((http.Response response) {
       fetchChoreList();
       _isLoading = false;
@@ -45,12 +55,11 @@ mixin ChoresModel on Model {
     notifyListeners();
   }
 
-  void fetchChoreList(){
+  void fetchChoreList() {
     _isLoading = true;
     notifyListeners();
     http
-        .get(
-        'https://split-the-bill-flutter.firebaseio.com/chores.json')
+        .get('https://split-the-bill-flutter.firebaseio.com/chores.json')
         .then((http.Response response) {
       final List<Chore> fetchedList = [];
       final Map<String, dynamic> listData = json.decode(response.body);
@@ -61,13 +70,10 @@ mixin ChoresModel on Model {
       }
       listData.forEach((String productId, dynamic data) {
         Chore product = Chore(
-            data['name'],
-            data['description'],
-            data['changingInterval'],
+            data['name'], data['description'], data['changingInterval'],
             id: productId,
             currentAssigneeId: data['currentAssigneeId'],
-            aid: data['aid']
-        );
+            aid: data['aid']);
         fetchedList.add(product);
       });
       _chores = fetchedList;
