@@ -35,8 +35,12 @@ mixin ChoresModel on Model {
       _chores[i].setInterval(interval);
       final Map<String, dynamic> value = _chores[i].getChoreMap();
       await http
-          .put('https://split-the-bill-flutter.firebaseio.com/chores/${_chores[i].id}.json',
-              body: json.encode(value));
+          .put(
+              'https://split-the-bill-flutter.firebaseio.com/chores/${_chores[i].id}.json',
+              body: json.encode(value))
+          .then((http.Response response) {
+        fetchChoreList();
+      });
     }
   }
 
