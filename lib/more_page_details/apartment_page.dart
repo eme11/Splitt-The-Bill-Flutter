@@ -5,7 +5,6 @@ import '../pop_up_widows/apparment_create.dart';
 import '../widgets/more_list_titles/title_list_title.dart';
 import '../widgets/cards/user_information_card.dart';
 import '../pop_up_widows/add_user_form.dart';
-import '../pop_up_widows/delete_warning.dart';
 
 import '../models/user.dart';
 import '../models/apartment.dart';
@@ -29,17 +28,19 @@ class _ApartmentPageState extends State<ApartmentPage> {
     super.initState();
   }
 
-  Widget _buildCard({
-    bool isUserCard = true,
-    Apartment apartment,
-    User user,
-    Function delete,
-  }) {
-    return isUserCard ? _buildUserCard(user, delete) : _buildAddress(apartment);
+  Widget _buildCard(
+      {bool isUserCard = true,
+      Apartment apartment,
+      User user,
+      Function delete,
+      Function deleteAid}) {
+    return isUserCard
+        ? _buildUserCard(user, delete, deleteAid)
+        : _buildAddress(apartment);
   }
 
-  Widget _buildUserCard(User user, Function delete) {
-    return UserInfoCard(user, delete: delete);
+  Widget _buildUserCard(User user, Function delete, Function deleteAid) {
+    return UserInfoCard(user, delete: delete, deleteAid: deleteAid);
   }
 
   Widget _buildIcon() {
@@ -76,7 +77,7 @@ class _ApartmentPageState extends State<ApartmentPage> {
   }
 
   Widget _buildBody(Apartment apartment, List<User> userList, bool isLoading,
-      Function delete) {
+      Function delete, Function deleteAid) {
     Widget info;
     if (!widget._isDeleted && !isLoading) {
       info = ListView.builder(
@@ -86,7 +87,10 @@ class _ApartmentPageState extends State<ApartmentPage> {
                 ? _buildIcon()
                 : index == 1
                     ? _buildCard(isUserCard: false, apartment: apartment)
-                    : _buildCard(user: userList[index - 2], delete: delete)
+                    : _buildCard(
+                        user: userList[index - 2],
+                        delete: delete,
+                        deleteAid: deleteAid)
           ]);
         },
         itemCount: userList.length + 2,
@@ -150,20 +154,9 @@ class _ApartmentPageState extends State<ApartmentPage> {
         appBar: AppBar(
           automaticallyImplyLeading: true,
           title: Text('Apartment'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        DeleteWarningMessage(_deleteTrue));
-              },
-            )
-          ],
         ),
         body: _buildBody(model.currentApartmnet, model.userList,
-            model.isApartmentLoading, model.deleteUser),
+            model.isApartmentLoading, model.deleteUser, model.deleteUserAid),
         floatingActionButton:
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
           model.currentUser.aid == null ? _buildAddApartmentButton() : Text(''),

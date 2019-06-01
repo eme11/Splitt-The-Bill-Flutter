@@ -4,8 +4,9 @@ import '../../models/user.dart';
 class UserInfoCard extends StatelessWidget {
   final User information;
   final Function delete;
+  final Function deleteAid;
 
-  UserInfoCard(this.information, {this.delete});
+  UserInfoCard(this.information, {this.delete, this.deleteAid});
 
   String _getInitials() {
     return information.firstName[0].toUpperCase() +
@@ -32,7 +33,7 @@ class UserInfoCard extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              delete(information);
+              delete(information, deleteAid);
             },
           ),
         ),
