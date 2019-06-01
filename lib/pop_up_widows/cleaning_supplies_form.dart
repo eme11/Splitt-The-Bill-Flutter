@@ -115,12 +115,13 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
     );
   }
 
-  void _submitForm(String uid) {
+  void _submitForm(String uid, String aid) {
     if (!_formKey.currentState.validate()) {
       return;
     }
+
     _formData.setCleaningUID(uid);
-    _formData.setApartmentId('blahblah');
+    _formData.setApartmentId(aid);
     _formKey.currentState.save();
     widget.addSupply(_formData);
     Navigator.of(context).pop();
@@ -138,7 +139,7 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
             actions: <Widget>[
               FlatButton(
                 onPressed: () {
-                  _submitForm(model.uid);
+                  _submitForm(model.uid, model.currentApartmnet.id);
                 },
                 child: Text('ADD'),
               ),
