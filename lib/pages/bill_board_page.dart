@@ -57,6 +57,10 @@ class _BillBoardPageState extends State<BillBoardPage> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
+        appBar: AppBar(
+          title: Text('Split the bill'),
+          automaticallyImplyLeading: false,
+        ),
         body: _buildBody(model.announcement, model.deleteAnnouncementAt,
             model.isBillBoardLoading),
         floatingActionButton: FloatingActionButton(

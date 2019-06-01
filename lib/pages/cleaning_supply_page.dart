@@ -62,6 +62,15 @@ class _CleaningSuppliesPageState extends State<CleaningSuppliesPage> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
+        appBar: AppBar(
+          title: Text('Split the bill'),
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.insert_chart),
+                onPressed: () {})
+          ],
+        ),
         body: _buildBody(model.supplies, model.deleteSupplyAt, model.isLoading),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
