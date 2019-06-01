@@ -14,20 +14,32 @@ import '../scoped_models/main_model.dart';
 
 class MorePage extends StatelessWidget {
   MainModel model;
+
   List<Widget> _initlizeList() {
     List<Widget> _returnList = [];
 
-    _returnList.add(UserListTitle(openNewPage,AccountInformation(),));
-    _returnList.add(SimpleListTitle('My Apartment', Icons.home, openNewPage, ApartmentPage()));
-    _returnList.add(SimpleListTitle('Change Theme', Icons.mode_edit, openNewPage, ChangeThemePage(),));
-    _returnList.add(SimpleListTitle('About', Icons.info, openNewPage, AboutPage()));
-    _returnList.add(SimpleListTitle('Report issue', Icons.warning, openNewPage, ReportIssuePage()));
+    _returnList.add(UserListTitle(
+      openNewPage,
+      AccountInformation(),
+    ));
+    _returnList.add(SimpleListTitle(
+        'My Apartment', Icons.home, openNewPage, ApartmentPage()));
+    _returnList.add(SimpleListTitle(
+      'Change Theme',
+      Icons.mode_edit,
+      openNewPage,
+      ChangeThemePage(),
+    ));
+    _returnList
+        .add(SimpleListTitle('About', Icons.info, openNewPage, AboutPage()));
+    _returnList.add(SimpleListTitle(
+        'Report issue', Icons.warning, openNewPage, ReportIssuePage()));
     _returnList.add(SignOutListTitle('Sign Out', Icons.exit_to_app, '/'));
 
     return _returnList;
   }
 
-  void openNewPage(BuildContext context,Widget pageName){
+  void openNewPage(BuildContext context, Widget pageName) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => pageName),
@@ -36,14 +48,20 @@ class MorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> moreList = _initlizeList();
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        return Column(
-          children: <Widget>[moreList[index]],
-        );
-      },
-      itemCount: moreList.length,
+    final  List<Widget> moreList = _initlizeList();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('More'),
+        automaticallyImplyLeading: false
+      ),
+      body: ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return Column(
+            children: <Widget>[moreList[index]],
+          );
+        },
+        itemCount: moreList.length,
+      ),
     );
   }
 }
