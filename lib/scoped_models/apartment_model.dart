@@ -35,16 +35,18 @@ mixin ApartmentModel on Model {
   }
 
   void deleteUser(User user, Function updateUserInfo) async {
-    print('JJJJJJJJJ');
+    _isLoading = true;
+    notifyListeners();
+    int index = _userList.indexOf(user);
+    _userList.removeAt(index);
     print(_userList.length.toString());
-    _userList.remove(user);
     await updateUserInfo(user).then((bool value) {
       if (value) {
         fetchUsersForApartment();
-        notifyListeners();
       }
+      _isLoading = false;
+      notifyListeners();
     });
-    notifyListeners();
   }
 
   Future<bool> addApartment(Apartment apartment) {
