@@ -31,7 +31,11 @@ class _BillBoardPageState extends State<BillBoardPage> {
                 print('Other swiping');
               }
             },
-            background: Container(color: Colors.red),
+            background: Container(
+              color: Theme.of(context).primaryColor,
+              alignment: Alignment(0.85, 0.0),
+              child: Icon(Icons.delete, color: Colors.white,),
+            ),
             child: Column(
               children: <Widget>[BillBoardCard(list[index], index)],
             ),

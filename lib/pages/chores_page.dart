@@ -31,7 +31,14 @@ class _ChoresPageState extends State<ChoresPage> {
                 print('Other swiping');
               }
             },
-            background: Container(color: Colors.red),
+            background: Container(
+              color: Theme.of(context).primaryColor,
+              alignment: Alignment(0.85, 0.0),
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+            ),
             child: Column(
               children: <Widget>[ChoresCard(list[index])],
             ),
