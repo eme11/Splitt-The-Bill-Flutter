@@ -4,9 +4,10 @@ class CleainingSupply{
   String type;
   double price;
   String userId;
+  String buyerNickName;
   String aid;
 
-  CleainingSupply(this.id, this.name, this.type, this.price, {this.userId, this.aid});
+  CleainingSupply(this.id, this.name, this.type, this.price, {this.userId, this.aid, this.buyerNickName});
 
   Map<String, dynamic> getSupplyMap(){
     final Map<String, dynamic> supply = {
@@ -17,6 +18,10 @@ class CleainingSupply{
       'aid':aid
     };
     return supply;
+  }
+
+  void setBuyerNickName(String value){
+    buyerNickName = value;
   }
 
   void setCleaningUID(String uid){

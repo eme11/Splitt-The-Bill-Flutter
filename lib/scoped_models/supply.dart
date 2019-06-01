@@ -26,7 +26,7 @@ mixin SupplyModel on Model {
     });
   }
 
-  void deleteSupplyAt(int index) {
+  void deleteSupplyAt(int index, String aid) {
     _isLoading = true;
     final String id = _supplies.elementAt(index).id;
     _supplies.removeAt(index);
@@ -34,7 +34,7 @@ mixin SupplyModel on Model {
         .delete(
         'https://split-the-bill-flutter.firebaseio.com/cleaning_supply/${id}.json')
         .then((http.Response response) {
-      fetchCleaningSupplies();
+      fetchCleaningSupplies(aid);
       _isLoading = false;
       notifyListeners();
     });
@@ -44,7 +44,7 @@ mixin SupplyModel on Model {
     return _isLoading;
   }
 
-  void fetchCleaningSupplies() {
+  void fetchCleaningSupplies(String aid) {
     _isLoading = true;
     notifyListeners();
     http
@@ -65,9 +65,11 @@ mixin SupplyModel on Model {
           data['type'],
           data['price'],
           userId: data['userId'],
+          buyerNickName: data['buyerNickName'],
           aid: data['aid']
         );
-        fetchedList.add(product);
+        if(data['aid'] == aid)
+          fetchedList.add(product);
       });
       _supplies = fetchedList;
       _isLoading = false;

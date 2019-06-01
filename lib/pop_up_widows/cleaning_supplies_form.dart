@@ -20,12 +20,13 @@ class CleaningSuppliesForm extends StatefulWidget {
 class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
   List<DropdownMenuItem<String>> _type = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  CleainingSupply _formData = CleainingSupply('ff','', 'Bathroom', 0.0);
+  CleainingSupply _formData = CleainingSupply('ff', '', 'Bathroom', 0.0);
 
   Widget _buildName() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'Name',),
+        labelText: 'Name',
+      ),
       validator: (String value) {
         if (value.isEmpty || value.length < 4) {
           return 'Name too short';
@@ -84,9 +85,7 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
     return TextFormField(
       keyboardType: TextInputType.number,
       decoration: InputDecoration(labelText: 'Price'),
-      initialValue: _formData.price == null
-          ? ''
-          : _formData.price.toString(),
+      initialValue: _formData.price == null ? '' : _formData.price.toString(),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isRealNumber(value)) {
           return 'Input should be a number.';
@@ -115,12 +114,14 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
     );
   }
 
-  void _submitForm(String uid) {
+  void _submitForm(String uid, String aid, String nickName) {
     if (!_formKey.currentState.validate()) {
       return;
     }
+
     _formData.setCleaningUID(uid);
-    _formData.setApartmentId('blahblah');
+    _formData.setApartmentId(aid);
+    _formData.setBuyerNickName(nickName);
     _formKey.currentState.save();
     widget.addSupply(_formData);
     Navigator.of(context).pop();
@@ -130,26 +131,27 @@ class _CleaningSuppliesFormState extends State<CleaningSuppliesForm> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(25.0))),
-            title: Text('Create'),
-            content: _buildBody(context),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  _submitForm(model.uid);
-                },
-                child: Text('ADD'),
-              ),
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('CANCEL'),
-              )
-            ],
-          );
-        });
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25.0))),
+        title: Text('Create'),
+        content: _buildBody(context),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              _submitForm(model.uid, model.currentApartmnet.id,
+                  model.currentUser.nickName);
+            },
+            child: Text('ADD'),
+          ),
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('CANCEL'),
+          )
+        ],
+      );
+    });
   }
 }

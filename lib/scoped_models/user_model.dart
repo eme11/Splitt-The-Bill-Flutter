@@ -248,4 +248,23 @@ mixin UserModel on Model {
       return user;
     });
   }
+
+  Future<String> fetchNickNameFromId(String id) async{
+    _isLoading = true;
+    notifyListeners();
+    return http
+        .get(
+        'https://split-the-bill-flutter.firebaseio.com/user_information/$id.json')
+        .then((http.Response response) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      if (data == null) {
+        _isLoading = false;
+        notifyListeners();
+        return 'anonymous';
+      }
+      _isLoading = false;
+      notifyListeners();
+      return data['nickname'];
+    });
+  }
 }
