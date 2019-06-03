@@ -25,7 +25,7 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
   List<Widget> _buildList(List<User> users) {
     List<Widget> _list = [];
     for (int i = 0; i < users.length; ++i) {
-      _list.add(UserSplitListTitle(users[i], 0.3));
+      _list.add(UserSplitListTitle(users[i], 0.3, 12.0));
     }
     _list.add(Divider());
     
@@ -59,7 +59,7 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('SPLIT'),
+            child: Text('RESET'),
           )
         ],
       );
