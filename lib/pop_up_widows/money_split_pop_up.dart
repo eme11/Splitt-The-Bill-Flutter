@@ -6,6 +6,7 @@ import '../models/user.dart';
 import '../models/cleaning_suppliy.dart';
 
 import '../widgets/more_list_titles/user_split_list_title.dart';
+import '../widgets/ui_elements/price_tag.dart';
 
 class MoneySplitPopUp extends StatefulWidget {
   @override
@@ -18,25 +19,38 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
   Widget _buildBody(List<User> users, List<CleainingSupply> supplies) {
     return SingleChildScrollView(
         child: Column(
-      children: _buildList(users),
+      children: _buildList(users, supplies),
     ));
   }
 
-  List<Widget> _buildList(List<User> users) {
+  List<Widget> _buildList(List<User> users, List<CleainingSupply> supplies) {
     List<Widget> _list = [];
+    List<_UserIdAndMoney> money = [];
+    double totalPrice = 0.0;
     for (int i = 0; i < users.length; ++i) {
       _list.add(UserSplitListTitle(users[i], 0.3, 12.0));
+      money.add(_UserIdAndMoney(users[i].id, 0));
     }
     _list.add(Divider());
-    
-    Widget total = _buildTotal();
+
+    for (int i = 0; i < supplies.length; ++i) {
+      _UserIdAndMoney tmp = money.firstWhere((_UserIdAndMoney money) {
+        return money.id == supplies[i].userId;
+      });
+      int index = money.indexOf(tmp);
+      tmp.money += supplies[i].price;
+      money.removeAt(index);
+      money.add(tmp);
+      totalPrice += supplies[i].price;
+    }
+
+    Widget total = ListTile(
+      title: Text("Total : "),
+      trailing: PriceTag(totalPrice, horizontal: 3, vertical: 1.75,),
+    );
     _list.add(total);
 
     return _list;
-  }
-
-  Widget _buildTotal(){
-    return Container();
   }
 
   @override
@@ -65,4 +79,11 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
       );
     });
   }
+}
+
+class _UserIdAndMoney {
+  String id;
+  double money;
+
+  _UserIdAndMoney(this.id, this.money);
 }
