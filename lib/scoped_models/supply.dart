@@ -26,14 +26,15 @@ mixin SupplyModel on Model {
     });
   }
 
-  void deleteSupplyAt(int index, String aid) {
+  void deleteSupplyAt(int index, String aid){
     _isLoading = true;
+    notifyListeners();
     final String id = _supplies.elementAt(index).id;
-    _supplies.removeAt(index);
     http
         .delete(
-        'https://split-the-bill-flutter.firebaseio.com/cleaning_supply/${id}.json')
+        'https://split-the-bill-flutter.firebaseio.com/cleaning_supply/$id.json')
         .then((http.Response response) {
+      _supplies.removeAt(index);
       fetchCleaningSupplies(aid);
       _isLoading = false;
       notifyListeners();
