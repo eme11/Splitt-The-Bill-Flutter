@@ -15,7 +15,8 @@ class CleainingSupply{
       'type': type,
       'price': price,
       'userId':userId,
-      'aid':aid
+      'aid':aid,
+      'buyerNickName':buyerNickName
     };
     return supply;
   }

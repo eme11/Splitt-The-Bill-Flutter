@@ -14,8 +14,8 @@ class CleaningSuppliesPage extends StatefulWidget {
 }
 
 class _CleaningSuppliesPageState extends State<CleaningSuppliesPage> {
-  Widget _buildBody(
-      List<CleainingSupply> supplies, Function delete, bool isLoading) {
+  Widget _buildBody(List<CleainingSupply> supplies, Function delete,
+      bool isLoading, String aid) {
     Widget cleaningSupplyCard;
     if (supplies.length > 0 && !isLoading) {
       cleaningSupplyCard = ListView.builder(
@@ -24,7 +24,7 @@ class _CleaningSuppliesPageState extends State<CleaningSuppliesPage> {
             key: Key(index.toString()),
             onDismissed: (DismissDirection direction) {
               if (direction == DismissDirection.endToStart) {
-                delete(index);
+                delete(index, aid);
               } else if (direction == DismissDirection.startToEnd) {
                 print('Swiped start to end');
               } else {
@@ -66,12 +66,11 @@ class _CleaningSuppliesPageState extends State<CleaningSuppliesPage> {
           title: Text('Split the bill'),
           automaticallyImplyLeading: false,
           actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.insert_chart),
-                onPressed: () {})
+            IconButton(icon: Icon(Icons.insert_chart), onPressed: () {})
           ],
         ),
-        body: _buildBody(model.supplies, model.deleteSupplyAt, model.isLoading),
+        body: _buildBody(model.supplies, model.deleteSupplyAt, model.isLoading,
+            model.currentApartmnet.id),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(
