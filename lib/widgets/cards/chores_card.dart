@@ -13,6 +13,10 @@ class ChoresCard extends StatefulWidget {
 }
 
 class _ChoresCardState extends State<ChoresCard> {
+  String _getInitials() {
+    return widget.value.initals == null ? '' : widget.value.initals;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -20,14 +24,13 @@ class _ChoresCardState extends State<ChoresCard> {
         children: <Widget>[
           ListTile(
             leading: CircleAvatar(
-              child: Text('EM'),
+              child: Text(_getInitials()),
             ),
             title: Text(widget.value.name),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Text(widget.value.description),
-                //Text('Person resposible: ' + widget.value['user']),
                 Text('Changing Interval: ' +
                     widget.value.changingInterval.toString()),
               ],

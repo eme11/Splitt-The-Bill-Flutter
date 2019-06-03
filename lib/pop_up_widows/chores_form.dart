@@ -75,16 +75,22 @@ class _ChoresFormState extends State<ChoresForm> {
     );
   }
 
-  void _submitForm(String uid) {
+  void _submitForm(String uid, String aid, String initials) {
     if (!_formKey.currentState.validate()) {
       return;
     }
 
     _formData.setCurrentAssigneeId(uid);
-    _formData.setApartmentId('sfsdrfer');
+    _formData.setApartmentId(aid);
+    _formData.setInitals(initials);
+
     _formKey.currentState.save();
     widget.addChore(_formData);
     Navigator.of(context).pop();
+  }
+
+  String _getInitials(String firstName, String lastName) {
+    return firstName[0].toUpperCase() + lastName[0].toUpperCase();
   }
 
   @override
@@ -99,7 +105,11 @@ class _ChoresFormState extends State<ChoresForm> {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
-              _submitForm(model.uid);
+              _submitForm(
+                  model.uid,
+                  model.currentApartmnet.id,
+                  _getInitials(
+                      model.currentUser.firstName, model.currentUser.lastName));
             },
             child: Text('ADD'),
           ),

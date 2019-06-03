@@ -1,47 +1,52 @@
-class Chore{
+class Chore {
   String aid;
   String id;
   String name;
   String description;
   int changingInterval;
   String currentAssigneeId;
+  String initals;
 
-  Chore(this.name, this.description, this.changingInterval, {this.id, this.aid, this.currentAssigneeId});
+  Chore(this.name, this.description, this.changingInterval,
+      {this.id, this.aid, this.currentAssigneeId, this.initals});
 
-  void setCurrentAssigneeId(String uid){
+  void setCurrentAssigneeId(String uid) {
     currentAssigneeId = uid;
   }
 
-  String get currentAssigneeUid{
+  String get currentAssigneeUid {
     return currentAssigneeId;
   }
 
-  void setApartmentId(String id){
+  void setApartmentId(String id) {
     aid = id;
   }
 
-  String get apartmentId{
+  String get apartmentId {
     return aid;
   }
 
-  void setId(String value){
+  void setId(String value) {
     id = value;
   }
 
-  void setInterval(int interval){
+  void setInterval(int interval) {
     changingInterval = interval;
   }
 
-  Map<String, dynamic> getChoreMap(){
-    final Map<String, dynamic> chore  = {
-      'aid':aid,
-      'name':name,
-      'description':description,
-      'changingInterval':changingInterval,
-      'currentAssigneeId':currentAssigneeId
+  void setInitals(String value){
+    initals = value;
+  }
+
+  Map<String, dynamic> getChoreMap() {
+    final Map<String, dynamic> chore = {
+      'aid': aid,
+      'name': name,
+      'description': description,
+      'changingInterval': changingInterval,
+      'currentAssigneeId': currentAssigneeId,
+      'initials':initals
     };
     return chore;
   }
-
-
 }
