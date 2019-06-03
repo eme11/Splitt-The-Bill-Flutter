@@ -28,10 +28,8 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
     List<_UserIdAndMoney> money = [];
     double totalPrice = 0.0;
     for (int i = 0; i < users.length; ++i) {
-      _list.add(UserSplitListTitle(users[i], 0.3, 12.0));
       money.add(_UserIdAndMoney(users[i].id, 0));
     }
-    _list.add(Divider());
 
     for (int i = 0; i < supplies.length; ++i) {
       _UserIdAndMoney tmp = money.firstWhere((_UserIdAndMoney money) {
@@ -43,6 +41,15 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
       money.add(tmp);
       totalPrice += supplies[i].price;
     }
+
+    for(int i = 0; i < money.length; ++i){
+      if(money[i].id == users[i].id) {
+        double percantage = money[i].money  / totalPrice;
+        _list.add(UserSplitListTitle(users[i], percantage, money[i].money));
+      }
+    }
+
+    _list.add(Divider());
 
     Widget total = ListTile(
       title: Text("Total : "),
