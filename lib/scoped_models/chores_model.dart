@@ -46,17 +46,17 @@ mixin ChoresModel on Model {
 
   void deleteChoreAt(int index) {
     _isLoading = true;
+    notifyListeners();
     final String id = _chores.elementAt(index).id;
-    _chores.removeAt(index);
     http
         .delete(
-            'https://split-the-bill-flutter.firebaseio.com/chores/${id}.json')
+            'https://split-the-bill-flutter.firebaseio.com/chores/$id.json')
         .then((http.Response response) {
+      _chores.removeAt(index);
       fetchChoreList();
       _isLoading = false;
       notifyListeners();
     });
-    notifyListeners();
   }
 
   void fetchChoreList() {
@@ -77,7 +77,8 @@ mixin ChoresModel on Model {
             data['name'], data['description'], data['changingInterval'],
             id: productId,
             currentAssigneeId: data['currentAssigneeId'],
-            aid: data['aid']);
+            aid: data['aid'],
+            initals: data['initials']);
         fetchedList.add(product);
       });
       _chores = fetchedList;
