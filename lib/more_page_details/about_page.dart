@@ -27,7 +27,7 @@ class AboutPage extends StatelessWidget {
           _buildSizedBox(),
           Text('Supervisor'),
           Text(
-            "Prof. dr. ing. Oana Iulia Casandra HOLOTESCU",
+            "Lect. dr. ing. Oana Iulia Casandra HOLOTESCU",
             textDirection: TextDirection.ltr,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
