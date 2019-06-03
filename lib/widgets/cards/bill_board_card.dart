@@ -45,21 +45,26 @@ class _BillBoardCardState extends State<BillBoardCard> {
           });
   }
 
+  String _getPublisher() {
+    return widget.value.userNickName == null
+        ? 'unknown user'
+        : widget.value.userNickName;
+  }
+
   Widget _buildDescription() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(widget.value.descrition),
-        Text('Published by: ' + widget.value.userId)
+        Text('Published by: ' + _getPublisher())
       ],
     );
   }
 
   Widget _buildPollVote() {
-      widget._percent = widget.value.yesVote == 0 && widget.value.noVote == 0
-          ? 0.0
-          : (widget.value.yesVote /
-              (widget.value.noVote + widget.value.yesVote));
+    widget._percent = widget.value.yesVote == 0 && widget.value.noVote == 0
+        ? 0.0
+        : (widget.value.yesVote / (widget.value.noVote + widget.value.yesVote));
 
     return widget.value.type == false
         ? Text('')
