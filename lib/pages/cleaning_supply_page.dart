@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../pop_up_widows/cleaning_supplies_form.dart';
+import '../pop_up_widows/money_split_pop_up.dart';
+
 import '../widgets/cards/cleaning_supply_card.dart';
 import '../models/cleaning_suppliy.dart';
 import '../scoped_models/main_model.dart';
@@ -66,7 +68,11 @@ class _CleaningSuppliesPageState extends State<CleaningSuppliesPage> {
           title: Text('Split the bill'),
           automaticallyImplyLeading: false,
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.insert_chart), onPressed: () {})
+            IconButton(icon: Icon(Icons.insert_chart), onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => MoneySplitPopUp());
+            })
           ],
         ),
         body: _buildBody(model.supplies, model.deleteSupplyAt, model.isLoading,
