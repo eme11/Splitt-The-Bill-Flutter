@@ -50,17 +50,17 @@ mixin BillBoardModel on Model {
 
   void deleteAnnouncementAt(int index) {
     _isLoading = true;
+    notifyListeners();
     final String id = _announcements.elementAt(index).id;
-    _announcements.removeAt(index);
     http
         .delete(
-        'https://split-the-bill-flutter.firebaseio.com/bill_board/${id}.json')
+        'https://split-the-bill-flutter.firebaseio.com/bill_board/$id.json')
         .then((http.Response response) {
+      _announcements.removeAt(index);
       fetchBillBoard();
       _isLoading = false;
       notifyListeners();
     });
-    notifyListeners();
   }
 
   void fetchBillBoard() {
@@ -79,14 +79,16 @@ mixin BillBoardModel on Model {
       }
       listData.forEach((String productId, dynamic data) {
         final BillBoard product = BillBoard(
+            productId,
             data['title'],
             data['description'],
             data['type'],
             data['expiration'],
-            data['userId'],
             data['yes'],
             data['no'],
-            id: productId
+            userNickName: data['userNickName'],
+            userId: data['userId'],
+            aid: data['aid']
         );
         fetchedList.add(product);
       });

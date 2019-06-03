@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 import '../helpers/regular_expressions.dart';
 
 import '../models/bill_board.dart';
+import '../scoped_models/main_model.dart';
 
 class BillBoardForm extends StatefulWidget {
   final Function addToBillBoard;
@@ -16,13 +19,14 @@ class BillBoardForm extends StatefulWidget {
 
 class _BillBoardFormState extends State<BillBoardForm> {
   List<DropdownMenuItem<bool>> _type = [];
-  BillBoard _formData = BillBoard('', '', false, 24.0, '2', 0, 0);
+  BillBoard _formData = BillBoard('', '', '', false, 24.0, 0, 0);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildTitleTextField() {
     return TextFormField(
       decoration: InputDecoration(
-          labelText: 'Title',),
+        labelText: 'Title',
+      ),
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Invalid Title';
@@ -123,10 +127,14 @@ class _BillBoardFormState extends State<BillBoardForm> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm(String uid, String aid, String nickName) {
     if (!_formKey.currentState.validate()) {
       return;
     }
+
+    _formData.setBillBoardUserId(uid);
+    _formData.setBillBoardAid(aid);
+    _formData.setBillBoardUserNickName(nickName);
 
     _formKey.currentState.save();
     widget.addToBillBoard(_formData);
@@ -135,25 +143,29 @@ class _BillBoardFormState extends State<BillBoardForm> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25.0))),
-      title: Text('Create'),
-      content: _buildBody(context),
-      actions: <Widget>[
-        FlatButton(
-          onPressed: () {
-            _submitForm();
-          },
-          child: Text('ADD'),
-        ),
-        FlatButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('CANCEL'),
-        )
-      ],
-    );
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25.0))),
+        title: Text('Create'),
+        content: _buildBody(context),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              _submitForm(model.currentUser.id, model.currentApartmnet.id,
+                  model.currentUser.nickName);
+            },
+            child: Text('ADD'),
+          ),
+          FlatButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('CANCEL'),
+          )
+        ],
+      );
+    });
   }
 }
