@@ -45,6 +45,10 @@ mixin SupplyModel on Model {
     return _isLoading;
   }
 
+  void deleteAllSupplies(){
+
+  }
+
   void fetchCleaningSupplies(String aid) {
     _isLoading = true;
     notifyListeners();
