@@ -36,7 +36,7 @@ class CleainingSupply{
   void setId(String value){
     id = value;
   }
-  
+
   String get apartmentId{
     return aid;
   }

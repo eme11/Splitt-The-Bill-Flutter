@@ -267,4 +267,8 @@ mixin UserModel on Model {
       return data['nickname'];
     });
   }
+
+  void resetPassword(String email){
+
+  }
 }
