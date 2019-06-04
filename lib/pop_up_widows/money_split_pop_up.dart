@@ -80,7 +80,7 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('RESET'),
+            child: Text('SPLIT AND RESET'),
           )
         ],
       );

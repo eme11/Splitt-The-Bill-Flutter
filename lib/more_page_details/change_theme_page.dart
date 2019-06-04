@@ -13,7 +13,6 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<DropdownMenuItem<Color>> _colors = [];
   Color _currentColor = Colors.red;
-  Brightness _currentBrightness = Brightness.light;
   bool _dark = false;
 
   void changeBrightness(Brightness brightness) {
