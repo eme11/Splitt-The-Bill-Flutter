@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
-
 import '../models/user.dart';
 import '../helpers/auth_mode.dart';
 
@@ -268,7 +267,16 @@ mixin UserModel on Model {
     });
   }
 
-  void resetPassword(String email){
+  Future<void> resetPassword(String email) async{
+    Map<String, dynamic> value ={
+      'email':email,
+      'requestType':'PASSWORD_RESET'
+    };
 
+    await http.post(
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/getOobConfirmationCode?key=AIzaSyDFVzAhNLSxobJRdMA9h1s7IrUxre5RMc8',
+        body: json.encode(value),
+        headers: {'Content-Type': 'application/json'},
+      );
   }
 }
