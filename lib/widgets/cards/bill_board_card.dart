@@ -71,8 +71,8 @@ class _BillBoardCardState extends State<BillBoardCard> {
         : LinearPercentIndicator(
             lineHeight: 10.0,
             percent: widget._percent,
-            backgroundColor: Colors.red,
-            progressColor: Colors.green,
+            backgroundColor: Theme.of(context).textSelectionColor,
+            progressColor: Theme.of(context).primaryColor,
           );
   }
 

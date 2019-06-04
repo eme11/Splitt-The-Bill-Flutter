@@ -8,6 +8,8 @@ import '../models/cleaning_suppliy.dart';
 import '../widgets/more_list_titles/user_split_list_title.dart';
 import '../widgets/ui_elements/price_tag.dart';
 
+import 'delete_warning.dart';
+
 class MoneySplitPopUp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -42,18 +44,24 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
       totalPrice += supplies[i].price;
     }
 
-    for(int i = 0; i < money.length; ++i){
-      if(money[i].id == users[i].id) {
-        double percantage = money[i].money  / totalPrice;
+    for (int i = 0; i < money.length; ++i) {
+      double percantage;
+      if (money[i].id == users[i].id) {
+        if (money[i].money != 0)
+          percantage = money[i].money / totalPrice;
+        else percantage = 0;
         _list.add(UserSplitListTitle(users[i], percantage, money[i].money));
+        _list.add(Divider(color: Colors.black,));
       }
     }
 
-    _list.add(Divider());
-
     Widget total = ListTile(
       title: Text("Total : "),
-      trailing: PriceTag(totalPrice, horizontal: 3, vertical: 1.75,),
+      trailing: PriceTag(
+        totalPrice,
+        horizontal: 3,
+        vertical: 1.75,
+      ),
     );
     _list.add(total);
 
@@ -67,7 +75,7 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
       return AlertDialog(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(25.0))),
-        title: Text('Money Split'),
+        title: Text('Contribution of each user'),
         content: _buildBody(model.userList, model.supplies),
         actions: <Widget>[
           FlatButton(
@@ -78,6 +86,7 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
           ),
           FlatButton(
             onPressed: () {
+              model.deleteAndFetch(model.currentApartmnet.id);
               Navigator.of(context).pop();
             },
             child: Text('RESET'),

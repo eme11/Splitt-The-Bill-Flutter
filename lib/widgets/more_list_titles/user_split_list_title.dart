@@ -15,7 +15,7 @@ class UserSplitListTitle extends StatelessWidget {
     return LinearPercentIndicator(
       lineHeight: 15.0,
       percent: percentage,
-      backgroundColor: Theme.of(context).secondaryHeaderColor,
+      backgroundColor: Theme.of(context).textSelectionColor,
       progressColor: Theme.of(context).primaryColor,
       center: Text((percentage * 100).toString() + '%'),
       trailing: PriceTag(ammount, horizontal: 3, vertical: 1.25,)

@@ -21,18 +21,19 @@ mixin SupplyModel on Model {
             body: json.encode(supplyMap))
         .then((http.Response response) {
       final Map<String, dynamic> responseData = json.decode(response.body);
+      supply.setId(responseData['name']);
       _supplies.add(supply);
       notifyListeners();
     });
   }
 
-  void deleteSupplyAt(int index, String aid){
+  void deleteSupplyAt(int index, String aid) {
     _isLoading = true;
     notifyListeners();
     final String id = _supplies.elementAt(index).id;
     http
         .delete(
-        'https://split-the-bill-flutter.firebaseio.com/cleaning_supply/$id.json')
+            'https://split-the-bill-flutter.firebaseio.com/cleaning_supply/$id.json')
         .then((http.Response response) {
       _supplies.removeAt(index);
       fetchCleaningSupplies(aid);
@@ -43,6 +44,33 @@ mixin SupplyModel on Model {
 
   bool get isLoading {
     return _isLoading;
+  }
+
+  Future _deleteAllSupplies() async {
+    _isLoading = true;
+    notifyListeners();
+    print('AAAAAAAAAA ' + _supplies.length.toString());
+    for (int i = 0; i < _supplies.length; ++i) {
+      await http
+          .delete(
+              'https://split-the-bill-flutter.firebaseio.com/cleaning_supply/${_supplies[i].id}.json')
+          .then((http.Response response) {
+            print(response);
+        _isLoading = false;
+        notifyListeners();
+      });
+    }
+  }
+
+  void deleteAndFetch(String aid) async {
+    _isLoading = true;
+    notifyListeners();
+    _deleteAllSupplies().whenComplete((){
+      _supplies = [];
+      fetchCleaningSupplies(aid);
+      _isLoading = false;
+      notifyListeners();
+    });
   }
 
   void fetchCleaningSupplies(String aid) {
@@ -61,16 +89,11 @@ mixin SupplyModel on Model {
       }
       listData.forEach((String productId, dynamic data) {
         final CleainingSupply product = CleainingSupply(
-          productId,
-          data['name'],
-          data['type'],
-          data['price'],
-          userId: data['userId'],
-          buyerNickName: data['buyerNickName'],
-          aid: data['aid']
-        );
-        if(data['aid'] == aid)
-          fetchedList.add(product);
+            productId, data['name'], data['type'], data['price'],
+            userId: data['userId'],
+            buyerNickName: data['buyerNickName'],
+            aid: data['aid']);
+        if (data['aid'] == aid) fetchedList.add(product);
       });
       _supplies = fetchedList;
       _isLoading = false;

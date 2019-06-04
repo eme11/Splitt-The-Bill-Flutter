@@ -10,15 +10,15 @@ class DeleteWarningMessage extends StatelessWidget {
     return AlertDialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25.0))),
-      title: Text('Delete'),
-      content: Text('Are you sure you want to delete this?'),
+      title: Text('Warning'),
+      content: Text('All data will be deleted!'),
       actions: <Widget>[
         FlatButton(
           onPressed: () {
             delete();
             Navigator.of(context).pop();
           },
-          child: Text('DELETE'),
+          child: Text('OKAY'),
         ),
         FlatButton(
           onPressed: () {
