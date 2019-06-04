@@ -50,6 +50,7 @@ class _MyApp extends State<MyApp> {
 
 class MyHomePage extends StatefulWidget {
   MainModel model;
+
   MyHomePage(this.model, {Key key, this.title}) : super(key: key);
   final String title;
 

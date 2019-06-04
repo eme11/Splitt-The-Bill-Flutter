@@ -34,7 +34,7 @@ class Chore {
     changingInterval = interval;
   }
 
-  void setInitals(String value){
+  void setInitals(String value) {
     initals = value;
   }
 
@@ -45,7 +45,7 @@ class Chore {
       'description': description,
       'changingInterval': changingInterval,
       'currentAssigneeId': currentAssigneeId,
-      'initials':initals
+      'initials': initals
     };
     return chore;
   }

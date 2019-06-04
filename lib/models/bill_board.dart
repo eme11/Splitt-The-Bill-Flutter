@@ -10,8 +10,8 @@ class BillBoard {
   int yesVote;
   int noVote;
 
-  BillBoard(this.id,this.title, this.descrition, this.type, this.expirationTime,
-      this.yesVote, this.noVote,
+  BillBoard(this.id, this.title, this.descrition, this.type,
+      this.expirationTime, this.yesVote, this.noVote,
       {this.userNickName, this.aid, this.userId});
 
   void incrementYesVote() {
@@ -32,7 +32,7 @@ class BillBoard {
       'no': noVote,
       'yes': yesVote,
       'userNickName': userNickName,
-      'aid':aid
+      'aid': aid
     };
     return _value;
   }
@@ -41,15 +41,15 @@ class BillBoard {
     id = value;
   }
 
-  void setBillBoardUserId(String value){
+  void setBillBoardUserId(String value) {
     userId = value;
   }
 
-  void setBillBoardUserNickName(String value){
+  void setBillBoardUserNickName(String value) {
     userNickName = value;
   }
 
-  void setBillBoardAid(String value){
+  void setBillBoardAid(String value) {
     aid = value;
   }
 }

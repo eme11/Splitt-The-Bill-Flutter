@@ -43,7 +43,6 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
     );
   }
 
-
   Widget _buildDropDownColorList() {
     _colors = [];
     _colors.add(_buildDropDownItem('Red', Colors.red));
@@ -85,10 +84,9 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
         setState(() {
           _dark = value;
         });
-        if(_dark){
+        if (_dark) {
           changeBrightness(Brightness.dark);
-        }
-        else{
+        } else {
           changeBrightness(Brightness.light);
         }
       },
@@ -116,7 +114,6 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
                   _buildSizedBox(),
                   _buildChangeColor(),
                   _buildSizedBox(),
-
                 ],
               ),
             ),

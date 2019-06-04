@@ -27,9 +27,11 @@ class _UserListTitleState extends State<UserListTitle> {
       return Card(
         child: ListTile(
           leading: CircleAvatar(
-            child: Text(_getInitials(model.currentUser.firstName, model.currentUser.lastName)),
+            child: Text(_getInitials(
+                model.currentUser.firstName, model.currentUser.lastName)),
           ),
-          title: Text(model.currentUser.firstName + ' ' + model.currentUser.lastName),
+          title: Text(
+              model.currentUser.firstName + ' ' + model.currentUser.lastName),
           subtitle: Text('Account Information'),
           trailing: IconButton(
             icon: Icon(Icons.arrow_forward_ios),

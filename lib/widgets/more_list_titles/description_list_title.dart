@@ -8,7 +8,8 @@ class DescriptionListTitle extends StatelessWidget {
   final AccountInformationEditWindow popUp;
   final bool isEditable;
 
-  DescriptionListTitle(this.title, this.description, {this.isEditable = true, this.openWindow, this.popUp});
+  DescriptionListTitle(this.title, this.description,
+      {this.isEditable = true, this.openWindow, this.popUp});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,14 @@ class DescriptionListTitle extends StatelessWidget {
       child: ListTile(
         title: Text(title),
         subtitle: Text(description),
-        trailing: isEditable == false ? Text('') :  IconButton(icon:Icon(Icons.edit), onPressed: (){openWindow(popUp);},),
+        trailing: isEditable == false
+            ? Text('')
+            : IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  openWindow(popUp);
+                },
+              ),
       ),
     );
   }

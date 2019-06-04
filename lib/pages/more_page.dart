@@ -48,12 +48,9 @@ class MorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final  List<Widget> moreList = _initlizeList();
+    final List<Widget> moreList = _initlizeList();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('More'),
-        automaticallyImplyLeading: false
-      ),
+      appBar: AppBar(title: Text('More'), automaticallyImplyLeading: false),
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Column(

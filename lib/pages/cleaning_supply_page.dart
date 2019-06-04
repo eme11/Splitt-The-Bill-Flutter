@@ -68,11 +68,13 @@ class _CleaningSuppliesPageState extends State<CleaningSuppliesPage> {
           title: Text('Split the bill'),
           automaticallyImplyLeading: false,
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.insert_chart), onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) => MoneySplitPopUp());
-            })
+            IconButton(
+                icon: Icon(Icons.insert_chart),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => MoneySplitPopUp());
+                })
           ],
         ),
         body: _buildBody(model.supplies, model.deleteSupplyAt, model.isLoading,

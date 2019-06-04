@@ -55,7 +55,7 @@ mixin SupplyModel on Model {
           .delete(
               'https://split-the-bill-flutter.firebaseio.com/cleaning_supply/${_supplies[i].id}.json')
           .then((http.Response response) {
-            print(response);
+        print(response);
         _isLoading = false;
         notifyListeners();
       });
@@ -65,7 +65,7 @@ mixin SupplyModel on Model {
   void deleteAndFetch(String aid) async {
     _isLoading = true;
     notifyListeners();
-    _deleteAllSupplies().whenComplete((){
+    _deleteAllSupplies().whenComplete(() {
       _supplies = [];
       fetchCleaningSupplies(aid);
       _isLoading = false;

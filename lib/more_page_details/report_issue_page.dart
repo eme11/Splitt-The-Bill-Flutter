@@ -141,7 +141,10 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
       return;
     }
     _formKey.currentState.save();
-    _launchURL('emese.mathe.07@gmail.com', _formData['type'] + ' : ' + _formData['title'], _formData['description']);
+    _launchURL(
+        'emese.mathe.07@gmail.com',
+        _formData['type'] + ' : ' + _formData['title'],
+        _formData['description']);
     //_send(_currentUser.email, _formData['type'] + ' : ' + _formData['title'], _formData['description'] );
     _formKey.currentState.reset();
   }
@@ -154,10 +157,11 @@ class _ReportIssuePageState extends State<ReportIssuePage> {
         automaticallyImplyLeading: true,
         title: Text('Report Issue'),
       ),
-      body: ScopedModelDescendant(builder: (BuildContext context, Widget child, MainModel model){
+      body: ScopedModelDescendant(
+          builder: (BuildContext context, Widget child, MainModel model) {
         _currentUser = model.currentUser;
         return _buildBody();
-    }),
+      }),
     );
   }
 }

@@ -248,12 +248,12 @@ mixin UserModel on Model {
     });
   }
 
-  Future<String> fetchNickNameFromId(String id) async{
+  Future<String> fetchNickNameFromId(String id) async {
     _isLoading = true;
     notifyListeners();
     return http
         .get(
-        'https://split-the-bill-flutter.firebaseio.com/user_information/$id.json')
+            'https://split-the-bill-flutter.firebaseio.com/user_information/$id.json')
         .then((http.Response response) {
       final Map<String, dynamic> data = json.decode(response.body);
       if (data == null) {
@@ -267,16 +267,16 @@ mixin UserModel on Model {
     });
   }
 
-  Future<void> resetPassword(String email) async{
-    Map<String, dynamic> value ={
-      'email':email,
-      'requestType':'PASSWORD_RESET'
+  Future<void> resetPassword(String email) async {
+    Map<String, dynamic> value = {
+      'email': email,
+      'requestType': 'PASSWORD_RESET'
     };
 
     await http.post(
-        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/getOobConfirmationCode?key=AIzaSyDFVzAhNLSxobJRdMA9h1s7IrUxre5RMc8',
-        body: json.encode(value),
-        headers: {'Content-Type': 'application/json'},
-      );
+      'https://www.googleapis.com/identitytoolkit/v3/relyingparty/getOobConfirmationCode?key=AIzaSyDFVzAhNLSxobJRdMA9h1s7IrUxre5RMc8',
+      body: json.encode(value),
+      headers: {'Content-Type': 'application/json'},
+    );
   }
 }

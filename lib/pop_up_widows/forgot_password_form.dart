@@ -18,7 +18,8 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   Widget _buildEmail() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: 'User E-Mail',),
+        labelText: 'User E-Mail',
+      ),
       validator: (String value) {
         if (value.isEmpty || RegularExpressions.isEmail(value)) {
           return 'Invalid e-mail';

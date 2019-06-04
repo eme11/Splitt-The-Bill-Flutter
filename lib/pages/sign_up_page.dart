@@ -138,11 +138,12 @@ class _SignUpPageState extends State<SignUpPage> {
       height: 10.0,
     );
   }
+
   Widget _buildRegisterButton() {
     return ThemedButton(_submitForm, 'SIGN UP');
   }
 
-  void _submitForm() async{
+  void _submitForm() async {
     if (!_formKey.currentState.validate() || !_accepted) {
       return;
     }
@@ -226,7 +227,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-          _register = model.registerUser;
+      _register = model.registerUser;
       return Scaffold(
         appBar: AppBar(
             title: Text('Sign Up'),

@@ -54,7 +54,7 @@ mixin BillBoardModel on Model {
     final String id = _announcements.elementAt(index).id;
     http
         .delete(
-        'https://split-the-bill-flutter.firebaseio.com/bill_board/$id.json')
+            'https://split-the-bill-flutter.firebaseio.com/bill_board/$id.json')
         .then((http.Response response) {
       _announcements.removeAt(index);
       fetchBillBoard();
@@ -67,8 +67,7 @@ mixin BillBoardModel on Model {
     _isLoading = true;
     notifyListeners();
     http
-        .get(
-        'https://split-the-bill-flutter.firebaseio.com/bill_board.json')
+        .get('https://split-the-bill-flutter.firebaseio.com/bill_board.json')
         .then((http.Response response) {
       final List<BillBoard> fetchedList = [];
       final Map<String, dynamic> listData = json.decode(response.body);
@@ -88,8 +87,7 @@ mixin BillBoardModel on Model {
             data['no'],
             userNickName: data['userNickName'],
             userId: data['userId'],
-            aid: data['aid']
-        );
+            aid: data['aid']);
         fetchedList.add(product);
       });
       _announcements = fetchedList;

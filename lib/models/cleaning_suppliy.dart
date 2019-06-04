@@ -1,4 +1,4 @@
-class CleainingSupply{
+class CleainingSupply {
   String id;
   String name;
   String type;
@@ -7,38 +7,38 @@ class CleainingSupply{
   String buyerNickName;
   String aid;
 
-  CleainingSupply(this.id, this.name, this.type, this.price, {this.userId, this.aid, this.buyerNickName});
+  CleainingSupply(this.id, this.name, this.type, this.price,
+      {this.userId, this.aid, this.buyerNickName});
 
-  Map<String, dynamic> getSupplyMap(){
+  Map<String, dynamic> getSupplyMap() {
     final Map<String, dynamic> supply = {
-      'name':name,
+      'name': name,
       'type': type,
       'price': price,
-      'userId':userId,
-      'aid':aid,
-      'buyerNickName':buyerNickName
+      'userId': userId,
+      'aid': aid,
+      'buyerNickName': buyerNickName
     };
     return supply;
   }
 
-  void setBuyerNickName(String value){
+  void setBuyerNickName(String value) {
     buyerNickName = value;
   }
 
-  void setCleaningUID(String uid){
+  void setCleaningUID(String uid) {
     userId = uid;
   }
 
-  void setApartmentId(String id){
+  void setApartmentId(String id) {
     aid = id;
   }
 
-  void setId(String value){
+  void setId(String value) {
     id = value;
   }
 
-  String get apartmentId{
+  String get apartmentId {
     return aid;
   }
-
 }

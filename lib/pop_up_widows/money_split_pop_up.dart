@@ -49,9 +49,12 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
       if (money[i].id == users[i].id) {
         if (money[i].money != 0)
           percantage = money[i].money / totalPrice;
-        else percantage = 0;
+        else
+          percantage = 0;
         _list.add(UserSplitListTitle(users[i], percantage, money[i].money));
-        _list.add(Divider(color: Colors.black,));
+        _list.add(Divider(
+          color: Colors.black,
+        ));
       }
     }
 

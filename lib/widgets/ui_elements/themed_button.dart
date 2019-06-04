@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ThemedButton extends StatelessWidget{
+class ThemedButton extends StatelessWidget {
   final Function pressed;
   final String text;
 
   ThemedButton(this.pressed, this.text);
+
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
@@ -14,14 +15,14 @@ class ThemedButton extends StatelessWidget{
       child: Text(text),
     );
   }
-
 }
 
-class ThemedTextButton extends StatelessWidget{
+class ThemedTextButton extends StatelessWidget {
   final Function pressed;
   final String text;
 
   ThemedTextButton(this.pressed, this.text);
+
   @override
   Widget build(BuildContext context) {
     return FlatButton(

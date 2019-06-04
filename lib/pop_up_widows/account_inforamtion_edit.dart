@@ -37,7 +37,7 @@ class _AccountInformationEditWindowState
       },
       onSaved: (String value) {
         int tmp;
-         if(widget.isNumber ) tmp = int.parse(widget.value);
+        if (widget.isNumber) tmp = int.parse(widget.value);
         widget.update(value);
       },
     );

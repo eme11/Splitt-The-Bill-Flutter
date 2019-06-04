@@ -49,8 +49,7 @@ mixin ChoresModel on Model {
     notifyListeners();
     final String id = _chores.elementAt(index).id;
     http
-        .delete(
-            'https://split-the-bill-flutter.firebaseio.com/chores/$id.json')
+        .delete('https://split-the-bill-flutter.firebaseio.com/chores/$id.json')
         .then((http.Response response) {
       _chores.removeAt(index);
       fetchChoreList();

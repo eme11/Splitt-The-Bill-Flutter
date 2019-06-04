@@ -34,25 +34,26 @@ class _CleaningSupplyCardState extends State<CleaningSupplyCard> {
   }
 
   String _getBuyer() {
-    return widget.value.buyerNickName == null ? 'anonymous user' : widget.value
-        .buyerNickName;
+    return widget.value.buyerNickName == null
+        ? 'anonymous user'
+        : widget.value.buyerNickName;
   }
 
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-          return Card(
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                    leading: CircleAvatar(child: Icon(_getIcon())),
-                    title: Text(widget.value.name),
-                    subtitle: Text('Buyer: ' + _getBuyer()),
-                    trailing: PriceTag(widget.value.price))
-              ],
-            ),
-          );
-        });
+      return Card(
+        child: Column(
+          children: <Widget>[
+            ListTile(
+                leading: CircleAvatar(child: Icon(_getIcon())),
+                title: Text(widget.value.name),
+                subtitle: Text('Buyer: ' + _getBuyer()),
+                trailing: PriceTag(widget.value.price))
+          ],
+        ),
+      );
+    });
   }
 }

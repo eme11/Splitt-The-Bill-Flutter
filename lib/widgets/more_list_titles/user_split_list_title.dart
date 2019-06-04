@@ -13,14 +13,16 @@ class UserSplitListTitle extends StatelessWidget {
 
   Widget _linearPercentIndicator(BuildContext context) {
     return LinearPercentIndicator(
-      lineHeight: 15.0,
-      percent: percentage,
-      backgroundColor: Theme.of(context).textSelectionColor,
-      progressColor: Theme.of(context).primaryColor,
-      center: Text((percentage * 100).toString() + '%'),
-      trailing: PriceTag(ammount, horizontal: 3, vertical: 1.25,)
-
-    );
+        lineHeight: 15.0,
+        percent: percentage,
+        backgroundColor: Theme.of(context).textSelectionColor,
+        progressColor: Theme.of(context).primaryColor,
+        center: Text((percentage * 100).toString() + '%'),
+        trailing: PriceTag(
+          ammount,
+          horizontal: 3,
+          vertical: 1.25,
+        ));
   }
 
   @override
@@ -30,10 +32,7 @@ class UserSplitListTitle extends StatelessWidget {
       subtitle: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Divider(),
-          _linearPercentIndicator(context)
-        ],
+        children: <Widget>[Divider(), _linearPercentIndicator(context)],
       ),
     );
   }
