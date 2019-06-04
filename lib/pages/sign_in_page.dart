@@ -4,6 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../scoped_models/main_model.dart';
 import '../helpers/regular_expressions.dart';
 import '../widgets/ui_elements/themed_button.dart';
+import '../pop_up_widows/forgot_password_form.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -57,6 +58,16 @@ class _SignInPageState extends State<SignInPage> {
     return ThemedTextButton(_signUp, 'NO ACCOUNT? SIGN UP');
   }
 
+  Widget _buildForgotPassword() {
+    return ThemedTextButton(_openForgotPassword, 'FORGOT PASSWORD');
+  }
+
+  void _openForgotPassword() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => ForgotPasswordForm());
+  }
+
   Widget _buildSizedBox() {
     return SizedBox(
       height: 10.0,
@@ -67,26 +78,24 @@ class _SignInPageState extends State<SignInPage> {
     Navigator.pushReplacementNamed(context, '/register');
   }
 
-  void _fetchData(String email) async{
+  void _fetchData(String email) async {
     MainModel model = ScopedModel.of(context);
-    await model.fetchCurrentUser(email).then((bool value) async{
+    await model.fetchCurrentUser(email).then((bool value) async {
       await model.fetchCurrentApartment(model.currentUser.aid);
       await model.fetchUsersForApartment();
       model.fetchBillBoard();
       model.fetchChoreList();
       model.fetchCleaningSupplies(model.currentApartmnet.id);
     });
-
   }
 
-  void _signIn() async{
+  void _signIn() async {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
     Map<String, dynamic> successInformation;
-    successInformation = await _login(
-        signIn['email'], signIn['password']);
+    successInformation = await _login(signIn['email'], signIn['password']);
     if (successInformation['success']) {
       Navigator.pushReplacementNamed(context, '/application');
       _fetchData(signIn['email']);
@@ -127,7 +136,9 @@ class _SignInPageState extends State<SignInPage> {
                   _buildSizedBox(),
                   _buildSignInButton(),
                   _buildSizedBox(),
-                  _buildRegisterButton()
+                  _buildRegisterButton(),
+                  _buildSizedBox(),
+                  _buildForgotPassword()
                 ],
               ),
             ),
@@ -145,7 +156,7 @@ class _SignInPageState extends State<SignInPage> {
       ),
       body: ScopedModelDescendant(
           builder: (BuildContext context, Widget child, MainModel model) {
-            _login = model.authenticate;
+        _login = model.authenticate;
         return _buildBody();
       }),
     );
