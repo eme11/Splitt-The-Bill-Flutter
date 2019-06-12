@@ -18,17 +18,24 @@ class MoneySplitPopUp extends StatefulWidget {
 }
 
 class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
+
   Widget _buildBody(List<User> users, List<CleainingSupply> supplies) {
-    return SingleChildScrollView(
-        child: Column(
-      children: _buildList(users, supplies),
-    ));
+    List<Widget> _list = _buildList(users, supplies);
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+        return Column(
+          children: <Widget>[_list[index]],
+        );
+      },
+      itemCount: _list.length,
+    );
   }
 
   List<Widget> _buildList(List<User> users, List<CleainingSupply> supplies) {
     List<Widget> _list = [];
     List<_UserIdAndMoney> money = [];
     double totalPrice = 0.0;
+
     for (int i = 0; i < users.length; ++i) {
       money.add(_UserIdAndMoney(users[i].id, 0));
     }
@@ -44,18 +51,23 @@ class _MoneySplittPopUpState extends State<MoneySplitPopUp> {
       totalPrice += supplies[i].price;
     }
 
-    for (int i = 0; i < money.length; ++i) {
-      double percantage;
-      if (money[i].id == users[i].id) {
-        if (money[i].money != 0)
-          percantage = money[i].money / totalPrice;
+
+    for (int i = 0; i < users.length; ++i) {
+      double percantage = 0.0;
+      print(users[i].id);
+      print(money[i].id);
+      _UserIdAndMoney tmp = money.firstWhere((_UserIdAndMoney money) {
+        return money.id == users[i].id;
+      });
+        if (tmp.money != 0)
+          percantage = tmp.money / totalPrice;
         else
-          percantage = 0;
-        _list.add(UserSplitListTitle(users[i], percantage, money[i].money));
-        _list.add(Divider(
-          color: Colors.black,
-        ));
-      }
+          percantage = 0.0;
+      print(tmp.money);
+      _list.add(UserSplitListTitle(users[i], percantage , money[i].money));
+      _list.add(Divider(
+        color: Colors.black,
+      ));
     }
 
     Widget total = ListTile(

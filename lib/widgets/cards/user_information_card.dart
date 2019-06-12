@@ -43,7 +43,6 @@ class UserInfoCard extends StatelessWidget {
                         deleteAid: deleteAid,
                         isUserDeletion: true,
                       ));
-              //delete(information, deleteAid);
             },
           ),
         ),
