@@ -82,7 +82,7 @@ class _SignInPageState extends State<SignInPage> {
     MainModel model = ScopedModel.of(context);
     await model.fetchCurrentUser(email).then((bool value) async {
       await model.fetchCurrentApartment(model.currentUser.aid);
-      await model.fetchUsersForApartment();
+      model.fetchUsersForApartment();
       model.fetchBillBoard();
       model.fetchChoreList();
       model.fetchCleaningSupplies(model.currentApartmnet.id);
