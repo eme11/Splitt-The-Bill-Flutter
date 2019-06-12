@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../models/user.dart';
 
+import '../../pop_up_widows/delete_warning.dart';
+
 class UserInfoCard extends StatelessWidget {
   final User information;
   final Function delete;
@@ -33,7 +35,15 @@ class UserInfoCard extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              delete(information, deleteAid);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => DeleteWarningMessage(
+                        delete,
+                        information: information,
+                        deleteAid: deleteAid,
+                        isUserDeletion: true,
+                      ));
+              //delete(information, deleteAid);
             },
           ),
         ),
