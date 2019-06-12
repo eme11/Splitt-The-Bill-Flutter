@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:http/http.dart' as http;
 import 'package:scoped_model/scoped_model.dart';
@@ -17,6 +18,7 @@ mixin BillBoardModel on Model {
   }
 
   void addAnnouncements(BillBoard announcement) {
+    announcement.setCreationTime(DateTime.now());
     final Map<String, dynamic> value = announcement.getBillBoardMap();
     http
         .post('https://split-the-bill-flutter.firebaseio.com/bill_board.json',
@@ -25,6 +27,8 @@ mixin BillBoardModel on Model {
       final Map<String, dynamic> responseData = json.decode(response.body);
       announcement.setId(responseData['name']);
       _announcements.add(announcement);
+      setDeletionTimeForSingleElement(
+          announcement, _announcements.indexOf(announcement));
       notifyListeners();
     });
   }
@@ -63,7 +67,7 @@ mixin BillBoardModel on Model {
     });
   }
 
-  void fetchBillBoard() {
+  Future<void> fetchBillBoard() async {
     _isLoading = true;
     notifyListeners();
     http
@@ -78,21 +82,46 @@ mixin BillBoardModel on Model {
       }
       listData.forEach((String productId, dynamic data) {
         final BillBoard product = BillBoard(
-            productId,
-            data['title'],
-            data['description'],
-            data['type'],
-            data['expiration'],
-            data['yes'],
-            data['no'],
-            userNickName: data['userNickName'],
-            userId: data['userId'],
-            aid: data['aid']);
+          productId,
+          data['title'],
+          data['description'],
+          data['type'],
+          data['expiration'],
+          data['yes'],
+          data['no'],
+          DateTime.parse(data['creation']),
+          userNickName: data['userNickName'],
+          userId: data['userId'],
+          aid: data['aid'],
+        );
         fetchedList.add(product);
       });
       _announcements = fetchedList;
+      setDeletionTimeForAll();
       _isLoading = false;
       notifyListeners();
     });
+  }
+
+  void setDeletionTimeForSingleElement(BillBoard billboard, int index) async {
+    Duration timer = Duration(hours: billboard.expirationTime.toInt());
+    Timer(timer, () {
+      deleteAnnouncementAt(index);
+    });
+  }
+
+  void setDeletionTimeForAll() async {
+    print('BBBBLAAAAAAAAA');
+    DateTime now = DateTime.now();
+    for (int i = 0; i < _announcements.length; ++i) {
+      Duration timePast = now.difference(_announcements[i].creationTime);
+      int expirationInSeconda = _announcements[i].expirationTime.toInt() * 3600;
+      int timeLeft = expirationInSeconda - timePast.inSeconds;
+
+      Duration timer = Duration(seconds: timeLeft);
+      Timer(timer, () {
+        deleteAnnouncementAt(i);
+      });
+    }
   }
 }

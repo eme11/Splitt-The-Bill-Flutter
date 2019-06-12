@@ -9,9 +9,10 @@ class BillBoard {
   String userNickName;
   int yesVote;
   int noVote;
+  DateTime creationTime;
 
   BillBoard(this.id, this.title, this.descrition, this.type,
-      this.expirationTime, this.yesVote, this.noVote,
+      this.expirationTime, this.yesVote, this.noVote, this.creationTime,
       {this.userNickName, this.aid, this.userId});
 
   void incrementYesVote() {
@@ -32,7 +33,8 @@ class BillBoard {
       'no': noVote,
       'yes': yesVote,
       'userNickName': userNickName,
-      'aid': aid
+      'aid': aid,
+      'creation':creationTime.toIso8601String()
     };
     return _value;
   }
@@ -51,5 +53,9 @@ class BillBoard {
 
   void setBillBoardAid(String value) {
     aid = value;
+  }
+
+  void setCreationTime(DateTime value){
+    creationTime = value;
   }
 }
