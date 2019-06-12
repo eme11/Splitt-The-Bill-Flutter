@@ -42,7 +42,7 @@ mixin ApartmentModel on Model {
     print(_userList.length.toString());
     await updateUserInfo(user).then((bool value) {
       if (value) {
-        fetchUsersForApartment();
+        //fetchUsersForApartment();
       }
       _isLoading = false;
       notifyListeners();
