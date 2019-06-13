@@ -6,8 +6,10 @@ class Chore {
   int changingInterval;
   String currentAssigneeId;
   String initals;
+  DateTime lastAssignedTime;
 
-  Chore(this.name, this.description, this.changingInterval,
+  Chore(
+      this.name, this.description, this.changingInterval, this.lastAssignedTime,
       {this.id, this.aid, this.currentAssigneeId, this.initals});
 
   void setCurrentAssigneeId(String uid) {
@@ -45,8 +47,13 @@ class Chore {
       'description': description,
       'changingInterval': changingInterval,
       'currentAssigneeId': currentAssigneeId,
-      'initials': initals
+      'initials': initals,
+      'lastAssignedTime':lastAssignedTime.toIso8601String()
     };
     return chore;
+  }
+
+  void setLastAssignedTime(DateTime time){
+    lastAssignedTime = time;
   }
 }
