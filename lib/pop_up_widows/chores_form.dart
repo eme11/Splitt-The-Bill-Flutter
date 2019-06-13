@@ -20,7 +20,7 @@ class _ChoresFormState extends State<ChoresForm> {
   List<DropdownMenuItem<String>> _type = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Chore _formData = Chore('', '', 3);
+  Chore _formData = Chore('', '', 3, DateTime.now());
 
   Widget _buildName() {
     return TextFormField(
